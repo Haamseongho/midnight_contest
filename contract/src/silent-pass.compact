@@ -1,0 +1,23 @@
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+// The public ledger stores only a commitment and whether it has been claimed.
+// The secret is a private circuit argument and is never assigned to the ledger.
+export ledger commitment: Bytes<32>;
+export ledger claimed: Boolean;
+
+constructor(initialCommitment: Bytes<32>) {
+  commitment = disclose(initialCommitment);
+  claimed = false;
+}
+
+export pure circuit makeCommitment(secret: Bytes<32>): Bytes<32> {
+  return persistentHash<Bytes<32>>(secret);
+}
+
+export circuit claim(secret: Bytes<32>): [] {
+  assert(!claimed, "This pass was already claimed");
+  assert(persistentHash<Bytes<32>>(secret) == commitment, "Secret does not match");
+  claimed = true;
+}

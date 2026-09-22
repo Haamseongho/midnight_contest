@@ -1,0 +1,39 @@
+{
+  "name": "silent-pass-midnight",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "compile:contract": "compact compile contract/src/silent-pass.compact contract/managed/silent-pass && node scripts/sync-artifacts.mjs",
+    "dev": "npm run compile:contract && vite --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run compile:contract && npm run typecheck && vite build",
+    "test": "npm run compile:contract && node --test tests/*.test.mjs",
+    "test:local": "npm run compile:contract && tsx scripts/local-e2e.mjs"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "0.16.0",
+    "@midnight-ntwrk/dapp-connector-api": "4.0.1",
+    "@midnight-ntwrk/midnight-js-contracts": "4.1.1",
+    "@midnight-ntwrk/midnight-js-fetch-zk-config-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-http-client-proof-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-network-id": "4.1.1",
+    "@midnight-ntwrk/midnight-js-protocol": "4.1.1",
+    "@midnight-ntwrk/midnight-js-types": "4.1.1",
+    "@midnight-ntwrk/midnight-js-utils": "4.1.1",
+    "assert": "^2.1.0"
+  },
+  "devDependencies": {
+    "@midnight-ntwrk/midnight-js-node-zk-config-provider": "^4.1.1",
+    "@midnight-ntwrk/testkit-js": "^4.1.1",
+    "rxjs": "^7.8.2",
+    "tsx": "^4.20.6",
+    "typescript": "5.9.3",
+    "vite": "7.3.6",
+    "vite-plugin-wasm": "3.6.0"
+  },
+  "overrides": {
+    "@midnight-ntwrk/onchain-runtime-v3": "3.0.0"
+  }
+}

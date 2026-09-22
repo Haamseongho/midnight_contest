@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1225" />
+    <meta
+      name="description"
+      content="Midnight Compact 계약으로 일회용 비밀 패스를 확인하는 로컬 데모와 지갑 연동 실험"
+    />
+    <title>Silent Pass — Midnight 패스 프로토타입</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Silent Pass 홈">
+          <span class="brand-mark" aria-hidden="true">◒</span>
+          <span>Silent Pass</span>
+        </a>
+        <span class="environment"
+          ><span class="status-dot"></span> LOCAL DEMO · WALLET BETA</span
+        >
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="eyebrow">MIDNIGHT KOREA HACKATHON 2026 · PROTOTYPE</div>
+          <h1>비밀은 간직하고,<br /><em>소유 사실만 확인하세요.</em></h1>
+          <p class="hero-copy">
+            32바이트 비밀값으로 패스를 만들고, 같은 비밀값을 아는 사람만 한 번
+            사용할 수 있습니다. 공개 상태에는 비밀값 대신 커밋먼트와 사용 여부만
+            남습니다.
+          </p>
+          <div class="hero-chips" aria-label="데모 범위">
+            <span>Compact 계약 컴파일</span>
+            <span>브라우저에서 로컬 회로 실행</span>
+            <span>로컬 거래 검증 · 실제 지갑 미확인</span>
+          </div>
+        </section>
+
+        <section class="workspace" aria-labelledby="workspace-title">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">INTERACTIVE DEMO</div>
+              <h2 id="workspace-title">패스 실험실</h2>
+            </div>
+            <span id="pass-status" class="pill pill-idle">패스 없음</span>
+          </div>
+
+          <div class="steps">
+            <article class="card">
+              <div class="card-head">
+                <span class="step-number">01</span>
+                <h3>비밀 패스 만들기</h3>
+              </div>
+              <p>
+                브라우저에서 새 비밀값을 무작위로 생성합니다. 아래 값은 복사해
+                보관하세요. 새로고침하면 이 로컬 데모 상태는 사라집니다.
+              </p>
+              <button
+                id="generate-button"
+                class="button button-primary"
+                type="button"
+              >
+                새 패스 생성
+              </button>
+              <div class="field-group">
+                <label for="secret-output"
+                  >내 비밀값 · 이 데모에서만 표시</label
+                >
+                <div class="copy-row">
+                  <textarea
+                    id="secret-output"
+                    rows="2"
+                    readonly
+                    placeholder="패스를 생성하면 이곳에 표시됩니다."
+                  ></textarea>
+                  <button
+                    id="copy-button"
+                    class="button button-outline"
+                    type="button"
+                    disabled
+                  >
+                    복사
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <span class="step-number">02</span>
+                <h3>소유 여부 확인</h3>
+              </div>
+              <p>
+                복사한 64자리 16진수 비밀값을 입력하세요. Compact 계약의
+                <code>claim</code> 회로가 커밋먼트 일치와 중복 사용을
+                검사합니다.
+              </p>
+              <form id="claim-form">
+                <label for="claim-input">비밀값 입력</label>
+                <input
+                  id="claim-input"
+                  name="secret"
+                  type="password"
+                  inputmode="text"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="64자리 16진수"
+                  maxlength="64"
+                  required
+                />
+                <button
+                  id="claim-button"
+                  class="button button-primary"
+                  type="submit"
+                  disabled
+                >
+                  패스 사용 확인
+                </button>
+              </form>
+              <p
+                id="claim-feedback"
+                class="feedback"
+                role="status"
+                aria-live="polite"
+              >
+                먼저 패스를 생성하세요.
+              </p>
+            </article>
+          </div>
+
+          <article class="ledger-card" aria-labelledby="ledger-title">
+            <div class="ledger-title-row">
+              <div>
+                <span class="eyebrow">PUBLIC LEDGER VIEW</span>
+                <h3 id="ledger-title">공개 상태 미리보기</h3>
+              </div>
+              <span class="ledger-icon" aria-hidden="true">⌁</span>
+            </div>
+            <dl>
+              <div>
+                <dt>커밋먼트</dt>
+                <dd id="commitment-value">아직 생성되지 않음</dd>
+              </div>
+              <div>
+                <dt>사용 여부</dt>
+                <dd id="claimed-value">—</dd>
+              </div>
+              <div>
+                <dt>비밀값 공개</dt>
+                <dd>안 함</dd>
+              </div>
+            </dl>
+          </article>
+        </section>
+
+        <section class="workspace network-workspace" aria-labelledby="network-title">
+          <div class="section-heading">
+            <div>
+              <div class="eyebrow">MIDNIGHT NETWORK · EXPERIMENTAL</div>
+              <h2 id="network-title">지갑·네트워크 실험</h2>
+            </div>
+            <span id="network-status" class="pill pill-idle">지갑 미연결</span>
+          </div>
+          <p class="network-intro">
+            DApp Connector 4.x 지갑으로 계약 배포와 사용 트랜잭션을 시도하는
+            베타 경로입니다. 로컬 개발망 거래는 테스트 지갑으로 검증했지만,
+            실제 브라우저 지갑과 공개 테스트넷은 아직 확인하지 않았습니다.
+            지갑 승인과 수수료용 잔액이 필요할 수 있습니다.
+          </p>
+          <div class="network-connect">
+            <label for="network-id">네트워크</label>
+            <select id="network-id">
+              <option value="preprod">Preprod</option>
+              <option value="preview">Preview</option>
+              <option value="undeployed">Undeployed · 로컬 Docker</option>
+            </select>
+            <button id="connect-button" class="button button-outline" type="button">지갑 연결</button>
+          </div>
+          <div class="steps network-steps">
+            <article class="card">
+              <div class="card-head"><span class="step-number">03</span><h3>계약 배포</h3></div>
+              <p>
+                비밀값을 생성해 안전하게 보관한 뒤 지갑으로 계약을 배포하세요.
+                공개 체인에는 비밀값이 아닌 커밋먼트가 기록됩니다.
+              </p>
+              <button id="network-generate-button" class="button button-outline" type="button">비밀값 생성</button>
+              <div class="field-group">
+                <label for="network-secret-output">내 비밀값 · 새로고침하면 사라짐</label>
+                <div class="copy-row">
+                  <textarea id="network-secret-output" rows="2" readonly placeholder="배포 전에 비밀값을 생성하세요."></textarea>
+                  <button id="network-copy-button" class="button button-outline" type="button" disabled>복사</button>
+                </div>
+              </div>
+              <button id="deploy-button" class="button button-primary network-action" type="button" disabled>지갑으로 배포</button>
+            </article>
+            <article class="card">
+              <div class="card-head"><span class="step-number">04</span><h3>계약 확인·사용</h3></div>
+              <p>
+                배포된 계약 주소로 공개 상태를 조회할 수 있습니다. 비밀값을
+                입력해 사용하면 지갑이 증명 및 트랜잭션을 처리합니다. 새로고침
+                후에는 지갑을 다시 연결하고 보관한 주소·비밀값을 입력하세요.
+              </p>
+              <label for="network-address">계약 주소</label>
+              <input id="network-address" type="text" autocomplete="off" spellcheck="false" placeholder="배포 후 자동 입력 또는 기존 주소 입력" />
+              <button id="network-read-button" class="button button-outline network-action" type="button" disabled>공개 상태 조회</button>
+              <label for="network-claim-secret">사용할 비밀값</label>
+              <input id="network-claim-secret" type="password" autocomplete="off" spellcheck="false" maxlength="64" placeholder="64자리 16진수" />
+              <button id="network-claim-button" class="button button-primary network-action" type="button" disabled>지갑으로 사용</button>
+            </article>
+          </div>
+          <div class="ledger-card network-ledger">
+            <div class="ledger-title-row"><div><span class="eyebrow">INDEXER VIEW</span><h3>네트워크 공개 상태</h3></div></div>
+            <dl>
+              <div><dt>계약 주소</dt><dd id="network-address-value">—</dd></div>
+              <div><dt>커밋먼트</dt><dd id="network-commitment-value">—</dd></div>
+              <div><dt>사용 여부</dt><dd id="network-claimed-value">—</dd></div>
+            </dl>
+          </div>
+          <p id="network-feedback" class="feedback" role="status" aria-live="polite">
+            지원 지갑이 있다면 연결해 보세요. 로컬 테스트 지갑으로 거래를 검증했으며 실제 확장 지갑은 미확인입니다.
+          </p>
+          <p class="network-caution">
+            주의: 사용 시 비밀값은 로컬 Docker 증명 서버 또는 선택한 지갑의
+            증명 제공자에 전달될 수 있습니다. 이 앱 자체는 별도 저장하지 않지만,
+            해당 증명 서비스의 처리 방식은 별도로 확인해야 합니다.
+          </p>
+        </section>
+
+        <section class="explain" aria-labelledby="explain-title">
+          <div class="eyebrow">PRIVACY BOUNDARY</div>
+          <h2 id="explain-title">무엇을 증명하고, 무엇을 아직 하지 않나요?</h2>
+          <div class="explain-grid">
+            <div>
+              <span class="explain-icon">✓</span>
+              <h3>계약 로직 검증</h3>
+              <p>
+                실제 Compact 소스를 컴파일한 JavaScript 회로를 브라우저에서
+                실행합니다. 잘못된 비밀값과 두 번째 사용은 거절됩니다.
+              </p>
+            </div>
+            <div>
+              <span class="explain-icon">◌</span>
+              <h3>공개 상태 최소화</h3>
+              <p>
+                비밀값은 로컬 입력으로만 사용되고 계약의 공개 상태에는
+                커밋먼트와 사용 여부만 저장됩니다.
+              </p>
+            </div>
+            <div>
+              <span class="explain-icon">↗</span>
+              <h3>다음 통합 단계</h3>
+              <p>
+                위쪽 데모는 로컬 시뮬레이션입니다. 아래 지갑 경로는 로컬
+                개발망에서 증명·배포·사용을 확인했지만 실제 확장 지갑과 공개
+                테스트넷에서는 아직 검증하지 않았습니다.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>Built on Midnight · Compact 0.31.1</span
+        ><a
+          href="https://docs.midnight.network/compact/reference/compact-reference"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Compact 문서 ↗</a
+        >
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

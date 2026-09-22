@@ -1,0 +1,7 @@
+node_modules/
+dist/
+contract/managed/
+public/keys/
+public/zkir/
+logs/
+.DS_Store
