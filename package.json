@@ -31,7 +31,7 @@
     "@midnight-ntwrk/midnight-js-node-zk-config-provider": "^4.1.1",
     "@midnight-ntwrk/testkit-js": "^4.1.1",
     "rxjs": "^7.8.2",
-    "tsx": "^4.20.6",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3",
     "vite": "7.3.6",
     "vite-plugin-wasm": "3.6.0"
