@@ -32,7 +32,7 @@
     "@midnight-ntwrk/testkit-js": "^4.1.1",
     "rxjs": "^7.8.2",
     "tsx": "^4.20.6",
-    "typescript": "5.9.3",
+    "typescript": "7.0.2",
     "vite": "7.3.6",
     "vite-plugin-wasm": "3.6.0"
   },
