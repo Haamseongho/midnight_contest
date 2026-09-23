@@ -7,6 +7,12 @@ const require = createRequire(import.meta.url);
 
 export default defineConfig({
   base: process.env.VITE_BASE_PATH || "/",
+  // `util` is pulled in transitively by the Midnight browser SDK. Its legacy
+  // browser build reads NODE_DEBUG at module evaluation time even though Vite
+  // intentionally does not provide a global Node.js `process` object.
+  define: {
+    "process.env.NODE_DEBUG": "undefined",
+  },
   plugins: [wasm()],
   resolve: {
     alias: [
