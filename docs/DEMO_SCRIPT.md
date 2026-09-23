@@ -22,10 +22,10 @@ Use this only with a compatible DApp Connector 4.x wallet and funded test-networ
 1. Select Preview, Preprod, or the local `undeployed` network.
 2. Connect the wallet and generate a fresh secret.
 3. Copy the secret before deploying the contract.
-4. Approve deployment and save the resulting contract address.
+4. Approve deployment and save the resulting contract address and deployment transaction identifier.
 5. Reconnect, enter the saved address, and query the public state.
 6. Try a wrong secret, then the correct secret, and finally a replay.
-7. Record the contract address and transaction identifiers without recording the secret.
+7. Record the contract address and both public transaction identifiers without recording the secret.
 
 ## Claims that should not be made
 

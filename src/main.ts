@@ -164,6 +164,8 @@ const networkClaimButton = element<HTMLButtonElement>("network-claim-button");
 const networkAddressValue = element<HTMLElement>("network-address-value");
 const networkCommitmentValue = element<HTMLElement>("network-commitment-value");
 const networkClaimedValue = element<HTMLElement>("network-claimed-value");
+const networkDeployTxValue = element<HTMLElement>("network-deploy-tx-value");
+const networkClaimTxValue = element<HTMLElement>("network-claim-tx-value");
 
 let network: MidnightSession | null = null;
 let networkSecretHex = "";
@@ -253,6 +255,7 @@ deployButton.addEventListener("click", () => {
     try {
       const result = await network.deploy(secret);
       showPublicState(result.address, result.state);
+      networkDeployTxValue.textContent = result.txId;
       networkMessage("계약이 배포되고 공개 상태가 조회됐습니다. 주소와 비밀값을 보관하세요.", "success");
     } finally {
       secret.fill(0);
@@ -280,7 +283,9 @@ networkClaimButton.addEventListener("click", () => {
     const secret = fromHex(enteredSecretHex);
     try {
       networkMessage("지갑 승인·증명 생성·사용 트랜잭션을 기다리고 있습니다…");
-      showPublicState(address, await network.claim(address, secret));
+      const result = await network.claim(address, secret);
+      showPublicState(address, result);
+      networkClaimTxValue.textContent = result.txId ?? "—";
       if (networkSecretHex.toLowerCase() === enteredSecretHex.toLowerCase()) {
         networkSecretHex = "";
         networkSecretOutput.value = "";

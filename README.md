@@ -88,7 +88,7 @@ docker compose -f devnet/compose.yml stop
 
 The local configuration exposes the node at `127.0.0.1:9944`, indexer at `127.0.0.1:8088`, and proof server at `127.0.0.1:6300`. The integration test uses the official public genesis seed only on the disposable `undeployed` network. Never reuse that seed on a public network.
 
-See [the three-minute demo script](./docs/DEMO_SCRIPT.md) for a reviewer-oriented walkthrough.
+See [the three-minute demo script](./docs/DEMO_SCRIPT.md) for a reviewer-oriented walkthrough. The remaining public-network verification is tracked in the [Preview deployment runbook](./docs/PREVIEW_DEPLOYMENT.md).
 
 ## Architecture
 

@@ -52,6 +52,7 @@ const compatibleWallet = (): InitialAPI | undefined => {
 export type PublicPass = {
   commitment: string;
   claimed: boolean;
+  txId?: string;
 };
 
 export class MidnightSession {
@@ -116,14 +117,18 @@ export class MidnightSession {
     return new MidnightSession(networkId, providers);
   }
 
-  async deploy(secret: Uint8Array): Promise<{ address: string; state: PublicPass }> {
+  async deploy(secret: Uint8Array): Promise<{ address: string; state: PublicPass; txId: string }> {
     const commitment = pureCircuits.makeCommitment(secret);
     const deployed = await deployContract(this.providers, {
       compiledContract,
       args: [commitment],
     });
     const address = deployed.deployTxData.public.contractAddress;
-    return { address, state: await this.read(address) };
+    return {
+      address,
+      state: await this.read(address),
+      txId: deployed.deployTxData.public.txId,
+    };
   }
 
   async claim(address: string, secret: Uint8Array): Promise<PublicPass> {
@@ -132,8 +137,8 @@ export class MidnightSession {
       compiledContract,
       contractAddress: address,
     });
-    await found.callTx.claim(secret);
-    return this.read(address);
+    const claimed = await found.callTx.claim(secret);
+    return { ...(await this.read(address)), txId: claimed.public.txId };
   }
 
   async read(address: string): Promise<PublicPass> {
