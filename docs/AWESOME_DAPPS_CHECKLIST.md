@@ -26,7 +26,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
 - [ ] Actual browser-wallet connection confirmed
 - [ ] Preview or Preprod contract address and transaction identifiers published
-- [ ] Short demo video or screenshots added to the README
+- [x] Public-demo screenshot added to the README
 
 ## Proposed list entry
 

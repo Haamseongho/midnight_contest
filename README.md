@@ -16,6 +16,8 @@ Silent Pass is a privacy-preserving bearer credential for one-time event admissi
 - SDK: Midnight.js 4.1.1 and DApp Connector API 4.0.1
 - License: [Apache-2.0](./LICENSE)
 
+![Silent Pass public demo](./docs/silent-pass-demo.png)
+
 ## Real-world use case
 
 Event organizers often need to distribute invitation codes while avoiding a public attendee list. A normal on-chain code would reveal the credential and allow observers to copy it. Silent Pass instead treats the secret as a transferable bearer credential:
