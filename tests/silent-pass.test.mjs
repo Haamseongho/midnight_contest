@@ -37,6 +37,21 @@ test('public state contains a commitment and starts unclaimed', () => {
   assert.deepEqual(Object.keys(state).sort(), ['claimed', 'commitment']);
 });
 
+test('commitments are deterministic and separate different secrets', () => {
+  const first = new Uint8Array(32).fill(11);
+  const same = new Uint8Array(32).fill(11);
+  const different = new Uint8Array(32).fill(12);
+
+  assert.deepEqual(
+    pureCircuits.makeCommitment(first),
+    pureCircuits.makeCommitment(same),
+  );
+  assert.notDeepEqual(
+    pureCircuits.makeCommitment(first),
+    pureCircuits.makeCommitment(different),
+  );
+});
+
 test('a wrong secret cannot change the public state', () => {
   const { contract, context } = createPass();
   assert.throws(
@@ -56,4 +71,15 @@ test('the correct secret claims once, then replay is rejected', () => {
     () => contract.circuits.claim(result.context, secret),
     /already claimed/,
   );
+  assert.equal(ledger(result.context.currentQueryContext.state).claimed, true);
+});
+
+test('claiming one deployment does not affect another deployment', () => {
+  const first = createPass();
+  const second = createPass();
+
+  const claimed = first.contract.circuits.claim(first.context, first.secret);
+
+  assert.equal(ledger(claimed.context.currentQueryContext.state).claimed, true);
+  assert.equal(ledger(second.context.currentQueryContext.state).claimed, false);
 });

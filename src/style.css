@@ -130,6 +130,60 @@ main {
   color: #cad2ea;
   font-size: 12px;
 }
+.use-case {
+  margin-bottom: 26px;
+  border: 1px solid #334365;
+  border-radius: 24px;
+  padding: 36px;
+  background:
+    linear-gradient(135deg, #172442eb, #111a30e8),
+    radial-gradient(circle at 85% 0, #6355a650, transparent 40%);
+}
+.use-case h2 {
+  margin: 9px 0 12px;
+  font-size: 30px;
+  letter-spacing: -0.04em;
+}
+.use-case-copy {
+  max-width: 780px;
+  color: #aebbd7;
+  line-height: 1.8;
+  word-break: keep-all;
+}
+.role-flow {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 0;
+  margin: 28px 0 0;
+}
+.role-flow li {
+  min-width: 0;
+  border: 1px solid #405174;
+  border-radius: 16px;
+  padding: 21px;
+  background: #0d172ab8;
+}
+.role-flow strong {
+  display: block;
+  margin-top: 16px;
+  color: #eef0fb;
+  font-size: 15px;
+}
+.role-flow p {
+  margin: 9px 0 0;
+  color: #9eacc8;
+  font-size: 12px;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+.role-number {
+  font-family: "DM Mono", monospace;
+  color: #b6a5f9;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
 .workspace {
   border: 1px solid #334365;
   background: #111a30d9;
@@ -455,6 +509,10 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+footer nav {
+  display: flex;
+  gap: 18px;
+}
 @media (max-width: 760px) {
   .topbar {
     height: 64px;
@@ -475,6 +533,16 @@ footer a:hover {
   .workspace {
     padding: 20px;
     border-radius: 18px;
+  }
+  .use-case {
+    padding: 24px 20px;
+    border-radius: 18px;
+  }
+  .use-case h2 {
+    font-size: 25px;
+  }
+  .role-flow {
+    grid-template-columns: 1fr;
   }
   .section-heading h2 {
     font-size: 25px;
@@ -513,6 +581,8 @@ footer a:hover {
   }
   footer {
     padding: 25px 20px 40px;
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 @media (max-width: 400px) {

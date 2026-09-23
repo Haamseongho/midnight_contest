@@ -6,9 +6,9 @@
     <meta name="theme-color" content="#0b1225" />
     <meta
       name="description"
-      content="Midnight Compact 계약으로 일회용 비밀 패스를 확인하는 로컬 데모와 지갑 연동 실험"
+      content="참가자 신원을 공개하지 않고 일회용 행사 입장 자격을 증명하는 Midnight DApp"
     />
-    <title>Silent Pass — Midnight 패스 프로토타입</title>
+    <title>Silent Pass — 비공개 일회용 입장 패스</title>
   </head>
   <body>
     <div id="app">
@@ -18,31 +18,58 @@
           <span>Silent Pass</span>
         </a>
         <span class="environment"
-          ><span class="status-dot"></span> LOCAL DEMO · WALLET BETA</span
+          ><span class="status-dot"></span> IDENTITY &amp; PRIVACY · OPEN SOURCE</span
         >
       </header>
 
       <main id="top">
         <section class="hero">
-          <div class="eyebrow">MIDNIGHT KOREA HACKATHON 2026 · PROTOTYPE</div>
+          <div class="eyebrow">ONE-TIME EVENT ADMISSION · MIDNIGHT NETWORK</div>
           <h1>비밀은 간직하고,<br /><em>소유 사실만 확인하세요.</em></h1>
           <p class="hero-copy">
-            32바이트 비밀값으로 패스를 만들고, 같은 비밀값을 아는 사람만 한 번
-            사용할 수 있습니다. 공개 상태에는 비밀값 대신 커밋먼트와 사용 여부만
-            남습니다.
+            주최자는 초대받은 사람의 이름이나 입장 코드를 공개 원장에 올리지
+            않고도 일회용 입장 자격을 발급할 수 있습니다. 참가자는 32바이트
+            비밀값을 공개하지 않은 채 소유 사실을 한 번만 증명합니다.
           </p>
           <div class="hero-chips" aria-label="데모 범위">
-            <span>Compact 계약 컴파일</span>
-            <span>브라우저에서 로컬 회로 실행</span>
-            <span>로컬 거래 검증 · 실제 지갑 미확인</span>
+            <span>실제 Compact 계약</span>
+            <span>로컬 개발망 E2E 검증</span>
+            <span>DApp Connector 4.x 경로</span>
           </div>
+        </section>
+
+        <section class="use-case" aria-labelledby="use-case-title">
+          <div class="eyebrow">REAL-WORLD FLOW</div>
+          <h2 id="use-case-title">공개 참석자 명단 없는 행사 체크인</h2>
+          <p class="use-case-copy">
+            Silent Pass는 비밀값을 가진 사람이 바로 권리 보유자인 양도 가능한
+            일회용 자격 증명입니다. 비밀값과 계약 주소는 신뢰할 수 있는 비공개
+            채널로 전달하고, 원장에는 확인에 필요한 최소 상태만 남깁니다.
+          </p>
+          <ol class="role-flow">
+            <li>
+              <span class="role-number">01</span>
+              <strong>주최자 · 발급</strong>
+              <p>무작위 비밀값을 만들고 커밋먼트만 Midnight 계약에 배포합니다.</p>
+            </li>
+            <li>
+              <span class="role-number">02</span>
+              <strong>참가자 · 보관</strong>
+              <p>비밀 채널로 계약 주소와 비밀값을 받아 체크인 전까지 보관합니다.</p>
+            </li>
+            <li>
+              <span class="role-number">03</span>
+              <strong>검증자 · 1회 확인</strong>
+              <p>비밀 원문 대신 증명을 확인하고 공개 상태를 사용 완료로 바꿉니다.</p>
+            </li>
+          </ol>
         </section>
 
         <section class="workspace" aria-labelledby="workspace-title">
           <div class="section-heading">
             <div>
               <div class="eyebrow">INTERACTIVE DEMO</div>
-              <h2 id="workspace-title">패스 실험실</h2>
+              <h2 id="workspace-title">입장 패스 실험실</h2>
             </div>
             <span id="pass-status" class="pill pill-idle">패스 없음</span>
           </div>
@@ -54,8 +81,9 @@
                 <h3>비밀 패스 만들기</h3>
               </div>
               <p>
-                브라우저에서 새 비밀값을 무작위로 생성합니다. 아래 값은 복사해
-                보관하세요. 새로고침하면 이 로컬 데모 상태는 사라집니다.
+                행사 주최자 역할로 새 비밀값을 무작위 생성합니다. 참가자에게
+                전달할 값이므로 복사해 보관하세요. 새로고침하면 로컬 상태는
+                사라집니다.
               </p>
               <button
                 id="generate-button"
@@ -93,8 +121,8 @@
                 <h3>소유 여부 확인</h3>
               </div>
               <p>
-                복사한 64자리 16진수 비밀값을 입력하세요. Compact 계약의
-                <code>claim</code> 회로가 커밋먼트 일치와 중복 사용을
+                행사 검증자 역할로 참가자가 제시한 64자리 비밀값을 입력하세요.
+                Compact의 <code>claim</code> 회로가 커밋먼트 일치와 중복 사용을
                 검사합니다.
               </p>
               <form id="claim-form">
@@ -230,7 +258,7 @@
 
         <section class="explain" aria-labelledby="explain-title">
           <div class="eyebrow">PRIVACY BOUNDARY</div>
-          <h2 id="explain-title">무엇을 증명하고, 무엇을 아직 하지 않나요?</h2>
+          <h2 id="explain-title">보호하는 정보와 공개되는 정보를 구분합니다.</h2>
           <div class="explain-grid">
             <div>
               <span class="explain-icon">✓</span>
@@ -250,11 +278,11 @@
             </div>
             <div>
               <span class="explain-icon">↗</span>
-              <h3>다음 통합 단계</h3>
+              <h3>공개되는 메타데이터</h3>
               <p>
-                위쪽 데모는 로컬 시뮬레이션입니다. 아래 지갑 경로는 로컬
-                개발망에서 증명·배포·사용을 확인했지만 실제 확장 지갑과 공개
-                테스트넷에서는 아직 검증하지 않았습니다.
+                계약 주소, 커밋먼트, 사용 여부와 거래 메타데이터는 공개될 수
+                있습니다. Silent Pass는 지갑 신원이나 네트워크 메타데이터의
+                익명성을 보장하지 않습니다.
               </p>
             </div>
           </div>
@@ -262,13 +290,21 @@
       </main>
 
       <footer>
-        <span>Built on Midnight · Compact 0.31.1</span
-        ><a
-          href="https://docs.midnight.network/compact/reference/compact-reference"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Compact 문서 ↗</a
-        >
+        <span>This project is built on the Midnight Network.</span>
+        <nav aria-label="프로젝트 링크">
+          <a
+            href="https://github.com/Haamseongho/midnight_contest"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub ↗</a
+          >
+          <a
+            href="https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            >보안 모델 ↗</a
+          >
+        </nav>
       </footer>
     </div>
     <script type="module" src="/src/main.ts"></script>

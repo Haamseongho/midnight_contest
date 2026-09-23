@@ -1,61 +1,194 @@
-# Silent Pass — Midnight 일회용 비밀 패스 프로토타입
+# Silent Pass
 
-**한 줄 설명:** 비밀값을 공개하지 않고 일회용 패스를 소유했음을 증명하는 Midnight DApp.
+[![CI](https://github.com/Haamseongho/midnight_contest/actions/workflows/ci.yml/badge.svg)](https://github.com/Haamseongho/midnight_contest/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
 
-비밀값을 공개 원장에 저장하지 않고, 그 값을 아는 사람만 패스를 한 번 사용할 수 있게 하는 작은 Midnight Compact 계약과 웹 앱입니다. [Midnight Korea Hackathon 2026 안내](https://sensible-successes-775636.framer.app/kor)는 요구사항 참조용이며, 이 사이트를 통한 최종 제출은 하지 않습니다. 컴파일·재현 가능한 로컬 데모와 로컬 개발망 거래 검증 경로를 구현했습니다. 공개 테스트넷과 실제 브라우저 지갑 확장 프로그램은 아직 검증하지 않았습니다.
+This project is built on the Midnight Network.
 
-## 바로 실행
+**한 줄 설명:** 비밀값을 공개하지 않고 일회용 행사 입장 자격을 증명하는 Midnight DApp.
 
-필요 환경: Node.js 22 이상, npm, Compact devtools 0.5.1 및 Compact 컴파일러 0.31.1. Compact는 [공식 설치 가이드](https://docs.midnight.network/getting-started/installation)에 따라 설치하고 `compact update 0.31.1`을 실행한 뒤 `compact --version`과 `compact compile --version`으로 확인하세요. SDK·컴파일러 버전은 [공식 호환성 표](https://docs.midnight.network/relnotes/support-matrix)에 맞췄습니다. 지갑 경로에는 DApp Connector 4.x 지원 지갑이 별도로 필요합니다.
+Silent Pass is a privacy-preserving bearer credential for one-time event admission. An organizer publishes a commitment, privately gives an attendee the secret and contract address, and lets a verifier confirm the pass exactly once without putting the secret or attendee name on the public ledger.
+
+- Repository: <https://github.com/Haamseongho/midnight_contest>
+- Category: `Identity & Privacy`
+- Contract: Compact language 0.23, compiler 0.31.1
+- SDK: Midnight.js 4.1.1 and DApp Connector API 4.0.1
+- License: [Apache-2.0](./LICENSE)
+
+## Real-world use case
+
+Event organizers often need to distribute invitation codes while avoiding a public attendee list. A normal on-chain code would reveal the credential and allow observers to copy it. Silent Pass instead treats the secret as a transferable bearer credential:
+
+1. **Organizer:** generates a random 32-byte secret and deploys only its Compact commitment.
+2. **Attendee:** receives the contract address and secret through a private authenticated channel.
+3. **Verifier:** accepts a zero-knowledge claim and reads the public `claimed` state to prevent reuse.
+
+The current prototype deploys one pass per contract. The same primitive can support private invitations, one-time claim codes, pickup authorizations, or recovery handoffs. It does not hide wallet identity or transaction metadata.
+
+## Why Midnight
+
+| Requirement | Silent Pass implementation |
+| --- | --- |
+| Keep the credential private | `secret: Bytes<32>` remains a private circuit argument |
+| Make verification public | The ledger stores `persistentHash(secret)` and `claimed` |
+| Reject forged passes | `claim` asserts that the supplied secret matches the commitment |
+| Prevent replay | A successful claim sets `claimed = true`; later claims fail |
+| Submit a real transaction | Midnight.js connects proof generation, wallet balancing, submission, and indexer reads |
+
+## Quick start
+
+Requirements:
+
+- Node.js 22 or newer
+- npm
+- Compact devtools 0.5.1 with compiler 0.31.1
+- A DApp Connector 4.x wallet for browser-wallet testing
+- Docker Desktop and Compose for the local-network integration test
+
+Install the Compact toolchain with the [official installation guide](https://docs.midnight.network/getting-started/installation), then verify the pinned compiler:
+
+```sh
+compact update 0.31.1
+compact --version
+compact compile --version
+```
+
+Build, test, and run the browser demo:
 
 ```sh
 npm ci
-npm run build
-npm test
+npm run verify
 npm run dev
 ```
 
-개발 서버가 표시한 로컬 주소(기본 `http://127.0.0.1:5173`)에서 위쪽 **패스 실험실**의 패스를 생성하고, 비밀값을 복사해 확인 칸에 입력하면 됩니다. 잘못된 값은 거절되고, 맞는 값은 한 번만 사용할 수 있습니다. `npm run build`는 Compact 계약 재컴파일, 영지식 증명용 산출물의 웹 공개 디렉터리 복사, TypeScript 검사, 웹 앱 번들을 수행합니다.
+Open the local URL printed by Vite. In **입장 패스 실험실**:
 
-외부 호스팅을 선택하고 사이트 하위 경로를 사용한다면 해당 경로로 `npx vite build --base /경로/`를 실행해야 합니다. 지갑 경로가 읽는 `keys/`, `zkir/`도 같은 기준 경로를 따릅니다. 현재 데모는 위 로컬 실행 절차로 확인할 수 있으며, 외부 호스팅 주소는 정하지 않았습니다.
+1. Generate a pass.
+2. Copy the displayed secret.
+3. Change one hexadecimal character and confirm that the claim is rejected.
+4. Enter the correct secret and confirm that the public state changes to `사용 완료`.
 
-**심사용 데모 흐름:** 위 명령을 실행한 뒤 앱에서 ① 새 패스 생성 ② 표시된 비밀값 복사 ③ 일부를 바꾼 값으로 사용 시도해 거절 확인 ④ 올바른 값으로 사용해 공개 상태가 `사용 완료`로 바뀌는 것을 확인합니다. 실제 로컬 체인 거래는 아래 `npm run test:local`로 재현할 수 있습니다.
+The browser-only laboratory executes JavaScript generated from the compiled Compact contract. It demonstrates circuit behavior but does not submit a blockchain transaction.
 
-**Midnight 구현 포인트:** Compact의 `persistentHash`로 비밀값의 32바이트 커밋먼트를 만들고, 공개 원장에는 커밋먼트와 사용 여부만 둡니다. `claim`은 비밀 회로 인자를 비교한 뒤 사용 여부를 바꾸므로 원장에 원문 비밀값을 쓰지 않습니다. Midnight.js가 증명·지갑 수수료 처리·트랜잭션 제출을 연결합니다. 로컬 개발망에서 실제 배포와 1회 사용을 검증했습니다.
+## Network transaction demo
 
-## 구현 범위
+The **지갑·네트워크 실험** section implements the DApp Connector 4.x path for Preview, Preprod, and the local `undeployed` network. It supports wallet connection, deployment, public-state lookup, and claiming an existing contract after reconnection.
 
-- `contract/src/silent-pass.compact`: 공개 원장 상태는 32바이트 커밋먼트와 `claimed` 여부뿐입니다. `claim` 회로의 비밀 인자는 공개 원장에 기록하지 않습니다.
-- `src/main.ts`: 컴파일된 Compact 계약 JavaScript를 브라우저의 로컬 상태에서 직접 실행합니다. 이 로컬 데모의 비밀값은 서버나 로컬 저장소에 전송·저장하지 않으며 사용 후 입력과 표시 값을 비웁니다. 생성·입력 파싱에 쓴 임시 바이트 배열도 사용 후 0으로 덮어쓰지만 JavaScript 문자열 사본까지 메모리에서 즉시 제거된다고 보장하지는 않습니다. 복사 버튼을 누른 값은 운영체제 클립보드에 남을 수 있습니다.
-- `src/network/midnight.ts`: Midnight.js 4.1.1과 DApp Connector 4.x로 지갑 연결, 계약 배포, 공개 상태 조회, `claim` 트랜잭션 제출 경로를 구현했습니다. 로컬 `undeployed`에서는 Docker 증명 서버를, Preview·Preprod에서는 지갑이 제공하는 증명 제공자를 사용합니다. 증명 키와 ZKIR은 `public/keys`, `public/zkir`에서 제공합니다.
-- `devnet/compose.yml`: 공식 `midnight-local-dev` 설정을 참고한 로컬 `undeployed` 네트워크 노드·인덱서·증명 서버 구성입니다. 컨테이너가 켜지는 것과 앱 거래 성공은 서로 다른 검증입니다.
-- `tests/silent-pass.test.mjs`, `tests/artifacts.test.mjs`: 계약 상태·비밀값·재사용 방지와 브라우저 증명 산출물 일치를 검사합니다.
-- `scripts/local-e2e.mjs`: 개발망에서 공개 테스트용 지갑으로 계약을 배포·사용하고, 공식 테스트 지갑 어댑터를 통해 앱의 DApp Connector 경로도 검증합니다. 앱 경로에서는 배포 후 새 연결 세션을 만들어 기존 주소를 조회·사용합니다. 두 경로 모두 잘못된 비밀값과 중복 사용 거절을 확인합니다.
-
-**검증 상태:** 로컬 계약 실행·4개 단위 테스트와 앱 프로덕션 빌드는 통과했습니다. GitHub 공개 저장소를 별도 디렉터리에 다시 클론한 뒤에도 `npm ci`, `npm run build`, `npm test`가 성공했습니다. 개발망에서 직접 SDK 경로와 앱의 Connector 경로 모두 계약 배포, 증명 생성, 사용 트랜잭션, 사용 완료 상태 조회가 성공했습니다. 앱 경로는 배포 후 새 연결 세션에서 기존 계약을 조회·사용했습니다. 두 경로 모두 잘못된 비밀값과 재사용을 거절하고 공개 상태가 예상대로 유지되는 것을 확인했습니다. 브라우저에서도 로컬 패스의 잘못된 값 거절과 정상 사용 후 표시값 삭제를 확인했고, `/demo/` 하위 경로 빌드에서 `claim.prover`가 올바르게 제공되는 것을 확인했습니다. 실제 브라우저 지갑 승인과 Preview·Preprod 거래는 아직 확인되지 않았습니다. 참가 등록·제출 여부 역시 별도 확인이 필요합니다.
-
-## 지갑·로컬 네트워크 실험
-
-앱 아래쪽 **지갑·네트워크 실험**에서 Preprod, Preview 또는 로컬 Undeployed를 고른 뒤 DApp Connector 4.x 지갑을 연결합니다. 비밀값을 생성해 **배포 전에 복사해 보관**하고, 계약을 배포한 뒤 **계약 주소도 보관**하세요. 새로고침하면 화면의 비밀값과 주소는 사라지지만, 지갑을 다시 연결하고 보관한 주소·비밀값을 입력해 사용을 시도할 수 있습니다. 로컬 테스트 지갑 어댑터에서는 새 연결 세션의 기존 계약 사용까지 검증했습니다. 별도의 계약 관리 서명키는 현재 브라우저 세션 메모리에만 있어, 새로고침 뒤 계약 관리 권한을 이어받는 기능은 없습니다(일반 `claim` 사용과는 별개입니다).
-
-로컬 네트워크 컨테이너는 Docker Desktop을 실행한 상태에서 다음처럼 기동합니다.
+For a reproducible local transaction test:
 
 ```sh
 docker compose -f devnet/compose.yml up -d
 docker compose -f devnet/compose.yml ps
 npm run test:local
+docker compose -f devnet/compose.yml stop
 ```
 
-이 설정은 노드 `127.0.0.1:9944`, 인덱서 `127.0.0.1:8088`, 증명 서버 `127.0.0.1:6300`을 엽니다. `test:local`은 공식 개발망의 공개 제네시스 테스트 시드를 사용하므로 실제 사용자 지갑이나 공개망 자금을 사용하지 않습니다. 브라우저에서 수동으로 시험하려면 DApp Connector 4.x 지갑의 `undeployed` 설정과 테스트 NIGHT·DUST 자금이 별도로 필요합니다. 자금 준비 방법은 [공식 로컬 개발망 안내](https://github.com/midnightntwrk/midnight-local-dev)를 따르세요. 로컬 컨테이너는 `docker compose -f devnet/compose.yml stop`으로 정지할 수 있습니다. 이 Compose 파일의 고정된 개발용 자격값을 공개 네트워크에 사용하지 마세요.
+The local configuration exposes the node at `127.0.0.1:9944`, indexer at `127.0.0.1:8088`, and proof server at `127.0.0.1:6300`. The integration test uses the official public genesis seed only on the disposable `undeployed` network. Never reuse that seed on a public network.
 
-지갑 경로의 `claim` 비밀값은 영지식 증명을 위해 로컬 Docker 증명 서버(`undeployed`) 또는 지갑이 선택한 증명 제공자(Preview·Preprod)에 전달될 수 있습니다. 이 앱 자체는 비밀값을 별도 서버·로컬 저장소에 저장하지 않지만, 증명 서비스의 처리·보관 정책은 별도로 확인해야 합니다.
+See [the three-minute demo script](./docs/DEMO_SCRIPT.md) for a reviewer-oriented walkthrough.
 
-## 출품 전 남은 확인
+## Architecture
 
-- 실제 브라우저의 DApp Connector 4.x 지갑 승인과 연결·배포·사용 흐름을 확인해야 합니다. 공식 테스트 지갑 어댑터의 로컬 성공은 실제 확장 프로그램의 성공을 대신하지 않습니다.
-- [공개 GitHub 저장소](https://github.com/Haamseongho/midnight_contest)의 `main`에 소스를 게시했고, 별도 클론에서 빌드와 단위 테스트를 재현했습니다. [공개 안내의 필수 제출물](https://sensible-successes-775636.framer.app/kor)은 README가 있는 공개 저장소와 실행·데모 흐름을 요구하지만, 별도 외부 호스팅 URL을 필수라고 명시하지는 않습니다. 로컬 개발망 통합 테스트를 재현하려면 Docker Desktop과 Compose 구성이 추가로 필요합니다.
-- 참가 등록·팀 자격과 제출 경로는 [개발 착수 체크리스트](./DEVELOPMENT_READINESS.md)의 미확인 항목을 별도로 확인해야 합니다. 참조용 Framer 사이트에 제출하지 않습니다.
+```text
+Organizer browser
+  ├─ random 32-byte secret (private)
+  └─ persistentHash(secret)
+             │
+             ▼
+Midnight contract ledger
+  ├─ commitment: Bytes<32> (public)
+  └─ claimed: Boolean (public)
+             ▲
+             │ zero-knowledge claim
+Attendee wallet + proof provider
+  └─ secret: Bytes<32> (private circuit input)
+```
 
-`contract/managed/`, `public/keys/`, `public/zkir/`, `dist/`, `node_modules/`는 빌드 산출물이므로 Git에서 제외합니다. 저장소를 복제한 심사자는 위 명령으로 계약과 앱을 다시 컴파일할 수 있습니다. 비밀값이나 지갑 시드는 저장소에 올리지 마세요.
+| Component | Responsibility |
+| --- | --- |
+| `contract/src/silent-pass.compact` | Commitment construction, secret verification, and replay prevention |
+| `src/main.ts` | Browser-only circuit demonstration and network interaction UI |
+| `src/network/midnight.ts` | Wallet discovery, providers, deploy/join/read/claim operations |
+| `src/network/private-state.ts` | Session-scoped contract private state provider |
+| `scripts/local-e2e.mjs` | Real local deployment, proof generation, claim, replay rejection, and connector-path test |
+| `devnet/compose.yml` | Local node, indexer, and proof-server configuration |
 
-공식 참고: [Compact 언어](https://docs.midnight.network/compact/reference/compact-reference) · [Midnight.js](https://docs.midnight.network/sdks/official/midnight-js) · [호환성 표](https://docs.midnight.network/relnotes/support-matrix).
+Generated contract bindings and proof artifacts are intentionally excluded from Git. `npm run build` recompiles the contract and synchronizes browser proof assets before TypeScript checking and the Vite production build.
+
+## Privacy boundary
+
+| Private or local | Public or observable |
+| --- | --- |
+| 32-byte pass secret | Contract address |
+| Secret delivery channel | Commitment |
+| Attendee name, unless disclosed elsewhere | Claimed status |
+| Browser input after it is cleared by the app | Transaction and wallet metadata |
+
+The proof provider or connected wallet may process the private circuit input. This project does not send the secret to an application server, but it cannot guarantee how third-party wallet or proving services handle it. The operating-system clipboard may retain copied secrets.
+
+Read [SECURITY.md](./SECURITY.md) for the threat model, disclosure process, trust boundaries, and known limitations.
+
+## Verification evidence
+
+The standard verification command is:
+
+```sh
+npm run verify
+```
+
+It performs:
+
+- Compact contract compilation with compiler 0.31.1
+- Proof-key and ZKIR synchronization checks
+- TypeScript static checking
+- Vite production build
+- Contract-state and privacy-invariant tests
+- Wrong-secret and replay-rejection tests
+- Repository attribution and license checks
+
+`npm run test:local` separately verifies actual local-network deployment and claim transactions through both the direct SDK and the application's DApp Connector route.
+
+### Current verified state
+
+- Contract compilation, production build, and automated tests pass locally.
+- A fresh clone has previously reproduced `npm ci`, `npm run build`, and `npm test`.
+- Local `undeployed` transactions have verified deployment, proof generation, state reads, wrong-secret rejection, a successful claim, and replay rejection.
+- The connector application path has been exercised with the official local test-wallet adapter, including reconnecting to an existing contract.
+- Actual browser-extension approval and Preview/Preprod deployment are not yet verified. No public-network address or transaction identifier is claimed until that evidence exists.
+
+## Known limitations
+
+- One pass requires one contract deployment.
+- Passes have no expiry, revocation, recipient binding, or recovery flow.
+- Anyone who learns the secret can claim the pass; this transferability is intentional.
+- The browser-only laboratory is a local circuit demonstration, not a network transaction.
+- The project has not received an independent security audit.
+- The initial bundle includes Midnight WebAssembly runtimes and is larger than a typical static website.
+
+## Awesome Midnight dApps readiness
+
+The repository follows the official [Awesome Midnight contribution guide](https://github.com/midnightntwrk/midnight-awesome-dapps/blob/main/CONTRIBUTING.md):
+
+- Apache-2.0 license
+- Exact ecosystem attribution sentence near the top of this README
+- Functional Compact code and a reproducible build
+- A factual real-world Midnight Network use case
+- Security limitations and upstream credits
+- CI workflow and reviewer demo script
+
+Remote-only and deployment checks are tracked in [the readiness checklist](./docs/AWESOME_DAPPS_CHECKLIST.md). The proposed list entry is:
+
+```md
+- [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network.
+```
+
+## Upstream attribution
+
+- Built with the [Midnight Compact compiler](https://github.com/midnightntwrk/compact) and official Midnight.js packages.
+- The local Docker topology and test approach follow the Apache-2.0-licensed [Midnight Local Dev](https://github.com/midnightntwrk/midnight-local-dev) project.
+- Continuous integration uses the official [Setup Compact Action](https://github.com/midnightntwrk/setup-compact-action).
+- Version compatibility follows the official [support matrix](https://docs.midnight.network/relnotes/support-matrix).
+
+## Contributing and license
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a change. Silent Pass is licensed under the [Apache License 2.0](./LICENSE).

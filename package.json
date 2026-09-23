@@ -1,7 +1,9 @@
 {
   "name": "silent-pass-midnight",
   "version": "0.1.0",
+  "description": "Privacy-preserving one-time access-pass DApp built on Midnight Network",
   "private": true,
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "compile:contract": "compact compile contract/src/silent-pass.compact contract/managed/silent-pass && node scripts/sync-artifacts.mjs",
@@ -9,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "build": "npm run compile:contract && npm run typecheck && vite build",
     "test": "npm run compile:contract && node --test tests/*.test.mjs",
-    "test:local": "npm run compile:contract && tsx scripts/local-e2e.mjs"
+    "test:local": "npm run compile:contract && tsx scripts/local-e2e.mjs",
+    "verify": "npm run build && npm test"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",

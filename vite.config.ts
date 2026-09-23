@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const require = createRequire(import.meta.url);
 
 export default defineConfig({
+  base: process.env.VITE_BASE_PATH || "/",
   plugins: [wasm()],
   resolve: {
     alias: [
