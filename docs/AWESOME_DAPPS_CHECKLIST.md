@@ -23,7 +23,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public/private data boundary documented
 - [x] Threat model and known limitations documented
 - [x] Continuous-integration workflow included
-- [ ] Public GitHub Pages deployment confirmed
+- [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
 - [ ] Actual browser-wallet connection confirmed
 - [ ] Preview or Preprod contract address and transaction identifiers published
 - [ ] Short demo video or screenshots added to the README

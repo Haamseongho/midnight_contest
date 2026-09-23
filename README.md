@@ -10,6 +10,7 @@ This project is built on the Midnight Network.
 Silent Pass is a privacy-preserving bearer credential for one-time event admission. An organizer publishes a commitment, privately gives an attendee the secret and contract address, and lets a verifier confirm the pass exactly once without putting the secret or attendee name on the public ledger.
 
 - Repository: <https://github.com/Haamseongho/midnight_contest>
+- Public demo: <https://haamseongho.github.io/midnight_contest/>
 - Category: `Identity & Privacy`
 - Contract: Compact language 0.23, compiler 0.31.1
 - SDK: Midnight.js 4.1.1 and DApp Connector API 4.0.1
@@ -151,6 +152,7 @@ It performs:
 ### Current verified state
 
 - Contract compilation, production build, and automated tests pass locally.
+- The public GitHub Pages demo and its proving-key/ZKIR asset paths return HTTP 200.
 - A fresh clone has previously reproduced `npm ci`, `npm run build`, and `npm test`.
 - Local `undeployed` transactions have verified deployment, proof generation, state reads, wrong-secret rejection, a successful claim, and replay rejection.
 - The connector application path has been exercised with the official local test-wallet adapter, including reconnecting to an existing contract.
