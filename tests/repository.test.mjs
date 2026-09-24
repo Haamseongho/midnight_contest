@@ -44,3 +44,12 @@ test('development versions stay aligned with the pinned official reference stack
   assert.match(compose, /midnightntwrk\/proof-server:8\.0\.3/);
   assert.match(readme, /example-bboard\/tree\/38bfac8c574abb0c5a96c9e076779716c3e88231/);
 });
+
+test('public CI exercises real local-network transactions', async () => {
+  const workflow = await read('.github/workflows/ci.yml');
+
+  assert.match(workflow, /^  local-e2e:$/m);
+  assert.match(workflow, /docker compose -f devnet\/compose\.yml up -d --wait/);
+  assert.match(workflow, /run: npm run test:local/);
+  assert.match(workflow, /docker compose -f devnet\/compose\.yml down -v/);
+});
