@@ -165,6 +165,7 @@ It performs:
 - A fresh clone has previously reproduced `npm ci`, `npm run build`, and `npm test`.
 - Local `undeployed` transactions have verified deployment, proof generation, state reads, wrong-secret rejection, a successful claim, and replay rejection.
 - The connector application path has been exercised with the official local test-wallet adapter, including reconnecting to an existing contract.
+- Public [GitHub Actions run 35949433702](https://github.com/Haamseongho/midnight_contest/actions/runs/35949433702) passed both `verify` and `local-e2e`; the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
 - Actual browser-extension approval and Preview/Preprod deployment are not yet verified. No public-network address or transaction identifier is claimed until that evidence exists.
 
 ## Known limitations
@@ -192,6 +193,8 @@ Remote-only and deployment checks are tracked in [the readiness checklist](./doc
 ```md
 - [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network.
 ```
+
+The exact upstream placement and pull-request draft are recorded in [the submission draft](./docs/AWESOME_DAPPS_SUBMISSION.md).
 
 ## Upstream attribution
 
