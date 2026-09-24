@@ -49,6 +49,38 @@ const compatibleWallet = (): InitialAPI | undefined => {
   });
 };
 
+const waitForCompatibleWallet = async (timeoutMs = 1_500): Promise<InitialAPI> => {
+  const deadline = Date.now() + timeoutMs;
+  do {
+    const wallet = compatibleWallet();
+    if (wallet) return wallet;
+    await new Promise<void>((resolve) => globalThis.setTimeout(resolve, 100));
+  } while (Date.now() < deadline);
+
+  throw new Error(
+    "Midnight DApp Connector 4.x 지갑이 활성화되지 않았습니다. Lace를 열어 잠금을 해제한 뒤 다시 연결해 주세요.",
+  );
+};
+
+const withTimeout = <T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  message: string,
+): Promise<T> =>
+  new Promise<T>((resolve, reject) => {
+    const timer = globalThis.setTimeout(() => reject(new Error(message)), timeoutMs);
+    promise.then(
+      (value) => {
+        globalThis.clearTimeout(timer);
+        resolve(value);
+      },
+      (error: unknown) => {
+        globalThis.clearTimeout(timer);
+        reject(error);
+      },
+    );
+  });
+
 export type PublicPass = {
   commitment: string;
   claimed: boolean;
@@ -62,12 +94,12 @@ export class MidnightSession {
   ) {}
 
   static async connect(networkId: string): Promise<MidnightSession> {
-    const wallet = compatibleWallet();
-    if (!wallet) {
-      throw new Error("Midnight DApp Connector 4.x 지갑이 감지되지 않았습니다.");
-    }
-
-    const connected = await wallet.connect(networkId);
+    const wallet = await waitForCompatibleWallet();
+    const connected = await withTimeout(
+      wallet.connect(networkId),
+      60_000,
+      "Lace가 60초 안에 응답하지 않았습니다. 지갑 잠금과 연결 승인 화면을 확인한 뒤 다시 시도해 주세요.",
+    );
     const status = await connected.getConnectionStatus();
     const config = await connected.getConfiguration();
     if (status.status !== "connected" || status.networkId !== networkId || config.networkId !== networkId) {

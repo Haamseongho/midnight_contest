@@ -42,11 +42,18 @@ The current prototype deploys one pass per contract. The same primitive can supp
 
 Requirements:
 
-- Node.js 22 or newer
+- Node.js 24.11.1 or newer
 - npm
 - Compact devtools 0.5.1 with compiler 0.31.1
 - A DApp Connector 4.x wallet for browser-wallet testing
 - Docker Desktop and Compose for the local-network integration test
+
+The pinned development stack follows the official
+[`example-bboard`](https://github.com/midnightntwrk/example-bboard/tree/38bfac8c574abb0c5a96c9e076779716c3e88231)
+reference: Midnight.js 4.1.1, Compact runtime 0.16.0, DApp Connector API
+4.0.1, local node 0.22.3, indexer 4.0.1, and proof server 8.0.3. Check
+the official [compatibility matrix](https://github.com/midnightntwrk/midnight-sdk/blob/main/COMPATIBILITY.md)
+before changing any one component independently.
 
 Install the Compact toolchain with the [official installation guide](https://docs.midnight.network/getting-started/installation), then verify the pinned compiler:
 
@@ -189,6 +196,7 @@ Remote-only and deployment checks are tracked in [the readiness checklist](./doc
 ## Upstream attribution
 
 - Built with the [Midnight Compact compiler](https://github.com/midnightntwrk/compact) and official Midnight.js packages.
+- Browser-wallet and local-stack versions follow the official [Bulletin Board DApp reference](https://github.com/midnightntwrk/example-bboard/tree/38bfac8c574abb0c5a96c9e076779716c3e88231).
 - The local Docker topology and test approach follow the Apache-2.0-licensed [Midnight Local Dev](https://github.com/midnightntwrk/midnight-local-dev) project.
 - Continuous integration uses the official [Setup Compact Action](https://github.com/midnightntwrk/setup-compact-action).
 - Version compatibility follows the official [support matrix](https://docs.midnight.network/relnotes/support-matrix).

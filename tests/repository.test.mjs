@@ -26,3 +26,21 @@ test('documentation does not claim unverified public-network deployment', async 
   assert.match(readme, /Preview\/Preprod deployment are not yet verified/);
   assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
 });
+
+test('development versions stay aligned with the pinned official reference stack', async () => {
+  const [manifestText, compose, readme] = await Promise.all([
+    read('package.json'),
+    read('devnet/compose.yml'),
+    read('README.md'),
+  ]);
+  const manifest = JSON.parse(manifestText);
+
+  assert.equal(manifest.engines.node, '>=24.11.1');
+  assert.equal(manifest.dependencies['@midnight-ntwrk/compact-runtime'], '0.16.0');
+  assert.equal(manifest.dependencies['@midnight-ntwrk/dapp-connector-api'], '4.0.1');
+  assert.equal(manifest.dependencies['@midnight-ntwrk/midnight-js-contracts'], '4.1.1');
+  assert.match(compose, /midnightntwrk\/midnight-node:0\.22\.3/);
+  assert.match(compose, /midnightntwrk\/indexer-standalone:4\.0\.1/);
+  assert.match(compose, /midnightntwrk\/proof-server:8\.0\.3/);
+  assert.match(readme, /example-bboard\/tree\/38bfac8c574abb0c5a96c9e076779716c3e88231/);
+});

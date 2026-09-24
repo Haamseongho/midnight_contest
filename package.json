@@ -5,6 +5,9 @@
   "private": true,
   "license": "Apache-2.0",
   "type": "module",
+  "engines": {
+    "node": ">=24.11.1"
+  },
   "scripts": {
     "compile:contract": "compact compile contract/src/silent-pass.compact contract/managed/silent-pass && node scripts/sync-artifacts.mjs",
     "dev": "npm run compile:contract && vite --host 127.0.0.1",
