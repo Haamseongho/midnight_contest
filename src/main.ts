@@ -10,6 +10,10 @@ import {
   type CircuitContext,
 } from "@midnight-ntwrk/compact-runtime";
 import type { MidnightSession, PublicPass } from "./network/midnight";
+import {
+  networkErrorMessage,
+  requiresWalletReconnect,
+} from "./network/errors";
 import "./style.css";
 
 type Session = {
@@ -180,7 +184,8 @@ const networkMessage = (
 };
 
 const updateNetworkButtons = (): void => {
-  connectButton.disabled = networkBusy || network !== null;
+  connectButton.disabled = networkBusy;
+  connectButton.textContent = network ? "지갑 다시 연결" : "지갑 연결";
   networkId.disabled = networkBusy || network !== null;
   networkGenerateButton.disabled = networkBusy;
   networkCopyButton.disabled = networkBusy || !networkSecretHex;
@@ -189,16 +194,21 @@ const updateNetworkButtons = (): void => {
   networkClaimButton.disabled = networkBusy || !network;
 };
 
-const runNetworkAction = async (action: () => Promise<void>): Promise<void> => {
+const runNetworkAction = async (
+  action: () => Promise<void>,
+  resetConnectionOnFailure = false,
+): Promise<void> => {
   networkBusy = true;
   updateNetworkButtons();
   try {
     await action();
   } catch (error) {
-    networkMessage(
-      error instanceof Error ? error.message : "네트워크 작업에 실패했습니다.",
-      "error",
-    );
+    if (resetConnectionOnFailure || requiresWalletReconnect(error)) {
+      network = null;
+      networkStatus.textContent = "재연결 필요";
+      networkStatus.className = "pill pill-idle";
+    }
+    networkMessage(networkErrorMessage(error), "error");
   } finally {
     networkBusy = false;
     updateNetworkButtons();
@@ -214,13 +224,16 @@ const showPublicState = (address: string, state: PublicPass): void => {
 
 connectButton.addEventListener("click", () => {
   void runNetworkAction(async () => {
-    networkMessage("지갑에 연결을 요청하고 있습니다…");
+    network = null;
+    networkStatus.textContent = "연결 확인 중";
+    networkStatus.className = "pill pill-idle";
+    networkMessage("지갑 연결과 Preview 계정 동기화를 확인하고 있습니다…");
     const { MidnightSession } = await import("./network/midnight");
     network = await MidnightSession.connect(networkId.value);
     networkStatus.textContent = `${network.networkId} 연결됨`;
     networkStatus.className = "pill pill-ready";
     networkMessage("지갑이 연결됐습니다. 비밀값을 생성하거나 기존 계약을 조회하세요.", "success");
-  });
+  }, true);
 });
 
 networkGenerateButton.addEventListener("click", () => {

@@ -5,7 +5,10 @@ import {
   type Proof,
   type SignatureEnabled,
 } from "@midnight-ntwrk/midnight-js-protocol/ledger";
-import { type InitialAPI } from "@midnight-ntwrk/dapp-connector-api";
+import {
+  type ConnectedAPI,
+  type InitialAPI,
+} from "@midnight-ntwrk/dapp-connector-api";
 import {
   deployContract,
   findDeployedContract,
@@ -91,6 +94,7 @@ export class MidnightSession {
   private constructor(
     readonly networkId: string,
     private readonly providers: SilentProviders,
+    private readonly connected: ConnectedAPI,
   ) {}
 
   static async connect(networkId: string): Promise<MidnightSession> {
@@ -100,8 +104,16 @@ export class MidnightSession {
       60_000,
       "Lace가 60초 안에 응답하지 않았습니다. 지갑 잠금과 연결 승인 화면을 확인한 뒤 다시 시도해 주세요.",
     );
-    const status = await connected.getConnectionStatus();
-    const config = await connected.getConfiguration();
+    const status = await withTimeout(
+      connected.getConnectionStatus(),
+      15_000,
+      "Lace 연결 상태를 확인하지 못했습니다. 지갑을 다시 연결해 주세요.",
+    );
+    const config = await withTimeout(
+      connected.getConfiguration(),
+      15_000,
+      "Lace 네트워크 설정을 확인하지 못했습니다. 지갑을 다시 연결해 주세요.",
+    );
     if (status.status !== "connected" || status.networkId !== networkId || config.networkId !== networkId) {
       throw new Error(`지갑 네트워크가 ${networkId}와 일치하지 않습니다.`);
     }
@@ -114,8 +126,16 @@ export class MidnightSession {
     const keys = new FetchZkConfigProvider<"claim">(assetBaseUrl);
     const proofProvider = networkId === "undeployed" && config.proverServerUri
       ? httpClientProofProvider(config.proverServerUri, keys)
-      : createProofProvider(await connected.getProvingProvider(keys));
-    const addresses = await connected.getShieldedAddresses();
+      : createProofProvider(await withTimeout(
+          connected.getProvingProvider(keys),
+          30_000,
+          "Lace 증명 제공자를 불러오지 못했습니다. 지갑 동기화 상태를 확인한 뒤 다시 연결해 주세요.",
+        ));
+    const addresses = await withTimeout(
+      connected.getShieldedAddresses(),
+      15_000,
+      "Lace 주소를 불러오지 못했습니다. 지갑 동기화 상태를 확인한 뒤 다시 연결해 주세요.",
+    );
     const providers: SilentProviders = {
       privateStateProvider: sessionPrivateStateProvider(),
       publicDataProvider: indexerPublicDataProvider(
@@ -129,7 +149,11 @@ export class MidnightSession {
         getCoinPublicKey: () => addresses.shieldedCoinPublicKey,
         getEncryptionPublicKey: () => addresses.shieldedEncryptionPublicKey,
         balanceTx: async (tx: UnboundTransaction) => {
-          const response = await connected.balanceUnsealedTransaction(toHex(tx.serialize()));
+          const response = await withTimeout(
+            connected.balanceUnsealedTransaction(toHex(tx.serialize())),
+            180_000,
+            "Lace가 3분 안에 거래 밸런싱·증명을 완료하지 못했습니다. Activity와 잔액을 확인하기 전에는 같은 거래를 다시 전송하지 마세요.",
+          );
           return Transaction.deserialize<SignatureEnabled, Proof, Binding>(
             "signature",
             "proof",
@@ -140,16 +164,37 @@ export class MidnightSession {
       },
       midnightProvider: {
         submitTx: async (tx) => {
-          await connected.submitTransaction(toHex(tx.serialize()));
+          await withTimeout(
+            connected.submitTransaction(toHex(tx.serialize())),
+            90_000,
+            "Lace의 제출 응답을 90초 안에 확인하지 못했습니다. 결과가 불확실하므로 Activity와 공개 상태를 확인하기 전에는 같은 거래를 다시 전송하지 마세요.",
+          );
           return tx.identifiers()[0];
         },
       },
     };
 
-    return new MidnightSession(networkId, providers);
+    return new MidnightSession(networkId, providers, connected);
+  }
+
+  private async assertWalletReady(): Promise<void> {
+    const status = await withTimeout(
+      this.connected.getConnectionStatus(),
+      15_000,
+      "Lace 연결 상태를 확인하지 못했습니다. 지갑을 다시 연결해 주세요.",
+    );
+    if (status.status !== "connected" || status.networkId !== this.networkId) {
+      throw new Error("Lace 지갑 연결이 끊어졌습니다. Preview 동기화를 확인한 뒤 다시 연결해 주세요.");
+    }
+    await withTimeout(
+      this.connected.getDustBalance(),
+      20_000,
+      "Lace 지갑 계정 동기화를 확인하지 못했습니다. Preview 동기화와 tDUST 잔액을 확인한 뒤 다시 연결해 주세요.",
+    );
   }
 
   async deploy(secret: Uint8Array): Promise<{ address: string; state: PublicPass; txId: string }> {
+    await this.assertWalletReady();
     const commitment = pureCircuits.makeCommitment(secret);
     const deployed = await deployContract(this.providers, {
       compiledContract,
@@ -164,6 +209,7 @@ export class MidnightSession {
   }
 
   async claim(address: string, secret: Uint8Array): Promise<PublicPass> {
+    await this.assertWalletReady();
     assertIsContractAddress(address);
     const found = await findDeployedContract(this.providers, {
       compiledContract,

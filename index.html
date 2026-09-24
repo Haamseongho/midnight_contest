@@ -193,9 +193,9 @@
           </div>
           <p class="network-intro">
             DApp Connector 4.x 지갑으로 계약 배포와 사용 트랜잭션을 시도하는
-            베타 경로입니다. 로컬 개발망 거래는 테스트 지갑으로 검증했지만,
-            실제 브라우저 지갑과 공개 테스트넷은 아직 확인하지 않았습니다.
-            지갑 승인과 수수료용 잔액이 필요할 수 있습니다.
+            베타 경로입니다. Lace 2.4.0 연결과 로컬 개발망 거래는 확인했지만,
+            Preview 공개 거래는 아직 검증 중입니다. 지갑 승인과 충분한 tDUST가
+            필요합니다.
           </p>
           <div class="network-connect">
             <label for="network-id">네트워크</label>
@@ -249,8 +249,17 @@
             </dl>
           </div>
           <p id="network-feedback" class="feedback" role="status" aria-live="polite">
-            지원 지갑이 있다면 연결해 보세요. 로컬 테스트 지갑으로 거래를 검증했으며 실제 확장 지갑은 미확인입니다.
+            Lace 2.4.0 연결은 확인됐습니다. Preview 거래는 공개 증빙이 생길 때까지 미검증 상태입니다.
           </p>
+          <details class="wallet-help">
+            <summary>지갑 연결이나 거래가 멈췄을 때</summary>
+            <p>
+              같은 거래를 바로 다시 보내지 마세요. 먼저 Lace의 Activity, Preview
+              동기화, tDUST 잔액을 확인하세요. 공개 상태나 거래 식별자가 없다면
+              Lace를 다시 연 뒤 이 화면의 <strong>지갑 다시 연결</strong>을 사용하세요.
+              제출 결과가 불확실하면 공개 상태를 조회한 후에만 재시도하세요.
+            </p>
+          </details>
           <p class="network-caution">
             주의: 사용 시 비밀값은 로컬 Docker 증명 서버 또는 선택한 지갑의
             증명 제공자에 전달될 수 있습니다. 이 앱 자체는 별도 저장하지 않지만,

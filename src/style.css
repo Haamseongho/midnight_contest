@@ -460,6 +460,25 @@ form .button {
   padding-left: 14px;
   margin: 13px 0 0;
 }
+.wallet-help {
+  margin: 16px 0;
+  border: 1px solid #ffffff1f;
+  border-radius: 12px;
+  background: #111c32;
+  color: #aebbd7;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.wallet-help summary {
+  cursor: pointer;
+  padding: 13px 15px;
+  color: #d8ddef;
+  font-weight: 700;
+}
+.wallet-help p {
+  margin: 0;
+  padding: 0 15px 15px;
+}
 .explain h2 {
   max-width: 750px;
   line-height: 1.45;

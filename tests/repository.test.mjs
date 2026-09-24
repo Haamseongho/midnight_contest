@@ -29,10 +29,18 @@ test('documentation does not claim unverified public-network deployment', async 
 });
 
 test('browser deployment flow defaults to the Preview evidence network', async () => {
-  const html = await read('index.html');
+  const [html, networkSource] = await Promise.all([
+    read('index.html'),
+    read('src/network/midnight.ts'),
+  ]);
 
   assert.match(html, /<option value="preview" selected>Preview<\/option>/);
   assert.doesNotMatch(html, /<option value="preprod" selected>/);
+  assert.match(html, /Preview 공개 거래는 아직 검증 중입니다/);
+  assert.match(html, /같은 거래를 바로 다시 보내지 마세요/);
+  assert.match(networkSource, /balanceUnsealedTransaction/);
+  assert.match(networkSource, /3분 안에 거래 밸런싱·증명을 완료하지 못했습니다/);
+  assert.match(networkSource, /결과가 불확실하므로 Activity와 공개 상태를 확인하기 전에는 같은 거래를 다시 전송하지 마세요/);
 });
 
 test('development versions stay aligned with the pinned official reference stack', async () => {

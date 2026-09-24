@@ -48,6 +48,16 @@ This proves only the browser-wallet authorization and connector handshake. It do
 12. Confirm that the public state is `사용 완료` and that a repeated claim is rejected.
 13. Add only the public evidence below to this file and the readiness checklist.
 
+## Recovery when Lace remains on `Sending`
+
+1. Do not submit the same transaction again while the result is unknown.
+2. Check Lace **Activity**, Preview synchronization, and the tDUST balance first.
+3. Check whether the proof server received a `/prove` request. A healthy container alone does not prove that Lace reached it.
+4. If no public transaction identifier, balance change, or proof request exists, reopen Lace and reconnect the DApp before preparing a new attempt.
+5. If submission might have occurred, query the public contract state before retrying. A timeout is not proof that a transaction failed.
+
+On 2026-09-24, one tDUST-generation attempt remained on `Processing transaction, generating zero-knowledge proof`. Lace 2.4.0 logged that it could not load the connected Midnight account wallet instance and that the Preview RPC WebSocket closed normally. The healthy local proof server received no proving request, and the wallet still showed zero tDUST. This attempt produced no public transaction evidence and is not counted as a successful Preview operation. Account identifiers, wallet addresses, and connector credentials are intentionally omitted.
+
 ## Public evidence
 
 | Field | Verified value |
