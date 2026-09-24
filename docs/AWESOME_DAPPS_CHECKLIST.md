@@ -27,7 +27,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public/private data boundary documented
 - [x] Threat model and known limitations documented
 - [x] Continuous-integration workflow included
-- [x] Public CI runs the production dependency audit plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/35950028362))
+- [x] Public CI runs the production dependency audit plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/35951433019))
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
 - [ ] Actual browser-wallet connection confirmed
 - [ ] Preview or Preprod contract address and transaction identifiers published

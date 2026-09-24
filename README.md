@@ -166,7 +166,7 @@ It performs:
 - A fresh clone has previously reproduced `npm ci`, `npm run build`, and `npm test`.
 - Local `undeployed` transactions have verified deployment, proof generation, state reads, wrong-secret rejection, a successful claim, and replay rejection.
 - The connector application path has been exercised with the official local test-wallet adapter, including reconnecting to an existing contract.
-- Public [GitHub Actions run 35950028362](https://github.com/Haamseongho/midnight_contest/actions/runs/35950028362) passed both `verify` and `local-e2e` for commit `70531bd`; the former includes the production dependency audit, and the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
+- Public [GitHub Actions run 35951433019](https://github.com/Haamseongho/midnight_contest/actions/runs/35951433019) passed both `verify` and `local-e2e` for commit `69b5d06`; the former includes the production dependency audit, and the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
 - Actual browser-extension approval and Preview/Preprod deployment are not yet verified. No public-network address or transaction identifier is claimed until that evidence exists.
 
 ## Known limitations
