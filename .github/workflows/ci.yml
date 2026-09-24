@@ -31,10 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Audit production dependencies
-        run: npm run audit:prod
-
-      - name: Verify contract, application, and tests
+      - name: Audit dependencies and verify contract, application, and tests
         run: npm run verify
 
   local-e2e:

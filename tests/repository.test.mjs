@@ -57,5 +57,6 @@ test('public CI exercises real local-network transactions', async () => {
   assert.match(workflow, /run: npm run test:local/);
   assert.match(workflow, /docker compose -f devnet\/compose\.yml down -v/);
   assert.equal(manifest.scripts['audit:prod'], 'npm audit --omit=dev --audit-level=high');
-  assert.match(workflow, /run: npm run audit:prod/);
+  assert.match(manifest.scripts.verify, /^npm run audit:prod && /);
+  assert.match(workflow, /run: npm run verify/);
 });

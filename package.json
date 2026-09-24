@@ -16,7 +16,7 @@
     "build": "npm run compile:contract && npm run typecheck && vite build",
     "test": "npm run compile:contract && node --test tests/*.test.mjs",
     "test:local": "npm run compile:contract && tsx scripts/local-e2e.mjs",
-    "verify": "npm run build && npm test"
+    "verify": "npm run audit:prod && npm run build && npm test"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
