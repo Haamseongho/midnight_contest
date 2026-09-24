@@ -27,6 +27,13 @@ test('documentation does not claim unverified public-network deployment', async 
   assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
 });
 
+test('browser deployment flow defaults to the Preview evidence network', async () => {
+  const html = await read('index.html');
+
+  assert.match(html, /<option value="preview" selected>Preview<\/option>/);
+  assert.doesNotMatch(html, /<option value="preprod" selected>/);
+});
+
 test('development versions stay aligned with the pinned official reference stack', async () => {
   const [manifestText, compose, readme] = await Promise.all([
     read('package.json'),
