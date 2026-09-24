@@ -35,11 +35,11 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 - CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/35951433019>
 - License: <https://github.com/Haamseongho/midnight_contest/blob/main/LICENSE>
 - Security model: <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
+- Browser wallet: Lace 2.4.0 DApp authorization and Preview connector handshake verified on 2026-09-24; public transaction evidence remains pending
 
 ## Gates before opening the pull request
 
-1. Connect a real browser wallet on Preview.
-2. Publish the Preview contract address, deployment transaction identifier, and claim transaction identifier without publishing the pass secret or wallet address.
-3. Confirm the final public state and replay rejection.
-4. Re-run `npm run verify` and confirm the public CI and Pages deployment.
-5. Complete the upstream Contributor License Agreement if requested by its check.
+1. Publish the Preview contract address, deployment transaction identifier, and claim transaction identifier without publishing the pass secret or wallet address.
+2. Confirm the final public state and replay rejection.
+3. Re-run `npm run verify` and confirm the public CI and Pages deployment.
+4. Complete the upstream Contributor License Agreement if requested by its check.

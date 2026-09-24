@@ -167,7 +167,8 @@ It performs:
 - Local `undeployed` transactions have verified deployment, proof generation, state reads, wrong-secret rejection, a successful claim, and replay rejection.
 - The connector application path has been exercised with the official local test-wallet adapter, including reconnecting to an existing contract.
 - Public [GitHub Actions run 35951433019](https://github.com/Haamseongho/midnight_contest/actions/runs/35951433019) passed both `verify` and `local-e2e` for commit `69b5d06`; the former includes the production dependency audit, and the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
-- Actual browser-extension approval and Preview/Preprod deployment are not yet verified. No public-network address or transaction identifier is claimed until that evidence exists.
+- Lace 2.4.0 browser-extension approval and the Preview DApp Connector 4.x handshake were verified on 2026-09-24; the public demo reported `preview 연결됨` after the user approved the DApp.
+- Preview/Preprod deployment and transaction submission are not yet verified. No public-network contract address or transaction identifier is claimed until that evidence exists.
 
 ## Known limitations
 

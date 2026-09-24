@@ -29,7 +29,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Continuous-integration workflow included
 - [x] Public CI runs the production dependency audit plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/35951433019))
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
-- [ ] Actual browser-wallet connection confirmed
+- [x] Actual Lace 2.4.0 browser-wallet authorization and Preview connector handshake confirmed (2026-09-24)
 - [ ] Preview or Preprod contract address and transaction identifiers published
 - [x] Public-demo screenshot added to the README
 
@@ -49,4 +49,4 @@ Add alphabetically under **Identity & Privacy**:
 - [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network. - [Demo](https://haamseongho.github.io/midnight_contest/)
 ```
 
-Do not open the upstream pull request until the browser-wallet and public-network evidence items are checked and the public repository reflects the current verified state.
+Do not open the upstream pull request until the public-network transaction evidence item is checked and the public repository reflects the current verified state.

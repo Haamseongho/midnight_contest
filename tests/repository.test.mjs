@@ -23,7 +23,8 @@ test('repository carries the required Midnight attribution and license', async (
 test('documentation does not claim unverified public-network deployment', async () => {
   const readme = await read('README.md');
 
-  assert.match(readme, /Preview\/Preprod deployment are not yet verified/);
+  assert.match(readme, /Preview\/Preprod deployment and transaction submission are not yet verified/);
+  assert.match(readme, /Preview DApp Connector 4\.x handshake were verified/);
   assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
 });
 

@@ -29,7 +29,7 @@ These properties are covered by contract tests and a local-development-network i
 - Contract addresses, transaction metadata, the commitment, and the final claimed state are public. Wallet or network metadata may identify a participant.
 - The contract supports one pass per deployment. It has no expiry, revocation, recipient binding, or recovery mechanism.
 - The interactive browser-only laboratory executes the compiled Compact circuit locally. It is not a blockchain transaction. Use the wallet/network section or `npm run test:local` for transaction-level validation.
-- Preview and Preprod browser-wallet operation remains unverified until a deployment record is added to the README.
+- Lace 2.4.0 authorization and the Preview connector handshake have been verified, but Preview and Preprod transaction operation remains unverified until a deployment record is added to the README.
 
 ## Secret-handling guidance
 

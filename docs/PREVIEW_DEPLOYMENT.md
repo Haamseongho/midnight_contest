@@ -13,6 +13,18 @@ This runbook is intentionally incomplete until a real browser wallet approves th
 
 The official [`create-mn-app` guide](https://github.com/midnightntwrk/create-mn-app#deploy-to-preview-and-preprod) documents Preview as the shared public test network and describes the faucet-funded setup flow.
 
+## Browser-wallet connection evidence
+
+| Field | Verified value |
+| --- | --- |
+| Wallet | Lace 2.4.0 |
+| Network | Preview |
+| DApp authorization | Approved for the public Silent Pass demo |
+| Connector result | Public demo reported `preview 연결됨` |
+| Verified on | 2026-09-24 (KST) |
+
+This proves only the browser-wallet authorization and connector handshake. It does not prove a Preview deployment or claim transaction; those remain pending in the public evidence table below.
+
 ## Safety rules
 
 - Use a dedicated test wallet; never use a production recovery phrase.
