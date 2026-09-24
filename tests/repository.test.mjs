@@ -46,10 +46,16 @@ test('development versions stay aligned with the pinned official reference stack
 });
 
 test('public CI exercises real local-network transactions', async () => {
-  const workflow = await read('.github/workflows/ci.yml');
+  const [workflow, manifestText] = await Promise.all([
+    read('.github/workflows/ci.yml'),
+    read('package.json'),
+  ]);
+  const manifest = JSON.parse(manifestText);
 
   assert.match(workflow, /^  local-e2e:$/m);
   assert.match(workflow, /docker compose -f devnet\/compose\.yml up -d --wait/);
   assert.match(workflow, /run: npm run test:local/);
   assert.match(workflow, /docker compose -f devnet\/compose\.yml down -v/);
+  assert.equal(manifest.scripts['audit:prod'], 'npm audit --omit=dev --audit-level=high');
+  assert.match(workflow, /run: npm run audit:prod/);
 });

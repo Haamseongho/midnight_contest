@@ -152,6 +152,7 @@ It performs:
 - Proof-key and ZKIR synchronization checks
 - TypeScript static checking
 - Vite production build
+- Production dependency audit at high severity or above
 - Contract-state and privacy-invariant tests
 - Wrong-secret and replay-rejection tests
 - Repository attribution and license checks
