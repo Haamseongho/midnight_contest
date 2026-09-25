@@ -27,9 +27,9 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public/private data boundary documented
 - [x] Threat model and known limitations documented
 - [x] Continuous-integration workflow included
-- [x] Public CI runs all 18 automated tests, the production dependency audit, plus real local-network deployment and claim E2E with initial DUST accrual handling ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656609), commit `72ac5d8`)
+- [x] Public CI runs all 20 automated tests, the production dependency audit, plus real local-network deployment and claim E2E with initial DUST accrual handling ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468920), commit `76d6610`)
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
-- [x] Public GitHub Pages workflow succeeded for commit `72ac5d8` ([run 36121656457](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457))
+- [x] Public GitHub Pages workflow succeeded for commit `76d6610` ([run 36126468936](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468936)); the live app and proof assets returned HTTP 200
 - [x] Actual Lace 2.4.0 browser-wallet authorization and Preview connector handshake confirmed (2026-09-24)
 - [x] Preview tNIGHT registration completed in Lace and a positive tDUST balance confirmed (2026-09-25)
 - [x] Deployment and claim stop before proof generation or submission when Lace reports zero tDUST
@@ -39,7 +39,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 ## Submission-time requirements
 
 - [x] Upstream pull-request title, entry, and template-aligned body prepared in [the submission draft](./AWESOME_DAPPS_SUBMISSION.md)
-- [ ] Re-check the upstream list immediately before opening the pull request
+- [x] Upstream `main` re-checked at commit [`b386bd9`](https://github.com/midnightntwrk/midnight-awesome-dapps/tree/b386bd9f4d011eb676df62272cf97b4698ac8011) on 2026-09-25: no Silent Pass duplicate; placement remains after `ShadowVoice` and before `ZIP`
 - [ ] Fork `midnightntwrk/midnight-awesome-dapps` and add the entry after Preview evidence is complete
 - [ ] Open one pull request for Silent Pass and request a reviewer
 - [ ] Complete the Contributor License Agreement if the upstream check requests it

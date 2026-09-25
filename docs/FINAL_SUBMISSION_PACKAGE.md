@@ -73,11 +73,11 @@ pays the network fee; Silent Pass does not hold or transfer user funds.
 
 ## 제출 직전 10분 체크
 
-- [ ] GitHub `main`이 로컬 HEAD와 일치한다.
-- [ ] 최신 GitHub Actions의 `verify`와 `local-e2e`가 모두 성공했다.
-- [ ] GitHub Pages가 같은 commit을 배포했다.
-- [ ] public demo, `claim.prover`, `claim.bzkir`가 HTTP 200을 반환한다.
-- [ ] 저장소에 비밀번호, 복구 구문, 개인키, 지갑 주소, 패스 비밀값이 없다.
+- [x] GitHub `main`이 검증된 Preview 증빙 commit `76d6610`을 포함한다.
+- [x] GitHub Actions의 `verify`와 `local-e2e`가 모두 성공했다 ([run 36126468920](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468920)).
+- [x] GitHub Pages가 같은 commit을 배포했다 ([run 36126468936](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468936)).
+- [x] public demo, `claim.prover`, `claim.bzkir`가 HTTP 200을 반환한다.
+- [x] 공개 문서에는 계약 주소와 transaction ID만 기록했고 비밀번호, 복구 구문, 개인키, 지갑 주소, 패스 비밀값은 기록하지 않았다.
 - [ ] 제출 페이지의 프로젝트명·설명·repo·demo 링크를 위 값과 대조한다.
 - [ ] 선택 자료를 첨부하려면 데모 영상과 Academy 수료증만 추가한다.
 - [ ] 제출 내용을 한 번 더 미리보기한 뒤 프로젝트 소유자가 최종 제출한다.

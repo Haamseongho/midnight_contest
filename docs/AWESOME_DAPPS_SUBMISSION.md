@@ -21,11 +21,11 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 - [x] Useful pull-request description prepared
 - [x] Tests are provided
 - [x] Key repository commits have useful messages
-- [x] Project CI checks have succeeded, including all 18 automated tests, the production dependency audit, and local-network transaction E2E with initial DUST accrual handling ([run 36121656609](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656609), commit `72ac5d8`)
-- [x] Public GitHub Pages deployment succeeded for the same commit ([run 36121656457](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457))
+- [x] Project CI checks have succeeded, including all 20 automated tests, the production dependency audit, and local-network transaction E2E with initial DUST accrual handling ([run 36126468920](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468920), commit `76d6610`)
+- [x] Public GitHub Pages deployment succeeded for the same commit and the live app/proof assets returned HTTP 200 ([run 36126468936](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468936))
 - [ ] Self-review the final upstream one-line diff
 - [ ] Request an upstream reviewer
-- [ ] Confirm the upstream README entry is still unique and alphabetically placed
+- [x] Upstream README re-checked at `b386bd9` on 2026-09-25: entry remains unique and belongs after `ShadowVoice` and before `ZIP`
 - [x] Project README and documentation are current
 - [x] No new TODOs are introduced by the proposed entry
 
@@ -33,8 +33,8 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 
 - Repository: <https://github.com/Haamseongho/midnight_contest>
 - Public demo: <https://haamseongho.github.io/midnight_contest/>
-- CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/36121656609>
-- Public GitHub Pages deployment: <https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457>
+- CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/36126468920>
+- Public GitHub Pages deployment: <https://github.com/Haamseongho/midnight_contest/actions/runs/36126468936>
 - License: <https://github.com/Haamseongho/midnight_contest/blob/main/LICENSE>
 - Security model: <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
 - Browser wallet: Lace 2.4.0 DApp authorization and Preview connector handshake verified on 2026-09-24
@@ -42,7 +42,6 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 
 ## Gates before opening the pull request
 
-1. Re-run `npm run verify` and confirm the final public CI and Pages deployment.
-2. Re-check that the upstream entry is unique and still belongs after `ShadowVoice` and before `ZIP`.
-3. Self-review the one-line upstream diff and obtain the user's approval before opening the pull request.
-4. Complete the upstream Contributor License Agreement if requested by its check.
+1. Self-review the one-line upstream diff and obtain the user's approval before opening the pull request.
+2. Request an upstream reviewer after the pull request is open.
+3. Complete the upstream Contributor License Agreement if requested by its check.
