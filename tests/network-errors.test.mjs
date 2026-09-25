@@ -2,9 +2,22 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  assertSpendableDust,
   networkErrorMessage,
   requiresWalletReconnect,
 } from '../src/network/errors.ts';
+
+test('a zero tDUST balance stops before transaction submission', () => {
+  assert.throws(
+    () => assertSpendableDust({ balance: 0n, cap: 10n }),
+    /Generate tDUST.*거래는 전송되지 않았습니다/,
+  );
+  assert.throws(
+    () => assertSpendableDust({ balance: 0n, cap: 0n }),
+    /생성 한도가 모두 0.*거래는 전송되지 않았습니다/,
+  );
+  assert.doesNotThrow(() => assertSpendableDust({ balance: 1n, cap: 1n }));
+});
 
 test('wallet instance failures are sanitized and require reconnection', () => {
   const error = new Error('Could not load midnight wallet for account private-account-id');

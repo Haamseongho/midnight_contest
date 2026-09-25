@@ -30,6 +30,7 @@ import {
   pureCircuits,
 } from "../../contract/managed/silent-pass/contract/index.js";
 import { sessionPrivateStateProvider } from "./private-state";
+import { assertSpendableDust } from "./errors";
 
 type SilentContract = Contract<undefined>;
 type SilentProviders = ContractProviders<SilentContract, "claim", unknown>;
@@ -186,11 +187,12 @@ export class MidnightSession {
     if (status.status !== "connected" || status.networkId !== this.networkId) {
       throw new Error("Lace 지갑 연결이 끊어졌습니다. Preview 동기화를 확인한 뒤 다시 연결해 주세요.");
     }
-    await withTimeout(
+    const dust = await withTimeout(
       this.connected.getDustBalance(),
       20_000,
       "Lace 지갑 계정 동기화를 확인하지 못했습니다. Preview 동기화와 tDUST 잔액을 확인한 뒤 다시 연결해 주세요.",
     );
+    assertSpendableDust(dust);
   }
 
   async deploy(secret: Uint8Array): Promise<{ address: string; state: PublicPass; txId: string }> {

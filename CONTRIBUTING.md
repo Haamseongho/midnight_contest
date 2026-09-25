@@ -6,7 +6,7 @@ Contributions that improve the Compact contract, wallet integration, tests, acce
 
 Requirements:
 
-- Node.js 22 or newer
+- Node.js 24.11.1 or newer
 - npm
 - Compact devtools with compiler 0.31.1
 - Docker Desktop and Docker Compose for the local network integration test

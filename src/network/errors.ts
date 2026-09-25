@@ -4,6 +4,25 @@ type ConnectorLikeError = Error & {
   type?: unknown;
 };
 
+type DustBalance = {
+  balance: bigint;
+  cap: bigint;
+};
+
+export const assertSpendableDust = ({ balance, cap }: DustBalance): void => {
+  if (balance > 0n) return;
+
+  if (cap > 0n) {
+    throw new Error(
+      "Lace의 tDUST 잔액이 0입니다. Preview에서 Generate tDUST를 완료한 뒤 다시 시도해 주세요. 거래는 전송되지 않았습니다.",
+    );
+  }
+
+  throw new Error(
+    "Lace의 tDUST 잔액과 생성 한도가 모두 0입니다. Preview tNIGHT가 DUST 생성에 등록됐는지 확인하고 Generate tDUST를 완료한 뒤 다시 시도해 주세요. 거래는 전송되지 않았습니다.",
+  );
+};
+
 const detailsFor = (error: unknown): string => {
   if (!(error instanceof Error)) return String(error ?? "");
   const connector = error as ConnectorLikeError;
