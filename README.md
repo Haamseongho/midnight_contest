@@ -136,6 +136,8 @@ Generated contract bindings and proof artifacts are intentionally excluded from 
 
 The proof provider or connected wallet may process the private circuit input. This project does not send the secret to an application server, but it cannot guarantee how third-party wallet or proving services handle it. The operating-system clipboard may retain copied secrets.
 
+After storing a pass through an appropriate private channel, use **지우기** to remove its plaintext from the page and the app's in-memory session. This does not erase clipboard history or copies saved outside the app.
+
 Read [SECURITY.md](./SECURITY.md) for the threat model, disclosure process, trust boundaries, and known limitations.
 
 ## Verification evidence
@@ -155,6 +157,7 @@ It performs:
 - Production dependency audit at high severity or above
 - Contract-state and privacy-invariant tests
 - Wrong-secret and replay-rejection tests
+- Browser secret-clearing and submission-document consistency checks
 - Repository attribution and license checks
 
 `npm run test:local` separately verifies actual local-network deployment and claim transactions through both the direct SDK and the application's DApp Connector route.

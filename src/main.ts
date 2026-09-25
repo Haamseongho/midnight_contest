@@ -30,6 +30,7 @@ const element = <T extends HTMLElement>(id: string): T => {
 
 const generateButton = element<HTMLButtonElement>("generate-button");
 const copyButton = element<HTMLButtonElement>("copy-button");
+const clearButton = element<HTMLButtonElement>("clear-button");
 const claimButton = element<HTMLButtonElement>("claim-button");
 const claimForm = element<HTMLFormElement>("claim-form");
 const secretOutput = element<HTMLTextAreaElement>("secret-output");
@@ -89,6 +90,7 @@ generateButton.addEventListener("click", () => {
     passStatus.className = "pill pill-ready";
     claimButton.disabled = false;
     copyButton.disabled = false;
+    clearButton.disabled = false;
     setFeedback(
       "패스가 생성됐습니다. 비밀값을 복사한 뒤 02단계에 입력해 보세요.",
     );
@@ -116,6 +118,18 @@ copyButton.addEventListener("click", async () => {
   }
 });
 
+clearButton.addEventListener("click", () => {
+  if (!session?.secretHex) return;
+  session.secretHex = "";
+  secretOutput.value = "";
+  copyButton.disabled = true;
+  clearButton.disabled = true;
+  setFeedback(
+    "비밀값을 이 화면과 세션 메모리에서 지웠습니다. 계약 상태는 유지됩니다.",
+    "success",
+  );
+});
+
 claimForm.addEventListener("submit", (event) => {
   event.preventDefault();
   if (!session) return;
@@ -131,6 +145,7 @@ claimForm.addEventListener("submit", (event) => {
     passStatus.className = "pill pill-used";
     claimButton.disabled = true;
     copyButton.disabled = true;
+    clearButton.disabled = true;
     secretOutput.value = "";
     session.secretHex = "";
     setFeedback(
@@ -159,6 +174,7 @@ const networkFeedback = element<HTMLParagraphElement>("network-feedback");
 const connectButton = element<HTMLButtonElement>("connect-button");
 const networkGenerateButton = element<HTMLButtonElement>("network-generate-button");
 const networkCopyButton = element<HTMLButtonElement>("network-copy-button");
+const networkClearButton = element<HTMLButtonElement>("network-clear-button");
 const networkSecretOutput = element<HTMLTextAreaElement>("network-secret-output");
 const deployButton = element<HTMLButtonElement>("deploy-button");
 const networkAddress = element<HTMLInputElement>("network-address");
@@ -189,6 +205,7 @@ const updateNetworkButtons = (): void => {
   networkId.disabled = networkBusy || network !== null;
   networkGenerateButton.disabled = networkBusy;
   networkCopyButton.disabled = networkBusy || !networkSecretHex;
+  networkClearButton.disabled = networkBusy || !networkSecretHex;
   deployButton.disabled = networkBusy || !network || !networkSecretHex;
   networkReadButton.disabled = networkBusy || !network;
   networkClaimButton.disabled = networkBusy || !network;
@@ -258,6 +275,17 @@ networkCopyButton.addEventListener("click", () => {
       networkMessage("자동 복사가 막혔습니다. 선택된 값을 직접 복사해 주세요.", "error");
     }
   });
+});
+
+networkClearButton.addEventListener("click", () => {
+  if (!networkSecretHex) return;
+  networkSecretHex = "";
+  networkSecretOutput.value = "";
+  networkMessage(
+    "비밀값을 이 화면과 세션 메모리에서 지웠습니다. 보관한 사본은 앱이 복구할 수 없습니다.",
+    "success",
+  );
+  updateNetworkButtons();
 });
 
 deployButton.addEventListener("click", () => {

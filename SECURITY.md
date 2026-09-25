@@ -36,5 +36,6 @@ These properties are covered by contract tests and a local-development-network i
 - Generate a fresh secret for each pass.
 - Share the secret and contract address over a private authenticated channel.
 - Do not place secrets in screenshots, issues, logs, URLs, analytics, or repository files.
+- After saving a pass through an appropriate private channel, use the app's **지우기** control to remove its plaintext from the page and current in-memory session.
 - Clear clipboard history after transferring a secret when the platform permits it.
 - Never use the public local-devnet genesis seed on Preview, Preprod, or any network holding real assets.

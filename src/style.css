@@ -306,6 +306,14 @@ form label {
   align-items: stretch;
   gap: 8px;
 }
+.secret-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.secret-actions .button {
+  flex: 1;
+}
 .copy-row textarea,
 input,
 select {

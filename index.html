@@ -103,14 +103,24 @@
                     readonly
                     placeholder="패스를 생성하면 이곳에 표시됩니다."
                   ></textarea>
-                  <button
-                    id="copy-button"
-                    class="button button-outline"
-                    type="button"
-                    disabled
-                  >
-                    복사
-                  </button>
+                  <div class="secret-actions">
+                    <button
+                      id="copy-button"
+                      class="button button-outline"
+                      type="button"
+                      disabled
+                    >
+                      복사
+                    </button>
+                    <button
+                      id="clear-button"
+                      class="button button-outline"
+                      type="button"
+                      disabled
+                    >
+                      지우기
+                    </button>
+                  </div>
                 </div>
               </div>
             </article>
@@ -218,7 +228,10 @@
                 <label for="network-secret-output">내 비밀값 · 새로고침하면 사라짐</label>
                 <div class="copy-row">
                   <textarea id="network-secret-output" rows="2" readonly placeholder="배포 전에 비밀값을 생성하세요."></textarea>
-                  <button id="network-copy-button" class="button button-outline" type="button" disabled>복사</button>
+                  <div class="secret-actions">
+                    <button id="network-copy-button" class="button button-outline" type="button" disabled>복사</button>
+                    <button id="network-clear-button" class="button button-outline" type="button" disabled>지우기</button>
+                  </div>
                 </div>
               </div>
               <button id="deploy-button" class="button button-primary network-action" type="button" disabled>지갑으로 배포</button>
