@@ -125,7 +125,7 @@ clearButton.addEventListener("click", () => {
   copyButton.disabled = true;
   clearButton.disabled = true;
   setFeedback(
-    "비밀값을 이 화면과 세션 메모리에서 지웠습니다. 계약 상태는 유지됩니다.",
+    "비밀값을 이 화면과 앱의 현재 세션 상태에서 제거했습니다. 계약 상태는 유지됩니다.",
     "success",
   );
 });
@@ -282,7 +282,7 @@ networkClearButton.addEventListener("click", () => {
   networkSecretHex = "";
   networkSecretOutput.value = "";
   networkMessage(
-    "비밀값을 이 화면과 세션 메모리에서 지웠습니다. 보관한 사본은 앱이 복구할 수 없습니다.",
+    "비밀값을 이 화면과 앱의 현재 세션 상태에서 제거했습니다. 보관한 사본은 앱이 복구할 수 없습니다.",
     "success",
   );
   updateNetworkButtons();

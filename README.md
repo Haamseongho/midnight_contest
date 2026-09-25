@@ -136,7 +136,7 @@ Generated contract bindings and proof artifacts are intentionally excluded from 
 
 The proof provider or connected wallet may process the private circuit input. This project does not send the secret to an application server, but it cannot guarantee how third-party wallet or proving services handle it. The operating-system clipboard may retain copied secrets.
 
-After storing a pass through an appropriate private channel, use **지우기** to remove its plaintext from the page and the app's in-memory session. This does not erase clipboard history or copies saved outside the app.
+After storing a pass through an appropriate private channel, use **지우기** to remove its plaintext from the page and the app's current session state. JavaScript strings cannot be reliably zeroized, and this control does not erase clipboard history or copies saved outside the app.
 
 Read [SECURITY.md](./SECURITY.md) for the threat model, disclosure process, trust boundaries, and known limitations.
 
