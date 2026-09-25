@@ -24,6 +24,12 @@ Hackathon Program Page에서 직접 누릅니다.
   <https://github.com/Haamseongho/midnight_contest/blob/main/docs/DEMO_SCRIPT.md>
 - **Security model:**
   <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
+- **Preview contract:**
+  `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c`
+- **Preview deploy transaction:**
+  `0009965462a734559665acff00e767c2de22a4f18ce689c7045f94e4ce9b356c2e`
+- **Preview claim transaction:**
+  `0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc`
 
 ## How Midnight is used
 
@@ -78,5 +84,6 @@ pays the network fee; Silent Pass does not hold or transfer user funds.
 
 Preview 공개 거래는 해커톤의 필수 제출 조건이 아니며 Local Devnet도 공식
 허용 환경입니다. 다만 Awesome Midnight dApps 품질 목표를 위해 Preview
-계약 주소와 transaction ID를 확보하면 README와 readiness checklist에
-추가합니다.
+계약 배포와 claim까지 2026년 9월 25일 검증했고, 공개 가능한 계약 주소와
+transaction ID를 README와 readiness checklist에 기록했습니다. 지갑 주소와
+패스 비밀값은 기록하지 않았습니다.

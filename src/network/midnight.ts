@@ -124,7 +124,10 @@ export class MidnightSession {
       import.meta.env?.BASE_URL ?? "/",
       window.location.href,
     ).href;
-    const keys = new FetchZkConfigProvider<"claim">(assetBaseUrl);
+    const keys = new FetchZkConfigProvider<"claim">(
+      assetBaseUrl,
+      globalThis.fetch.bind(globalThis),
+    );
     const proofProvider = networkId === "undeployed" && config.proverServerUri
       ? httpClientProofProvider(config.proverServerUri, keys)
       : createProofProvider(await withTimeout(

@@ -97,7 +97,7 @@ docker compose -f devnet/compose.yml stop
 
 The local configuration exposes the node at `127.0.0.1:9944`, indexer at `127.0.0.1:8088`, and proof server at `127.0.0.1:6300`. The integration test uses the official public genesis seed only on the disposable `undeployed` network. Never reuse that seed on a public network.
 
-See [the three-minute demo script](./docs/DEMO_SCRIPT.md) for a reviewer-oriented walkthrough. The remaining public-network verification is tracked in the [Preview deployment runbook](./docs/PREVIEW_DEPLOYMENT.md).
+See [the three-minute demo script](./docs/DEMO_SCRIPT.md) for a reviewer-oriented walkthrough. The verified public-network transaction evidence is recorded in the [Preview deployment runbook](./docs/PREVIEW_DEPLOYMENT.md).
 
 For a single Korean-language procedure covering installation, local execution,
 local-network E2E, Preview funding, and Lace connection, use the
@@ -184,7 +184,8 @@ It performs:
 - Lace 2.4.0 browser-extension approval and the Preview DApp Connector 4.x handshake were verified on 2026-09-24; the public demo reported `preview 연결됨` after the user approved the DApp.
 - The current official Preview funding flow uses the Preview faucet for tNIGHT and Lace **Generate tDUST** to register that tNIGHT for tDUST generation. Holding tNIGHT alone is not sufficient.
 - Lace completed the Preview tNIGHT-to-tDUST registration on 2026-09-25, showed `All done`, and reported a positive, refilling tDUST balance. No wallet address or secret is recorded in this repository.
-- Preview/Preprod deployment and transaction submission are not yet verified. No public-network contract address or transaction identifier is claimed until that evidence exists.
+- Preview deployment and claim were verified through Lace 2.4.0 on 2026-09-25. Contract `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c` was deployed in transaction `0009965462a734559665acff00e767c2de22a4f18ce689c7045f94e4ce9b356c2e`, claimed in transaction `0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc`, and read back from the Preview indexer as `claimed = true`. The app cleared both secret fields after success; no wallet address or pass secret is published.
+- Preprod has not been exercised and is not claimed as verified.
 
 ## Known limitations
 

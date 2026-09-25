@@ -1,3 +1,4 @@
+import "./shims/node-buffer";
 import {
   Contract,
   ledger,

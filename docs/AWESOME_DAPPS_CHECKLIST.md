@@ -33,7 +33,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Actual Lace 2.4.0 browser-wallet authorization and Preview connector handshake confirmed (2026-09-24)
 - [x] Preview tNIGHT registration completed in Lace and a positive tDUST balance confirmed (2026-09-25)
 - [x] Deployment and claim stop before proof generation or submission when Lace reports zero tDUST
-- [ ] Preview or Preprod contract address and transaction identifiers published
+- [x] Preview contract address, deploy transaction, claim transaction, and final `claimed = true` state published in [the Preview runbook](./PREVIEW_DEPLOYMENT.md) (2026-09-25)
 - [x] Public-demo screenshot added to the README
 
 ## Submission-time requirements
@@ -52,4 +52,4 @@ Add alphabetically under **Identity & Privacy**:
 - [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network. - [Demo](https://haamseongho.github.io/midnight_contest/)
 ```
 
-Do not open the upstream pull request until the public-network transaction evidence item is checked and the public repository reflects the current verified state.
+The public-network evidence gate is complete. Before opening the upstream pull request, re-check the upstream list, confirm the final public CI and Pages runs, self-review the one-line diff, and obtain the user's action-time approval to publish the pull request.

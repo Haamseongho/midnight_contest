@@ -14,7 +14,7 @@ This draft follows the official [contribution guide](https://github.com/midnight
 
 ## Pull-request overview
 
-Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2.0-licensed one-time access-pass DApp with functional Compact code. A holder proves knowledge of a private secret while the Midnight Network contract exposes only the commitment and claimed status. The repository includes a public demo, security boundaries, automated contract tests, and a public local-network transaction E2E run.
+Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2.0-licensed one-time access-pass DApp with functional Compact code. A holder proves knowledge of a private secret while the Midnight Network contract exposes only the commitment and claimed status. The repository includes a public demo, security boundaries, automated contract tests, a public local-network transaction E2E run, and an actual Lace Preview deployment and claim.
 
 ## Submission checklist draft
 
@@ -37,11 +37,12 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 - Public GitHub Pages deployment: <https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457>
 - License: <https://github.com/Haamseongho/midnight_contest/blob/main/LICENSE>
 - Security model: <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
-- Browser wallet: Lace 2.4.0 DApp authorization and Preview connector handshake verified on 2026-09-24; public transaction evidence remains pending
+- Browser wallet: Lace 2.4.0 DApp authorization and Preview connector handshake verified on 2026-09-24
+- Preview transaction evidence: contract `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c`; deploy `0009965462a734559665acff00e767c2de22a4f18ce689c7045f94e4ce9b356c2e`; claim `0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc`; final state `claimed = true`
 
 ## Gates before opening the pull request
 
-1. Publish the Preview contract address, deployment transaction identifier, and claim transaction identifier without publishing the pass secret or wallet address.
-2. Confirm the final public state and replay rejection.
-3. Re-run `npm run verify` and confirm the public CI and Pages deployment.
+1. Re-run `npm run verify` and confirm the final public CI and Pages deployment.
+2. Re-check that the upstream entry is unique and still belongs after `ShadowVoice` and before `ZIP`.
+3. Self-review the one-line upstream diff and obtain the user's approval before opening the pull request.
 4. Complete the upstream Contributor License Agreement if requested by its check.

@@ -114,12 +114,12 @@ step being demonstrated.
 | Wallet connection | Lace 2.4.0 Preview connector handshake verified |
 | Preview tNIGHT | Present in the selected test account; address omitted |
 | Preview tDUST | Registration completed in Lace on 2026-09-25; positive and refilling |
-| Contract address | Pending |
-| Deployment transaction ID | Pending |
-| Claim transaction ID | Pending |
-| Final public state | Pending |
-| Verified at (UTC) | Pending |
-| Public explorer links | Pending |
+| Contract address | `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c` |
+| Deployment transaction ID | `0009965462a734559665acff00e767c2de22a4f18ce689c7045f94e4ce9b356c2e` |
+| Claim transaction ID | `0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc` |
+| Final public state | `claimed = true` (`사용 완료`) |
+| Verified at (UTC) | 2026-09-25 10:46 UTC |
+| Public explorer links | Not published: no official Preview explorer URL was verified |
 
 The repository's local `undeployed` E2E already verifies deployment, wrong-secret
 rejection, successful claim, replay rejection, and the DApp Connector application
@@ -127,5 +127,7 @@ path. It is development evidence, not a substitute for the Preview fields above.
 
 The successful registration screen reported `All done`, designated the selected
 wallet's own Preview DUST address, and showed a zero tDUST fee. The address is
-intentionally omitted. This proves the fee resource is available, but it does not
-prove that the Silent Pass contract itself has been deployed on Preview.
+intentionally omitted. The later deployment and claim records above independently
+prove the Silent Pass transaction path on Preview. The app read the final state
+back from the Preview indexer and cleared both secret inputs; the secret and wallet
+address were not recorded.

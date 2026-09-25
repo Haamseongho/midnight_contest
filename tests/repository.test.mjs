@@ -35,7 +35,7 @@ test('Awesome Midnight submission entry stays identical across reviewer document
   assert.match(submission, new RegExp(`^${escapeRegExp(entry)}$`, 'm'));
 });
 
-test('documentation does not claim unverified public-network deployment', async () => {
+test('documentation publishes verified Preview evidence without stale funding guidance', async () => {
   const [readme, runbook, guide, submission] = await Promise.all([
     read('README.md'),
     read('docs/PREVIEW_DEPLOYMENT.md'),
@@ -43,14 +43,18 @@ test('documentation does not claim unverified public-network deployment', async 
     read('docs/FINAL_SUBMISSION_PACKAGE.md'),
   ]);
 
-  assert.match(readme, /Preview\/Preprod deployment and transaction submission are not yet verified/);
+  assert.match(readme, /Preview deployment and claim were verified through Lace 2\.4\.0 on 2026-09-25/);
   assert.match(readme, /Preview DApp Connector 4\.x handshake were verified/);
   assert.match(readme, /tNIGHT-to-tDUST registration on 2026-09-25/);
-  assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
+  assert.match(readme, /66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c/);
+  assert.match(readme, /0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc/);
+  assert.match(readme, /no wallet address or pass secret is published/i);
   assert.match(runbook, /https:\/\/docs\.midnight\.network\/guides\/acquire-tokens/);
   assert.match(runbook, /https:\/\/midnight-tmnight-preview\.nethermind\.dev/);
   assert.match(runbook, /\*\*Generate tDUST\*\*/);
   assert.match(runbook, /Registration completed in Lace on 2026-09-25; positive and refilling/);
+  assert.match(runbook, /Final public state \| `claimed = true`/);
+  assert.match(runbook, /no official Preview explorer URL was verified/);
   assert.doesNotMatch(`${readme}\n${runbook}\n${guide}`, /Cardano-held NIGHT|enough ADA|dust\.preview\.midnight\.network/);
   assert.match(guide, /npm run verify/);
   assert.match(guide, /npm run test:local/);
@@ -67,11 +71,29 @@ test('browser deployment flow defaults to the Preview evidence network', async (
 
   assert.match(html, /<option value="preview" selected>Preview<\/option>/);
   assert.doesNotMatch(html, /<option value="preprod" selected>/);
-  assert.match(html, /Preview 공개 거래는 아직 검증 중입니다/);
+  assert.match(html, /Preview 실제\s*배포와 1회 사용 거래를 2026-09-25 검증했습니다/);
   assert.match(html, /같은 거래를 바로 다시 보내지 마세요/);
   assert.match(networkSource, /balanceUnsealedTransaction/);
   assert.match(networkSource, /3분 안에 거래 밸런싱·증명을 완료하지 못했습니다/);
   assert.match(networkSource, /결과가 불확실하므로 Activity와 공개 상태를 확인하기 전에는 같은 거래를 다시 전송하지 마세요/);
+});
+
+test('browser entry installs the Buffer compatibility shim before Midnight SDK use', async () => {
+  const [entry, shim, packageJson] = await Promise.all([
+    readFile(new URL('../src/main.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../src/shims/node-buffer.ts', import.meta.url), 'utf8'),
+    readFile(new URL('../package.json', import.meta.url), 'utf8'),
+  ]);
+
+  assert.match(entry, /^import "\.\/shims\/node-buffer";/);
+  assert.match(shim, /browserGlobal\.Buffer \?\?= Buffer/);
+  assert.equal(JSON.parse(packageJson).dependencies.buffer, '6.0.3');
+});
+
+test('browser ZK artifact requests keep the native fetch receiver', async () => {
+  const network = await readFile(new URL('../src/network/midnight.ts', import.meta.url), 'utf8');
+
+  assert.match(network, /globalThis\.fetch\.bind\(globalThis\)/);
 });
 
 test('the product scope distinguishes credentials from asset transfers', async () => {
