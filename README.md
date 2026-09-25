@@ -195,7 +195,7 @@ The repository follows the official [Awesome Midnight contribution guide](https:
 Remote-only and deployment checks are tracked in [the readiness checklist](./docs/AWESOME_DAPPS_CHECKLIST.md). The proposed list entry is:
 
 ```md
-- [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network.
+- [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network. - [Demo](https://haamseongho.github.io/midnight_contest/)
 ```
 
 The exact upstream placement and pull-request draft are recorded in [the submission draft](./docs/AWESOME_DAPPS_SUBMISSION.md).
