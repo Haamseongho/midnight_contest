@@ -27,10 +27,11 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public/private data boundary documented
 - [x] Threat model and known limitations documented
 - [x] Continuous-integration workflow included
-- [x] Public CI runs the production dependency audit plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508985), commit `9cac9e5`)
+- [x] Public CI runs all 15 automated tests, the production dependency audit, plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205), commit `80a090e`)
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
-- [x] Public GitHub Pages workflow succeeded for commit `9cac9e5` ([run 35958508991](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508991))
+- [x] Public GitHub Pages workflow succeeded for commit `80a090e` ([run 36111061214](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061214))
 - [x] Actual Lace 2.4.0 browser-wallet authorization and Preview connector handshake confirmed (2026-09-24)
+- [x] Deployment and claim stop before proof generation or submission when Lace reports zero tDUST
 - [ ] Preview or Preprod contract address and transaction identifiers published
 - [x] Public-demo screenshot added to the README
 

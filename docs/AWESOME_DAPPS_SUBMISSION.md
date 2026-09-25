@@ -21,8 +21,8 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 - [x] Useful pull-request description prepared
 - [x] Tests are provided
 - [x] Key repository commits have useful messages
-- [x] Project CI checks have succeeded, including the production dependency audit and local-network transaction E2E ([run 35958508985](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508985), commit `9cac9e5`)
-- [x] Public GitHub Pages deployment succeeded for the same commit ([run 35958508991](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508991))
+- [x] Project CI checks have succeeded, including all 15 automated tests, the production dependency audit, and local-network transaction E2E ([run 36111061205](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205), commit `80a090e`)
+- [x] Public GitHub Pages deployment succeeded for the same commit ([run 36111061214](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061214))
 - [ ] Self-review the final upstream one-line diff
 - [ ] Request an upstream reviewer
 - [ ] Confirm the upstream README entry is still unique and alphabetically placed
@@ -33,8 +33,8 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 
 - Repository: <https://github.com/Haamseongho/midnight_contest>
 - Public demo: <https://haamseongho.github.io/midnight_contest/>
-- CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/35958508985>
-- Public GitHub Pages deployment: <https://github.com/Haamseongho/midnight_contest/actions/runs/35958508991>
+- CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205>
+- Public GitHub Pages deployment: <https://github.com/Haamseongho/midnight_contest/actions/runs/36111061214>
 - License: <https://github.com/Haamseongho/midnight_contest/blob/main/LICENSE>
 - Security model: <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
 - Browser wallet: Lace 2.4.0 DApp authorization and Preview connector handshake verified on 2026-09-24; public transaction evidence remains pending
