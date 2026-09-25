@@ -173,6 +173,7 @@ It performs:
 - Public [GitHub Actions run 36111061205](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205) passed both `verify` and `local-e2e` for commit `80a090e`; the former includes the production dependency audit and all automated tests, and the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
 - Public [GitHub Pages run 36111061214](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061214) deployed the same `80a090e` commit successfully.
 - Lace 2.4.0 browser-extension approval and the Preview DApp Connector 4.x handshake were verified on 2026-09-24; the public demo reported `preview 연결됨` after the user approved the DApp.
+- The official Preview DUST Generator requires Cardano-held NIGHT, enough ADA for its registration transaction, and a valid Midnight DUST recipient address; a Midnight tNIGHT balance alone is not evidence that those prerequisites are satisfied.
 - Preview/Preprod deployment and transaction submission are not yet verified. No public-network contract address or transaction identifier is claimed until that evidence exists.
 
 ## Known limitations

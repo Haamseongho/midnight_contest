@@ -36,11 +36,18 @@ test('Awesome Midnight submission entry stays identical across reviewer document
 });
 
 test('documentation does not claim unverified public-network deployment', async () => {
-  const readme = await read('README.md');
+  const [readme, runbook] = await Promise.all([
+    read('README.md'),
+    read('docs/PREVIEW_DEPLOYMENT.md'),
+  ]);
 
   assert.match(readme, /Preview\/Preprod deployment and transaction submission are not yet verified/);
   assert.match(readme, /Preview DApp Connector 4\.x handshake were verified/);
   assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
+  assert.match(runbook, /https:\/\/dust\.preview\.midnight\.network/);
+  assert.match(runbook, /NIGHT plus enough ADA/);
+  assert.match(runbook, /at least 2\.5 hours/);
+  assert.doesNotMatch(runbook, /open the tNIGHT token in Lace, choose \*\*Generate tDUST\*\*/);
 });
 
 test('browser deployment flow defaults to the Preview evidence network', async () => {
