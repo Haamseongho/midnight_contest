@@ -25,6 +25,8 @@ jobs:
 
       - name: Set up Compact compiler
         uses: midnightntwrk/setup-compact-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           compact-version: "0.31.1"
 
@@ -49,6 +51,8 @@ jobs:
 
       - name: Set up Compact compiler
         uses: midnightntwrk/setup-compact-action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           compact-version: "0.31.1"
 

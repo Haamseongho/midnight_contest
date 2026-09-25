@@ -120,6 +120,7 @@ test('public CI exercises real local-network transactions', async () => {
   const manifest = JSON.parse(manifestText);
 
   assert.match(workflow, /^  local-e2e:$/m);
+  assert.equal(workflow.match(/GITHUB_TOKEN: \$\{\{ github\.token \}\}/g)?.length, 2);
   assert.match(workflow, /docker compose -f devnet\/compose\.yml up -d --wait/);
   assert.match(workflow, /run: npm run test:local/);
   assert.match(workflow, /docker compose -f devnet\/compose\.yml down -v/);
