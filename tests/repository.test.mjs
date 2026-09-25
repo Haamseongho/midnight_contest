@@ -36,18 +36,25 @@ test('Awesome Midnight submission entry stays identical across reviewer document
 });
 
 test('documentation does not claim unverified public-network deployment', async () => {
-  const [readme, runbook] = await Promise.all([
+  const [readme, runbook, guide, submission] = await Promise.all([
     read('README.md'),
     read('docs/PREVIEW_DEPLOYMENT.md'),
+    read('docs/RUN_AND_LACE_GUIDE.md'),
+    read('docs/FINAL_SUBMISSION_PACKAGE.md'),
   ]);
 
   assert.match(readme, /Preview\/Preprod deployment and transaction submission are not yet verified/);
   assert.match(readme, /Preview DApp Connector 4\.x handshake were verified/);
   assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
-  assert.match(runbook, /https:\/\/dust\.preview\.midnight\.network/);
-  assert.match(runbook, /NIGHT plus enough ADA/);
-  assert.match(runbook, /at least 2\.5 hours/);
-  assert.doesNotMatch(runbook, /open the tNIGHT token in Lace, choose \*\*Generate tDUST\*\*/);
+  assert.match(runbook, /https:\/\/docs\.midnight\.network\/guides\/acquire-tokens/);
+  assert.match(runbook, /https:\/\/midnight-tmnight-preview\.nethermind\.dev/);
+  assert.match(runbook, /\*\*Generate tDUST\*\*/);
+  assert.doesNotMatch(`${readme}\n${runbook}\n${guide}`, /Cardano-held NIGHT|enough ADA|dust\.preview\.midnight\.network/);
+  assert.match(guide, /npm run verify/);
+  assert.match(guide, /npm run test:local/);
+  assert.match(guide, /mn_addr_preview/);
+  assert.match(submission, /최종 제출 버튼/);
+  assert.match(submission, /Preview 공개 거래는 해커톤의 필수 제출 조건이 아니며 Local Devnet도 공식/);
 });
 
 test('browser deployment flow defaults to the Preview evidence network', async () => {

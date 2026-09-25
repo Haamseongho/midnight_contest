@@ -99,6 +99,13 @@ The local configuration exposes the node at `127.0.0.1:9944`, indexer at `127.0.
 
 See [the three-minute demo script](./docs/DEMO_SCRIPT.md) for a reviewer-oriented walkthrough. The remaining public-network verification is tracked in the [Preview deployment runbook](./docs/PREVIEW_DEPLOYMENT.md).
 
+For a single Korean-language procedure covering installation, local execution,
+local-network E2E, Preview funding, and Lace connection, use the
+[run and Lace guide](./docs/RUN_AND_LACE_GUIDE.md). The
+[final submission package](./docs/FINAL_SUBMISSION_PACKAGE.md) contains the
+ready-to-copy hackathon fields and the last pre-submission checks; it does not
+submit the project.
+
 ## Architecture
 
 ```text
@@ -175,7 +182,7 @@ It performs:
 - Public [GitHub Actions run 36121656609](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656609) passed both `verify` and `local-e2e` for commit `72ac5d8`; the former includes the production dependency audit and all 18 automated tests, and the latter started a fresh pinned Midnight Docker stack, waited for initial DUST accrual, and exercised the direct SDK and DApp Connector application paths.
 - Public [GitHub Pages run 36121656457](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457) deployed the same `72ac5d8` commit successfully.
 - Lace 2.4.0 browser-extension approval and the Preview DApp Connector 4.x handshake were verified on 2026-09-24; the public demo reported `preview 연결됨` after the user approved the DApp.
-- The official Preview DUST Generator requires Cardano-held NIGHT, enough ADA for its registration transaction, and a valid Midnight DUST recipient address; a Midnight tNIGHT balance alone is not evidence that those prerequisites are satisfied.
+- The current official Preview funding flow uses the Preview faucet for tNIGHT and Lace **Generate tDUST** to register that tNIGHT for tDUST generation. Holding tNIGHT alone is not sufficient.
 - Preview/Preprod deployment and transaction submission are not yet verified. No public-network contract address or transaction identifier is claimed until that evidence exists.
 
 ## Known limitations
