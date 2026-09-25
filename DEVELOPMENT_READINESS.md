@@ -29,7 +29,7 @@
 2. **Hack-Nation 포털 확인 필요:** World Bank 분야별 브리프, 최종 제출 필드, 영상 규격, 정확한 마감 시각·시간대, 원본성/사전 작업·타 대회 제출물 재사용 규정. **Midnight 출품 코드를 World Bank에 재사용할 수 있다고 가정하지 않는다.** [World Bank 공고](https://www.worldbank.org/en/events/2026/10/19/global-ai-and-digital-summit-2026)
 3. **사용자 확인 필요:** 최종 제출 페이지에서 프로젝트 소유자가 내용을 검토하고 제출한다. 이 앱 자체를 제출 포털로 사용하지 않는다.
 4. **선택 항목:** 데모 영상과 Midnight Academy 수료증은 필수가 아니며 준비 여부가 **미확인**이다.
-5. **Awesome dApps 추가 증빙:** 해커톤 제출에는 Local Devnet이 허용되지만, 우수사례 등록 목표를 위해 Preview tDUST 등록·계약 배포·claim 공개 transaction evidence를 남긴다. 현재 Lace Preview 연결과 tNIGHT 수령까지 확인했고 tDUST 등록은 남아 있다.
+5. **Awesome dApps 추가 증빙:** 해커톤 제출에는 Local Devnet이 허용되지만, 우수사례 등록 목표를 위해 Preview 계약 배포·claim 공개 transaction evidence를 남긴다. Lace Preview 연결, tNIGHT 수령, tDUST 등록과 양수 잔액은 2026-09-25 확인했다.
 
 참고: 제공된 [한국어 Midnight.js 문서](https://docs.midnightkorea.org/sdks/official/midnight-js)는 개요에 유용하지만, 한국어 [호환성 표](https://docs.midnightkorea.org/relnotes/support-matrix)는 4.0.4를 표시한다. 설치 버전은 더 최신인 [본가 호환성 표](https://docs.midnight.network/relnotes/support-matrix)의 4.1.1을 기준으로 확인했다.
 

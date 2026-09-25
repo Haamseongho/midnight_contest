@@ -31,6 +31,7 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
 - [x] Public GitHub Pages workflow succeeded for commit `72ac5d8` ([run 36121656457](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457))
 - [x] Actual Lace 2.4.0 browser-wallet authorization and Preview connector handshake confirmed (2026-09-24)
+- [x] Preview tNIGHT registration completed in Lace and a positive tDUST balance confirmed (2026-09-25)
 - [x] Deployment and claim stop before proof generation or submission when Lace reports zero tDUST
 - [ ] Preview or Preprod contract address and transaction identifiers published
 - [x] Public-demo screenshot added to the README

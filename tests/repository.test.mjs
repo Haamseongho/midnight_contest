@@ -45,10 +45,12 @@ test('documentation does not claim unverified public-network deployment', async 
 
   assert.match(readme, /Preview\/Preprod deployment and transaction submission are not yet verified/);
   assert.match(readme, /Preview DApp Connector 4\.x handshake were verified/);
+  assert.match(readme, /tNIGHT-to-tDUST registration on 2026-09-25/);
   assert.doesNotMatch(readme, /Contract deployed on (Preview|Preprod)/i);
   assert.match(runbook, /https:\/\/docs\.midnight\.network\/guides\/acquire-tokens/);
   assert.match(runbook, /https:\/\/midnight-tmnight-preview\.nethermind\.dev/);
   assert.match(runbook, /\*\*Generate tDUST\*\*/);
+  assert.match(runbook, /Registration completed in Lace on 2026-09-25; positive and refilling/);
   assert.doesNotMatch(`${readme}\n${runbook}\n${guide}`, /Cardano-held NIGHT|enough ADA|dust\.preview\.midnight\.network/);
   assert.match(guide, /npm run verify/);
   assert.match(guide, /npm run test:local/);

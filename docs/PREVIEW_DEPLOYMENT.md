@@ -113,7 +113,7 @@ step being demonstrated.
 | --- | --- |
 | Wallet connection | Lace 2.4.0 Preview connector handshake verified |
 | Preview tNIGHT | Present in the selected test account; address omitted |
-| Preview tDUST | Registration pending; balance was 0 at the last check |
+| Preview tDUST | Registration completed in Lace on 2026-09-25; positive and refilling |
 | Contract address | Pending |
 | Deployment transaction ID | Pending |
 | Claim transaction ID | Pending |
@@ -124,3 +124,8 @@ step being demonstrated.
 The repository's local `undeployed` E2E already verifies deployment, wrong-secret
 rejection, successful claim, replay rejection, and the DApp Connector application
 path. It is development evidence, not a substitute for the Preview fields above.
+
+The successful registration screen reported `All done`, designated the selected
+wallet's own Preview DUST address, and showed a zero tDUST fee. The address is
+intentionally omitted. This proves the fee resource is available, but it does not
+prove that the Silent Pass contract itself has been deployed on Preview.

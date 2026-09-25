@@ -183,6 +183,7 @@ It performs:
 - Public [GitHub Pages run 36121656457](https://github.com/Haamseongho/midnight_contest/actions/runs/36121656457) deployed the same `72ac5d8` commit successfully.
 - Lace 2.4.0 browser-extension approval and the Preview DApp Connector 4.x handshake were verified on 2026-09-24; the public demo reported `preview 연결됨` after the user approved the DApp.
 - The current official Preview funding flow uses the Preview faucet for tNIGHT and Lace **Generate tDUST** to register that tNIGHT for tDUST generation. Holding tNIGHT alone is not sufficient.
+- Lace completed the Preview tNIGHT-to-tDUST registration on 2026-09-25, showed `All done`, and reported a positive, refilling tDUST balance. No wallet address or secret is recorded in this repository.
 - Preview/Preprod deployment and transaction submission are not yet verified. No public-network contract address or transaction identifier is claimed until that evidence exists.
 
 ## Known limitations
