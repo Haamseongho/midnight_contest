@@ -65,6 +65,20 @@ test('browser deployment flow defaults to the Preview evidence network', async (
   assert.match(networkSource, /결과가 불확실하므로 Activity와 공개 상태를 확인하기 전에는 같은 거래를 다시 전송하지 마세요/);
 });
 
+test('the product scope distinguishes credentials from asset transfers', async () => {
+  const [html, readme, demoScript] = await Promise.all([
+    read('index.html'),
+    read('README.md'),
+    read('docs/DEMO_SCRIPT.md'),
+  ]);
+
+  assert.match(html, /Silent Pass는 송금·결제·에스크로 앱이\s*아닙니다/);
+  assert.match(html, /사용자 자금을\s*보관하거나 다른 지갑으로 전송하지 않습니다/);
+  assert.match(readme, /not a payment, remittance, or escrow application/);
+  assert.match(readme, /does not custody funds or transfer assets between wallets/);
+  assert.match(demoScript, /does not send, hold, or escrow funds/);
+});
+
 test('the browser can clear displayed secrets without changing public state', async () => {
   const [html, source] = await Promise.all([
     read('index.html'),

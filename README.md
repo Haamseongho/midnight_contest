@@ -28,6 +28,8 @@ Event organizers often need to distribute invitation codes while avoiding a publ
 
 The current prototype deploys one pass per contract. The same primitive can support private invitations, one-time claim codes, pickup authorizations, or recovery handoffs. It does not hide wallet identity or transaction metadata.
 
+Silent Pass is not a payment, remittance, or escrow application. The connected wallet signs Midnight contract deployment and claim transactions and pays the corresponding network fees; the Silent Pass contract does not custody funds or transfer assets between wallets.
+
 ## Why Midnight
 
 | Requirement | Silent Pass implementation |

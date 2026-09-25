@@ -6,6 +6,8 @@ This script demonstrates a private one-time event admission credential in about 
 
 An organizer needs to admit one invited attendee without publishing the attendee's name or the invitation secret. The organizer deploys a commitment. The attendee receives the secret and contract address through a private channel. At check-in, the attendee proves knowledge of the secret once. The public state reveals only the commitment and whether the pass has been claimed.
 
+State the product boundary before the wallet flow: Silent Pass does not send, hold, or escrow funds. The wallet signs the contract transactions and pays network fees; it is not the subject of the private proof.
+
 ## Browser-only walkthrough
 
 1. Open the DApp and explain the three roles: organizer, attendee, and verifier.
@@ -30,6 +32,7 @@ Use this only with a compatible DApp Connector 4.x wallet and funded test-networ
 ## Claims that should not be made
 
 - Do not say that wallet identity or transaction metadata is hidden.
+- Do not describe Silent Pass as a payment, remittance, or escrow application.
 - Do not describe the browser-only laboratory as an on-chain transaction.
 - Do not claim an independent security audit.
 - Do not claim Preview or Preprod verification without a published contract address and transaction evidence.
