@@ -5,6 +5,7 @@ import test from 'node:test';
 
 const read = (relativePath) =>
   readFile(fileURLToPath(new URL(`../${relativePath}`, import.meta.url)), 'utf8');
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('repository carries the required Midnight attribution and license', async () => {
   const [readme, license, manifest] = await Promise.all([
@@ -18,6 +19,20 @@ test('repository carries the required Midnight attribution and license', async (
   assert.match(readme, /midnightntwrk\/midnight-awesome-dapps/);
   assert.match(license, /Apache License\s+Version 2\.0, January 2004/);
   assert.equal(JSON.parse(manifest).license, 'Apache-2.0');
+});
+
+test('Awesome Midnight submission entry stays identical across reviewer documents', async () => {
+  const [readme, checklist, submission] = await Promise.all([
+    read('README.md'),
+    read('docs/AWESOME_DAPPS_CHECKLIST.md'),
+    read('docs/AWESOME_DAPPS_SUBMISSION.md'),
+  ]);
+  const entry =
+    '- [Silent Pass](https://github.com/Haamseongho/midnight_contest) - One-time access-pass DApp that proves knowledge of a private secret while publishing only its commitment and claimed status on Midnight Network. - [Demo](https://haamseongho.github.io/midnight_contest/)';
+
+  assert.match(readme, new RegExp(`^${escapeRegExp(entry)}$`, 'm'));
+  assert.match(checklist, new RegExp(`^${escapeRegExp(entry)}$`, 'm'));
+  assert.match(submission, new RegExp(`^${escapeRegExp(entry)}$`, 'm'));
 });
 
 test('documentation does not claim unverified public-network deployment', async () => {

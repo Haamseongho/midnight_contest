@@ -21,7 +21,7 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 - [x] Useful pull-request description prepared
 - [x] Tests are provided
 - [x] Key repository commits have useful messages
-- [x] Project CI checks have succeeded, including all 15 automated tests, the production dependency audit, and local-network transaction E2E ([run 36111061205](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205), commit `80a090e`)
+- [x] Project CI checks have succeeded, including all automated tests, the production dependency audit, and local-network transaction E2E ([run 36111061205](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205), commit `80a090e`)
 - [x] Public GitHub Pages deployment succeeded for the same commit ([run 36111061214](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061214))
 - [ ] Self-review the final upstream one-line diff
 - [ ] Request an upstream reviewer
