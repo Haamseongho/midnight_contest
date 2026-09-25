@@ -34,6 +34,7 @@ const environment = {
   faucet: undefined,
 };
 const logger = { info() {}, warn() {}, error() {}, debug() {}, trace() {} };
+const dustAccrualBufferMs = 15_000;
 
 const waitForWallet = (wallet, predicate, label, ms = 300_000) =>
   firstValueFrom(
@@ -55,7 +56,7 @@ try {
   console.log('1/8 Connecting the public genesis test wallet to the local devnet…');
   walletProvider = await MidnightWalletProvider.build(logger, environment, genesisSeed);
   await walletProvider.start(false);
-  const state = await waitForWallet(
+  let state = await waitForWallet(
     walletProvider.wallet,
     (value) => synced(value.shielded.state.progress)
       && synced(value.unshielded.progress)
@@ -78,12 +79,25 @@ try {
         await walletProvider.wallet.finalizeRecipe(recipe),
       );
     }
-    await waitForWallet(
+    state = await waitForWallet(
       walletProvider.wallet,
       (value) => (value.dust?.availableCoins.length ?? 0) >= 1,
       'Spendable DUST',
     );
   }
+
+  // A fresh devnet can expose the first spendable coin just before it has
+  // accrued enough DUST to balance a deployment. Give the registered genesis
+  // UTXO two local block intervals to accrue before submitting the first tx.
+  console.log(`Waiting ${dustAccrualBufferMs / 1_000}s for the initial DUST fee buffer…`);
+  await new Promise((resolveDelay) => setTimeout(resolveDelay, dustAccrualBufferMs));
+  state = await waitForWallet(
+    walletProvider.wallet,
+    (value) => (value.dust?.availableCoins.length ?? 0) >= 1
+      && (value.dust?.balance(new Date()) ?? 0n) > 0n,
+    'DUST fee buffer',
+  );
+  console.log(`DUST fee buffer ready: ${state.dust.balance(new Date())}`);
 
   const keys = new NodeZkConfigProvider(resolve(root, 'contract/managed/silent-pass'));
   const providers = {

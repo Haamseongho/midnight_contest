@@ -112,9 +112,10 @@ test('development versions stay aligned with the pinned official reference stack
 });
 
 test('public CI exercises real local-network transactions', async () => {
-  const [workflow, manifestText] = await Promise.all([
+  const [workflow, manifestText, localE2e] = await Promise.all([
     read('.github/workflows/ci.yml'),
     read('package.json'),
+    read('scripts/local-e2e.mjs'),
   ]);
   const manifest = JSON.parse(manifestText);
 
@@ -125,4 +126,6 @@ test('public CI exercises real local-network transactions', async () => {
   assert.equal(manifest.scripts['audit:prod'], 'npm audit --omit=dev --audit-level=high');
   assert.match(manifest.scripts.verify, /^npm run audit:prod && /);
   assert.match(workflow, /run: npm run verify/);
+  assert.match(localE2e, /dustAccrualBufferMs = 15_000/);
+  assert.match(localE2e, /DUST fee buffer ready/);
 });
