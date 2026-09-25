@@ -1,6 +1,6 @@
 # Awesome Midnight dApps readiness
 
-Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution guide at upstream commit [`b386bd9`](https://github.com/midnightntwrk/midnight-awesome-dapps/tree/b386bd9f4d011eb676df62272cf97b4698ac8011) on 2026-09-24.
+Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution guide at upstream commit [`b386bd9`](https://github.com/midnightntwrk/midnight-awesome-dapps/tree/b386bd9f4d011eb676df62272cf97b4698ac8011) on 2026-09-25.
 
 ## Repository requirements
 
@@ -27,8 +27,9 @@ Checked against the official `midnightntwrk/midnight-awesome-dapps` contribution
 - [x] Public/private data boundary documented
 - [x] Threat model and known limitations documented
 - [x] Continuous-integration workflow included
-- [x] Public CI runs the production dependency audit plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/35958177446))
+- [x] Public CI runs the production dependency audit plus real local-network deployment and claim E2E ([successful run](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508985), commit `9cac9e5`)
 - [x] Public GitHub Pages deployment confirmed at <https://haamseongho.github.io/midnight_contest/>
+- [x] Public GitHub Pages workflow succeeded for commit `9cac9e5` ([run 35958508991](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508991))
 - [x] Actual Lace 2.4.0 browser-wallet authorization and Preview connector handshake confirmed (2026-09-24)
 - [ ] Preview or Preprod contract address and transaction identifiers published
 - [x] Public-demo screenshot added to the README

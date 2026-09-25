@@ -1,6 +1,6 @@
 # Awesome Midnight dApps submission draft
 
-This draft follows the official [contribution guide](https://github.com/midnightntwrk/midnight-awesome-dapps/blob/main/CONTRIBUTING.md) and [pull-request template](https://github.com/midnightntwrk/midnight-awesome-dapps/blob/main/.github/PULL_REQUEST_TEMPLATE/pull_request_template.md), last checked at upstream commit [`b386bd9`](https://github.com/midnightntwrk/midnight-awesome-dapps/tree/b386bd9f4d011eb676df62272cf97b4698ac8011) on 2026-09-24. Re-check both immediately before submission because the upstream list can change.
+This draft follows the official [contribution guide](https://github.com/midnightntwrk/midnight-awesome-dapps/blob/main/CONTRIBUTING.md) and [pull-request template](https://github.com/midnightntwrk/midnight-awesome-dapps/blob/main/.github/PULL_REQUEST_TEMPLATE/pull_request_template.md), last checked at upstream commit [`b386bd9`](https://github.com/midnightntwrk/midnight-awesome-dapps/tree/b386bd9f4d011eb676df62272cf97b4698ac8011) on 2026-09-25. Re-check both immediately before submission because the upstream list can change.
 
 ## Target and placement
 
@@ -21,7 +21,8 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 - [x] Useful pull-request description prepared
 - [x] Tests are provided
 - [x] Key repository commits have useful messages
-- [x] Project CI checks have succeeded, including the production dependency audit and local-network transaction E2E ([run 35958177446](https://github.com/Haamseongho/midnight_contest/actions/runs/35958177446))
+- [x] Project CI checks have succeeded, including the production dependency audit and local-network transaction E2E ([run 35958508985](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508985), commit `9cac9e5`)
+- [x] Public GitHub Pages deployment succeeded for the same commit ([run 35958508991](https://github.com/Haamseongho/midnight_contest/actions/runs/35958508991))
 - [ ] Self-review the final upstream one-line diff
 - [ ] Request an upstream reviewer
 - [ ] Confirm the upstream README entry is still unique and alphabetically placed
@@ -32,7 +33,8 @@ Adds Silent Pass to the `Identity & Privacy` section. Silent Pass is an Apache-2
 
 - Repository: <https://github.com/Haamseongho/midnight_contest>
 - Public demo: <https://haamseongho.github.io/midnight_contest/>
-- CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/35958177446>
+- CI, production dependency audit, and local transaction E2E: <https://github.com/Haamseongho/midnight_contest/actions/runs/35958508985>
+- Public GitHub Pages deployment: <https://github.com/Haamseongho/midnight_contest/actions/runs/35958508991>
 - License: <https://github.com/Haamseongho/midnight_contest/blob/main/LICENSE>
 - Security model: <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
 - Browser wallet: Lace 2.4.0 DApp authorization and Preview connector handshake verified on 2026-09-24; public transaction evidence remains pending
