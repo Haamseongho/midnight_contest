@@ -159,7 +159,7 @@ It performs:
 - Production dependency audit at high severity or above
 - Contract-state and privacy-invariant tests
 - Wrong-secret and replay-rejection tests
-- Browser secret-clearing and submission-document consistency checks
+- Browser secret-clearing, product-scope, and submission-document consistency checks
 - Repository attribution and license checks
 
 `npm run test:local` separately verifies actual local-network deployment and claim transactions through both the direct SDK and the application's DApp Connector route.
@@ -172,8 +172,8 @@ It performs:
 - Local `undeployed` transactions have verified deployment, proof generation, state reads, wrong-secret rejection, a successful claim, and replay rejection.
 - The connector application path has been exercised with the official local test-wallet adapter, including reconnecting to an existing contract.
 - Deployment and claim now stop before proof generation or submission when Lace reports a zero tDUST balance, with separate guidance for an empty balance and a zero generation cap.
-- Public [GitHub Actions run 36111061205](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061205) passed both `verify` and `local-e2e` for commit `80a090e`; the former includes the production dependency audit and all automated tests, and the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
-- Public [GitHub Pages run 36111061214](https://github.com/Haamseongho/midnight_contest/actions/runs/36111061214) deployed the same `80a090e` commit successfully.
+- Public [GitHub Actions run 36120220230](https://github.com/Haamseongho/midnight_contest/actions/runs/36120220230) passed both `verify` and `local-e2e` for commit `74ff829`; the former includes the production dependency audit and all 18 automated tests, and the latter started the pinned Midnight Docker stack and exercised the direct SDK and DApp Connector application paths.
+- Public [GitHub Pages run 36120220302](https://github.com/Haamseongho/midnight_contest/actions/runs/36120220302) deployed the same `74ff829` commit successfully.
 - Lace 2.4.0 browser-extension approval and the Preview DApp Connector 4.x handshake were verified on 2026-09-24; the public demo reported `preview 연결됨` after the user approved the DApp.
 - The official Preview DUST Generator requires Cardano-held NIGHT, enough ADA for its registration transaction, and a valid Midnight DUST recipient address; a Midnight tNIGHT balance alone is not evidence that those prerequisites are satisfied.
 - Preview/Preprod deployment and transaction submission are not yet verified. No public-network contract address or transaction identifier is claimed until that evidence exists.
