@@ -103,11 +103,18 @@ step being demonstrated.
 2. Check Lace **Activity**, Preview synchronization, and the tDUST balance.
 3. Confirm the local proof server still returns a healthy response and inspect
    its logs for a proving request.
-4. Reconnect Silent Pass only after the prior result is known.
-5. If submission may have occurred, query the public contract state before
-   retrying. A timeout is not evidence that a transaction failed.
+4. Reconnect Silent Pass on the same network to check the original transaction
+   ID. Reconnecting alone does not authorize a new send.
+5. If submission may have occurred, reconcile the original transaction ID's
+   final result. A timeout, missing transaction or unused public state is not
+   evidence that the original transaction failed. Do not clear recovery storage
+   or switch tabs to bypass an unresolved operation.
 
-## Current public evidence
+## Historical public evidence — 2026-09-25
+
+These are the original document's observations, not validation of a later UI
+or a new deployment. The verification time below has minute precision; it is
+not an independently established block-inclusion timestamp.
 
 | Field | Verified value |
 | --- | --- |

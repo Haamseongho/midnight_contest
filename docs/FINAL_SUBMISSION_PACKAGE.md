@@ -1,97 +1,75 @@
-# Midnight Korea Hackathon 최종 제출 패키지
+# Midnight Korea Hackathon — 최종 제출 준비 패키지
 
-문구 갱신일: 2026-09-26 (KST). 제출 계정 요건은 별도 확인 필요.
+**현재 상태: ZIP 패치를 dev_haams에 적용한 로컬 후보. 새 commit·원격 반영·새 배포·실제 계정 정보 입력·최종 Submit은 사용자 단계입니다.** 패치 후 검증 결과는 [로컬 통합 검증 기록](FINAL_INTEGRATION_VALIDATION.md)을 확인합니다. 문서 작성이나 체크리스트 생성은 접수 증거가 아닙니다.
+최종 제출 버튼은 사용자/지정 제출자가 실제 입력 내용을 확인한 뒤 직접 누릅니다.
 
-최신 복구 오류 수정·배포 정합성 검수 및 미체크 사유: [F1_F2_RELEASE_VALIDATION.md](./F1_F2_RELEASE_VALIDATION.md). 아래 역사적 성공 체크는 최종 릴리스·실제 폼 검수를 대신하지 않습니다.
+## 1. 지금 사용할 문서
 
-이 문서는 제출 사이트에 그대로 옮길 수 있는 프로젝트 정보와 제출 직전
-검증 항목을 모은 것입니다. 실제 최종 제출 버튼은 프로젝트 소유자가
-Hackathon Program Page에서 직접 누릅니다.
+- [사용자가 직접 진행할 제출 순서](USER_SUBMISSION_STEPS.md)
+- [실제 폼에 맞춘 복붙 원고](SUBMISSION_FORM_COPY.md)
+- [최종 GO Sheet와 실행 기록](FINAL_GO_SHEET.md)
+- [패치 후 로컬 통합 검증 기록](FINAL_INTEGRATION_VALIDATION.md)
+- [최종 데모 대본](FINAL_DEMO_SCRIPT.md)
+- [영상 스토리보드](VIDEO_STORYBOARD.md)
+- [사람 이해도·리허설 표](HUMAN_VALIDATION_READY.md)
+- [로컬 보완·재검증 경계](FINAL_HARDENING_NOTES.md)
 
-## 제출용 프로젝트 정보
+## 2. 과거 기준과 새 제출판 구분
 
-- **Project name:** Silent Pass
-- **One-line description:** 초대의 비밀은 공개하지 않고, 그 초대가 한 번 사용됐는지는 함께 확인합니다.
-- **English description:** A one-time access-pass DApp that proves knowledge of
-  a private secret while publishing only its commitment and claimed status on
-  Midnight Network.
-- **Scope:** 소지자는 자기 환경에서 claim을 만들고, 확인자는 앱이 고정한 계약의 공개 소비 기록을 지갑 없이 조회합니다. 발급자 인증·현재 방문자 확인·입장 허가를 자동 제공하지 않습니다.
-- **Public repository:** <https://github.com/Haamseongho/midnight_contest>
-- **Public demo:** <https://haamseongho.github.io/midnight_contest/>
-- **Reviewer-only demo:** <https://haamseongho.github.io/midnight_contest/review.html>
-- **Canonical release branch:** `main` (개발은 `dev_haams`, 사용자 승인 후 검증된 변경만 병합). 공개 배포의 정확한 SHA는 [release.json](https://haamseongho.github.io/midnight_contest/release.json) 및 해당 CI/Pages 실행과 대조합니다.
-- **Category:** Identity & Privacy
-- **License:** Apache-2.0
-- **Run guide:**
-  <https://github.com/Haamseongho/midnight_contest/blob/main/docs/RUN_AND_LACE_GUIDE.md>
-- **Demo script:**
-  <https://github.com/Haamseongho/midnight_contest/blob/main/docs/DEMO_SCRIPT.md>
-- **Security model:**
-  <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
-- **Preview contract:**
-  `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c`
-- **Preview deploy transaction:**
-  `0009965462a734559665acff00e767c2de22a4f18ce689c7045f94e4ce9b356c2e`
-- **Preview claim transaction:**
-  `0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc`
+| 구분 | 상태 / 근거 |
+|---|---|
+| 패치 기준 main | `363064270e80d65834151ce07796616bf7680f01` |
+| 기준 CI | [36223346869](https://github.com/Haamseongho/midnight_contest/actions/runs/36223346869) |
+| 기준 Pages | [36223346867](https://github.com/Haamseongho/midnight_contest/actions/runs/36223346867) |
+| 기준 배포 artifact | `sourceCommit=363064270e80d65834151ce07796616bf7680f01`, `sourceRef=refs/heads/main`, `workflowRun=36223346867` |
+| 이번 로컬 수정 후보 | 오류 원문 비노출·취소 저장 실패 처리·SDK 준비/실패 안내·릴리스 검증·제출 자료. `dev_haams`에 적용, 아직 공개하지 않음 |
+| 패치 후 로컬 검증 | [통합 검증 기록](FINAL_INTEGRATION_VALIDATION.md)의 실제 실행 결과 참조. 기준 CI나 ZIP 내 제한 검수 결과로 대체하지 않음 |
+| 패치 반영 후 제출판 | 사용자의 main 반영 후 새 SHA·CI·Pages·release.json·공개 화면을 함께 확인해야 함 |
 
-## How Midnight is used
+문서에 자신의 미래 commit SHA를 미리 넣지 않습니다. 최종 SHA는 배포 후 GitHub와 공개 `release.json`을 대조해 별도 검수 기록에 남깁니다. 검수 후 코드나 문서가 다시 바뀌면 새 최종판을 확인합니다. 기록만 보존하기 위해 이미 검증한 코드를 다시 변경할 필요는 없습니다.
 
-Silent Pass stores a commitment and a `claimed` Boolean in the public Compact
-contract state. The 32-byte pass secret remains a private circuit input. The
-`claim` circuit proves that the submitted secret matches the commitment and
-rejects a second use after `claimed` becomes `true`. Midnight.js connects
-contract deployment, proof generation, wallet balancing, transaction
-submission, and indexer reads. The wallet signs these contract operations and
-pays the network fee; Silent Pass does not hold or transfer user funds.
+ZIP의 최초 감사가 기록한 37개 Node·8개 제한 브라우저 검수는 원본 환경의 검수입니다. 전체 checkout의 새 build, 전체 브라우저 회귀, 실제 공개 origin, 로컬 개발망 거래 테스트 결과와 구분합니다.
 
-## 실행 또는 데모 흐름
+## 3. 실제 결과를 확인한 뒤 체크
 
-새 A–F 고도화 및 Notion U3 검수는 [ENHANCEMENT_PROGRESS.md](./ENHANCEMENT_PROGRESS.md)를 기준으로 한다. 공개 관찰 JSON은 서명되지 않은 기록이며 현재 상태·공증·입장권이 아니다. 신규 방문자 3명의 이해도와 실제 낭독은 [HUMAN_VALIDATION.md](./HUMAN_VALIDATION.md)에 실제 결과가 기록되기 전에는 미완료다. 비교·차별점은 [FEATURE_COMPARISON.md](./FEATURE_COMPARISON.md)에 출처와 함께 정리했다.
+- [x] 패치 기준과 로컬 변경 내역을 검토했다.
+- [x] 통합 검증 기록에서 패치 후 install/Compact compile/typecheck/build/tests/브라우저/로컬망 결과를 확인했다.
+- [x] 새 production 확인자 코드 검사에 holder/wallet/transaction/scenario 경로가 없다.
+- [ ] 사용자가 직접 dev commit·push하고 검증 성공 후 main에 반영했다.
+- [ ] 현재 main과 같은 SHA의 CI verify/local-e2e 및 Pages build/deploy가 성공했다.
+- [ ] `node scripts/verify-submission-release.mjs --out final-release-evidence.json`이 `RELEASE_PROVENANCE_VERIFIED`를 반환했다.
+- [ ] 최종 공개 `/`와 `/review.html`에서 실제 조회·회로 시연·실패/기록 구분을 확인했다.
+- [ ] 실제 폼·README·보안 문서·시연·원고의 보장 범위가 일치한다.
+- [ ] 실제 Luma 신청 완료, 모든 팀원 정보와 대표 연락처를 확인했다.
+- [ ] 사용자가 실제 필수 항목을 입력하고 전체 내용을 미리보기했다.
+- [ ] 사용자가 직접 Submit한 뒤 접수 증거와 시각을 보관했다.
 
-1. 저장소를 clone하고 `npm ci`, `npm run verify`를 실행한다.
-2. `npm run dev`로 브라우저 데모를 연다.
-3. 지갑 없는 공개 기록 조회를 실행하고 맥락 출처·조회 시각·‘사용 기록 있음’을 보여준다. 입장 승인으로 해석하지 않는다.
-4. 독립 로컬 회로 시연으로 잘못된 비밀값 거절 → 올바른 값 성공 → 재사용 거절을 보여준다.
-5. Recorded example을 열어 과거 Preview 증거와 이번 UI 검증이 다름을 설명한다.
-6. 거래 증빙은 `npm run test:local`의 로컬 개발망 E2E 또는, 준비된 경우,
-   Lace Preview 배포·claim 공개 기록으로 제시한다.
+사람 3명 이해도 확인과 발표 리허설은 내부 품질 제안입니다. 실제 수행 여부는 [리허설 표](HUMAN_VALIDATION_READY.md)에 기록하며 공식 필수 접수 조건으로 설명하지 않습니다. 실제 등록·연락처 확인은 코드 검증과 병행할 수 있습니다.
 
-새 UI/U1~U4의 실행 결과는 [IMPLEMENTATION_EVIDENCE.md](./IMPLEMENTATION_EVIDENCE.md)에서 확인한다. 아래 과거 체크는 2026-09-25 기준이며 dev_haams의 새 CI/Pages 결과를 대신하지 않는다. 제출 폼에 실제 반영됐는지는 계정에서 별도 확인해야 한다.
+## 4. 실제 폼 확인 결과
 
-## 공식 제출 요건 대비
+2026-09-26 KST [공식 페이지](https://www.hackathon.midnightkorea.org/kor)의 제출 링크에서 열린 [Tally 폼](https://tally.so/popup/Np20VW)을 입력 없이 확인했습니다.
 
-| 항목 | 상태 | 근거 |
-| --- | --- | --- |
-| 프로젝트명 | 준비 완료 | `Silent Pass` |
-| 한 줄 설명 | 준비 완료 | 위 제출용 정보 |
-| 공개 GitHub + README | 준비 완료 | 공개 저장소와 Apache-2.0 라이선스 |
-| 실행 방법/데모 흐름 | 준비 완료 | README, 실행 가이드, 데모 스크립트 |
-| Midnight 활용 설명 | 준비 완료 | Compact 계약, Midnight.js, 위 설명 |
-| 작동하는 DApp | 준비 완료 | public demo, CI, local-network E2E |
-| 데모 영상 | 선택 항목·미제작 | 공식 공지상 선택 사항 |
-| Luma 참가 등록 | 사용자 계정에서 확인 필요 | 저장소로 확인할 수 없음 |
-| Midnight Academy 수료증 | 선택 항목·미확인 | 제출 시 가산점 자료 |
-| 최종 Program Page 제출 | 미실행 | 사용자가 제출 직전 직접 실행 |
+필수 표시가 있는 항목은 팀/프로젝트명, 참가 형태, 소속/이름(모든 팀원의 이름·이메일·직책, Luma 정보 일치), 대표 연락처, public GitHub 링크, `midnightntwrk` 토픽 확인, 프로젝트 소개, Midnight 구현 포인트입니다. 덱·영상·데모 URL·Explorer/Scholar 증서는 선택 항목으로 표시됐습니다. 영상은 3분 이내 권장, 증서는 파일 10 MB 제한이 표시됐습니다.
 
-공식 Luma 공지는 제출 기한을 2026년 9월 27일로 안내하며, 최종 프로젝트는
-[Hackathon Program Page](https://hackathon.midnightkorea.org/)에서 제출한다고
-명시합니다. 프로그램 페이지에서 확인한 상세 마감은 2026년 9월 28일
-00:00 KST이므로, 안전하게 9월 27일 안에 제출합니다.
+별도 한 줄·Problem·Solution·Privacy·트랙·지갑 주소 입력칸은 보이지 않았습니다. 원고는 실제 소개/구현 두 칸으로 재배치했습니다. 용도 불명 `Untitled` 링크 필드는 채우지 않습니다. DOM에 `maxlength`는 없었으나 서버 길이 제한은 미확인입니다. 필수 여부는 화면/DOM 확인이며 최종 Submit 검증은 아닙니다. 값 입력·체크·첨부·Submit은 하지 않았습니다.
 
-## 제출 직전 10분 체크
+GitHub 공개 API로 저장소의 public 상태와 `midnightntwrk` 토픽을 확인했습니다. 실제 개인/팀 정보·Luma 등록 완료·대표 연락처는 사용자가 직접 확인해야 합니다.
 
-- [x] GitHub `main`이 검증된 Preview 증빙 commit `76d6610`을 포함한다.
-- [x] GitHub Actions의 `verify`와 `local-e2e`가 모두 성공했다 ([run 36126468920](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468920)).
-- [x] GitHub Pages가 같은 commit을 배포했다 ([run 36126468936](https://github.com/Haamseongho/midnight_contest/actions/runs/36126468936)).
-- [x] public demo, `claim.prover`, `claim.bzkir`가 HTTP 200을 반환한다.
-- [x] 공개 문서에는 계약 주소와 transaction ID만 기록했고 비밀번호, 복구 구문, 개인키, 지갑 주소, 패스 비밀값은 기록하지 않았다.
-- [ ] 제출 페이지의 프로젝트명·설명·repo·demo 링크를 위 값과 대조한다.
-- [ ] 선택 자료를 첨부하려면 데모 영상과 Academy 수료증만 추가한다.
-- [ ] 제출 내용을 한 번 더 미리보기한 뒤 프로젝트 소유자가 최종 제출한다.
+## 5. 과거 Preview 증거 보존
 
-Preview 공개 거래는 해커톤의 필수 제출 조건이 아니며 Local Devnet도 공식
-허용 환경입니다. 다만 Awesome Midnight dApps 품질 목표를 위해 Preview
-계약 배포와 claim까지 2026년 9월 25일 검증했고, 공개 가능한 계약 주소와
-transaction ID를 README와 readiness checklist에 기록했습니다. 지갑 주소와
-패스 비밀값은 기록하지 않았습니다.
+2026-09-25의 contract/deploy/claim과 원본 commit은 [폼 원고의 과거 Preview 기록](SUBMISSION_FORM_COPY.md)에 있습니다. 원 증거 commit은 `76d6610acae4afd994fcfe8b5b34218f1d9f80b3`입니다. 기존 CI `36126468920` / Pages `36126468936`은 그 당시 증거이며 새 릴리스 검증 성공의 근거로 사용하지 않습니다.
+
+[원본 Preview 문서](https://github.com/Haamseongho/midnight_contest/blob/76d6610acae4afd994fcfe8b5b34218f1d9f80b3/docs/PREVIEW_DEPLOYMENT.md)의 `Verified at (UTC)`에는 **2026-09-25 10:46 UTC (19:46 KST)**가 기록되어 있습니다. ZIP의 `NOT_RECOVERED` 표기를 원본 확인 결과에 따라 정정했습니다. 이는 문서에 기록된 검증 시각이며 거래 포함 시각이나 원시 로그의 새 독립 검증을 뜻하지 않습니다.
+
+## 6. 공식 안내와 제출 기한
+
+공식 작품 마감: **2026-09-28 00:00 KST**입니다. 9월 28일 낮이나 밤이 아니라 **9월 27일 밤이 지나 날짜가 바뀌는 시각**입니다. 내부 목표는 9월 27일 안에 접수 증거를 확보하는 것입니다.
+
+2026-09-26 공식 공개 안내에서 개인 또는 최대 4명 팀, Local Devnet/Preview/Preprod 허용, 영상 선택, Explorer/Scholar 증서 안내와 트랙 구분 없음을 확인했습니다. [Luma](https://luma.com/2pnv2fwk)의 실제 등록 완료 여부와 별도 등록 종료시각은 미확인입니다.
+
+Preview 공개 거래는 해커톤의 필수 제출 조건이 아니며 Local Devnet도 공식 허용 환경입니다.
+
+## 7. 미확정 거래 처리
+
+시간 초과는 취소가 아닙니다. 공개 상태의 미사용·미검출만으로 이전 거래 실패를 확정하지 않습니다. 원래 거래 ID의 최종 결과를 확인하고 결과 불명은 UNKNOWN으로 유지합니다. BLOCKED에서 저장소 삭제나 새 탭을 우회 재전송 수단으로 사용하지 않습니다.

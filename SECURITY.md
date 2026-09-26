@@ -1,5 +1,7 @@
 # Security policy
 
+Local hardening scope and remaining validation are recorded in [FINAL_HARDENING_NOTES.md](./docs/FINAL_HARDENING_NOTES.md). Unknown provider failures are displayed as bounded guidance rather than raw payloads. The startup indicator describes SDK readiness, not a live observation or security verdict. This does not add issuer authentication, anonymity, or formal audit certification.
+
 Silent Pass is an experimental privacy-preserving access-pass DApp. It has not received an independent security audit and must not be used to protect money, production credentials, or safety-critical access.
 
 ## Supported version

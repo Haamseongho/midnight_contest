@@ -1,5 +1,8 @@
 # Silent Pass
 
+> **Final release preparation:** [local validation](./docs/FINAL_INTEGRATION_VALIDATION.md) · [user publication/submission steps](./docs/USER_SUBMISSION_STEPS.md) · [GO Sheet](./docs/FINAL_GO_SHEET.md) · [copy-paste fields](./docs/SUBMISSION_FORM_COPY.md).
+> A local patch is not a verified public release. Check the final deployed SHA, CI and Pages before submission; older evidence below remains historical.
+
 [![CI](https://github.com/Haamseongho/midnight_contest/actions/workflows/ci.yml/badge.svg)](https://github.com/Haamseongho/midnight_contest/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
 
@@ -14,7 +17,7 @@ Silent Pass demonstrates private secret knowledge and one-time consumption on Mi
 - Read-only reviewer: <https://haamseongho.github.io/midnight_contest/review.html> (no wallet or secret input)
 - Canonical release/demo branch: `main`; development continues on `dev_haams`. Pages publishes only `main`; [release metadata](https://haamseongho.github.io/midnight_contest/release.json) identifies the deployed source commit and workflow run.
 - [Enhancement/U3 progress](./docs/ENHANCEMENT_PROGRESS.md), [feature comparison](./docs/FEATURE_COMPARISON.md), [pending human validation](./docs/HUMAN_VALIDATION.md)
-- Category: `Identity & Privacy`
+- Product theme: `Identity & Privacy` (description only; not an official competition track or a submission-form field)
 - Contract: Compact language 0.23, compiler 0.31.1
 - SDK: Midnight.js 4.1.1 and DApp Connector API 4.0.1
 - License: [Apache-2.0](./LICENSE)
@@ -175,6 +178,7 @@ It performs:
 - Contract-state and privacy-invariant tests
 - Wrong-secret and replay-rejection tests
 - Real Chromium DOM regressions for clearing, request ordering, read failures, reviewer context, and operation recovery
+- Production-browser startup/failure checks and audited reviewer-only chunk isolation
 - Product-scope and submission-document consistency checks
 - Repository attribution and license checks
 
@@ -195,7 +199,12 @@ It performs:
 
 Existing work already covers ZK ticketing ([Lens & Frens](https://ethglobal.com/showcase/lens-and-frens-ogedp)), identity plus email ticket verification ([Zhat's Me](https://ethglobal.com/showcase/zhats-me-vioyt)), and secret-based asset claims ([Selkie](https://github.com/DpacJones/selkie-usdm-escrow)). Silent Pass makes no novelty or equivalent-feature claim: its deliberately small scope is one-time consumption plus a deployment-pinned public read and recoverable transaction status. It implements neither identity/email verification nor asset escrow.
 
-### Current verified state
+### Historical verified state — 2026-09-24/25
+
+The records below belong to the original Preview-evidence implementation and its
+then-current deployment. They do not certify this local candidate or a new public
+release. See [current local validation](./docs/FINAL_INTEGRATION_VALIDATION.md)
+and [final release gates](./docs/FINAL_GO_SHEET.md) for the submission candidate.
 
 - Contract compilation, production build, and automated tests pass locally.
 - The public GitHub Pages demo and its proving-key/ZKIR asset paths return HTTP 200.

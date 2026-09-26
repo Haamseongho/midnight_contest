@@ -16,8 +16,9 @@
     "build": "npm run compile:contract && npm run typecheck && vite build",
     "test": "npm run compile:contract && node --test tests/*.test.mjs",
     "test:local": "npm run compile:contract && tsx scripts/local-e2e.mjs",
-    "verify": "npm run audit:prod && npm run build && npm test && npm run test:ui",
+    "verify": "npm run audit:prod && npm run build && npm test && npm run test:ui && npm run test:production",
     "test:ui": "playwright test",
+    "test:production": "BUILT_PREVIEW=1 playwright test tests/browser/startup.spec.ts",
     "test:preview": "LIVE_PREVIEW=1 playwright test --grep \"actual Preview\""
   },
   "dependencies": {

@@ -145,6 +145,9 @@ test('U3 DOM: disposable actual compiled circuit rejects wrong secret and replay
   await expect(page.locator('#reviewer-status')).toHaveAttribute('data-state','IDLE');
   await page.getByText('Recorded example · 과거 검증 기록',{exact:true}).click();
   await expect(page.locator('#recorded-claim')).toHaveText('0032856554b96a452286646176f4a0e689808d22615069eb9a498973493cee35dc');
+  await expect(page.locator('#recorded-meta')).toContainText('2026-09-25 10:46 UTC / 19:46 KST');
+  await expect(page.locator('#recorded-meta')).toContainText('원본 문서의 검증 기록');
+  await expect(page.locator('#recorded-meta')).toContainText('블록 시각 아님');
 });
 
 test('presentation flow stays usable on a narrow screen without horizontal overflow', async ({page}) => {

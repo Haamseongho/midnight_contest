@@ -66,7 +66,7 @@ If transaction recovery storage is corrupt or inaccessible, show BLOCKED and kee
 1. 0:00–0:30 — Organizer → holder → reviewer. The holder supplies a private input in their own environment; the reviewer never receives it.
 2. 0:30–1:10 — Context source/version, network, contract, expected commitment and an actual Preview read. Explain the app publisher and indexer trust assumptions.
 3. 1:10–1:50 — Run all three local scenarios and repeat. Show that a separately generated holder pass remains unused.
-4. 1:50–2:20 — Open Recorded example: original code/documentation commits, contract, deploy/claim IDs, original date and CI. The historical source has no exact time; do not invent one.
+4. 1:50–2:20 — Open Recorded example: original code/documentation commits, contract, deploy/claim IDs and CI. The original runbook records verification at 2026-09-25 10:46 UTC (19:46 KST), to the minute. Attribute this to the original document; it is not a block-inclusion timestamp or today's observation.
 5. 2:20–2:45 — Explain UNKNOWN, exact-ID recovery after reconnection, and pre-submit interruption. A missing transaction or an unclaimed read never authorizes automatic retry.
 6. 2:45–3:00 — State limitations and show the reproduction commands and implementation evidence.
 

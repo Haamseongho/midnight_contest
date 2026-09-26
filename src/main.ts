@@ -13,6 +13,7 @@ import {
 import type { MidnightSession, PublicPass } from "./network/midnight";
 import {
   networkErrorMessage,
+  localErrorMessage,
   requiresWalletReconnect,
 } from "./network/errors";
 import "./style.css";
@@ -110,7 +111,7 @@ generateButton.addEventListener("click", () => {
     );
   } catch (error) {
     setFeedback(
-      error instanceof Error ? error.message : "패스를 만들지 못했습니다.",
+      "패스를 만들지 못했습니다. 오류 원문은 표시하지 않습니다.",
       "error",
     );
   } finally {
@@ -168,15 +169,7 @@ claimForm.addEventListener("submit", (event) => {
       "success",
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "";
-    setFeedback(
-      message.includes("already claimed")
-        ? "이미 사용된 패스입니다."
-        : message.includes("does not match")
-          ? "비밀값이 일치하지 않습니다. 공개 상태는 변경되지 않았습니다."
-          : message || "확인에 실패했습니다.",
-      "error",
-    );
+    setFeedback(localErrorMessage(error), "error");
   } finally {
     claimInput.value = "";
     secret?.fill(0);
@@ -277,7 +270,13 @@ recoverButton.addEventListener("click", () => {
   });
 });
 cancelOperationButton.addEventListener("click", () => {
-  operations.cancelBeforeSubmission();
+  try {
+    operations.cancelBeforeSubmission();
+  } catch (error) {
+    networkMessage(networkErrorMessage(error), "error");
+    updateNetworkButtons();
+    return;
+  }
   clearNetworkView();
   ++busyAction;
   networkBusy = false;

@@ -1,5 +1,7 @@
 # Silent Pass U1–U4 구현·검수 증거
 
+> 2026-09-26 후속 정정: 원본 `76d6610`/`f87aee3`의 PREVIEW_DEPLOYMENT.md에서 검증 기록 **2026-09-25 10:46 UTC (19:46 KST)**를 확인했다. 아래 ‘날짜만 있다’는 판단은 당시의 누락이며 정정한다. 분 단위 문서 기록과 실제 블록 시각은 구분한다. 새 후보 검수는 [통합 검증](./FINAL_INTEGRATION_VALIDATION.md)을 참조한다.
+
 기준일: 2026-09-26 KST. 작업 브랜치: `dev_haams`.
 시작 시 로컬 및 원격 main/dev_haams는 `f87aee390bb20ccd8e033dcfa7dbec42de522b68`, 작업 폴더는 깨끗했다.
 
