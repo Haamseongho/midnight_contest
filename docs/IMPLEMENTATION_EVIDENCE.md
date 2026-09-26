@@ -96,5 +96,8 @@ npm run dev
 - 구현 커밋: [`fd71c40c2a873db2b67ef189147bf5bad7082904`](https://github.com/Haamseongho/midnight_contest/commit/fd71c40c2a873db2b67ef189147bf5bad7082904). `dev_haams`에 push 완료. `main`은 시작 커밋 그대로 유지했다.
 - [새 CI 36215886045](https://github.com/Haamseongho/midnight_contest/actions/runs/36215886045): **success**. `verify`와 실제 `local-e2e` 두 job 모두 통과했다. 이 결과는 위 구현 커밋에 해당한다.
 - [Pages 36215886066](https://github.com/Haamseongho/midnight_contest/actions/runs/36215886066): build 성공, deploy 차단. GitHub의 `github-pages` 환경 보호 규칙이 `dev_haams` 브랜치를 허용하지 않는다. 실패 사유: `Branch "dev_haams" is not allowed to deploy to github-pages due to environment protection rules.`
-- 환경 보호 규칙을 임의로 변경하지 않았다. 사용자에게 기존 규칙을 유지하면서 `dev_haams`만 추가 허용할지 확인을 요청했다. 허용 후 재배포 및 공개 URL 재검수가 남아 있다.
-- 따라서 **구현·로컬·원격 CI 검수 완료 / 새 공개 데모 배포 미완료**로 구분한다. 기존 공개 demo를 새 UI의 배포 증거로 사용하지 않는다. 실제 Preview 조회 검증은 새 코드를 실행한 fresh browser의 기록이다.
+- 최초 차단 당시에는 환경 보호 규칙을 임의로 변경하지 않고 사용자 승인을 요청했다.
+- 2026-09-26 사용자 승인 후 `github-pages` 환경에 정확한 branch `dev_haams`를 추가했다. 기존 `main` 및 다른 보호 설정은 유지했다. 저장 완료 메시지와 두 브랜치가 함께 허용된 화면을 확인했다.
+- 문서 후속 커밋 `afc0b5620886db0bf0a29711f83cfcea3274d98b`의 [CI 36216200134](https://github.com/Haamseongho/midnight_contest/actions/runs/36216200134) **success**, [Pages 36216200151 재시도 #2](https://github.com/Haamseongho/midnight_contest/actions/runs/36216200151/attempts/2) **success**.
+- 실제 [공개 demo](https://haamseongho.github.io/midnight_contest/)에서 새 reviewer UI 초기화, 고정 Preview 계약 조회 **USED**, 관찰 `2026-09-26T04:04:39.754Z`, request `5d25b5fe-488a-43f6-be91-dfa275692827`를 확인했다. 지갑 연결/거래 승인 없이 조회했다. 이어 disposable actual circuit의 wrong-secret/correct-secret/replay 세 항목 **PASS**를 화면에서 확인했다. 과거 기록은 별도 접힌 카드로 유지된다.
+- 이 공개 smoke 검수는 위 배포 커밋에 대한 증거이며 새 Preview 거래 송신 증거가 아니다. 후속 변경은 문서와 현재 브랜치를 가리키는 footer 링크 정합성 보완이다. 추가 아이디어의 기능 구현은 하지 않았다.
