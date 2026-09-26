@@ -3,7 +3,7 @@
 검토일: 2026-09-26 KST. U1~U4 구현 및 로컬/브라우저 검증 후 작성.
 판정은 원문에서 확인한 사실과 Silent Pass에 적용한 설계 판단을 구분한다. 다른 프로젝트의 자체 README는 이번 세션에서 그 프로젝트를 실행·감사했다는 증거가 아니다.
 
-추가 확인: [공동 주관사 라온시큐어의 2025-09-25 수상 발표](https://www.raon.com/ko/about/news_list/view/453)에서 위임(We-im) 대상, zkBlock 최우수상, 성희청과·TodayRPG·Typha 우수상을 확인했다. 이전 결선 공지만으로 미확인으로 남긴 수상·영문명 항목을 아래와 같이 갱신한다. **아직 구현하지 않은 추가 아이디어는 [별도 제안서](./BENCHMARK_IDEAS_PROPOSAL.md)에 분리**했다.
+추가 확인: [공동 주관사 라온시큐어의 2025-09-25 수상 발표](https://www.raon.com/ko/about/news_list/view/453)에서 위임(We-im) 대상, zkBlock 최우수상, 성희청과·TodayRPG·Typha 우수상을 확인했다. 이전 결선 공지만으로 미확인으로 남긴 수상·영문명 항목을 아래와 같이 갱신한다. 추가 아이디어의 제안 당시 설계는 [별도 제안서](./BENCHMARK_IDEAS_PROPOSAL.md), 채택 후 구현·검수는 [진행표](./ENHANCEMENT_PROGRESS.md)에 분리했다.
 
 ## 적용과 검증
 

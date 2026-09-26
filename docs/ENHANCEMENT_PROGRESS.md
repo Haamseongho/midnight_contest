@@ -21,6 +21,8 @@
 출처: https://app.notion.com/p/2026-09-26-Midnight-3e6c9bbb7de58149a8e0cb23c9a367b2
 현재 MCP 연결은 다른 워크스페이스여서 404, 로그인된 Chrome의 해당 페이지에서 원문을 읽었다. 기존 기록을 지우거나 담당자의 독립 검수를 대신 완료 처리하지 않는다.
 
+사용자가 이번 갱신을 승인한 뒤 ‘딱따구리’의 지정 페이지 U3 1·2·4·5를 체크하고, 바로 아래에 `2026-09-26 구현·검수 업데이트 — dev_haams` 및 근거 링크를 추가했다. U3-3은 미체크 유지. 브라우저 편집 성공과 MCP 재연결은 별개이며 도구의 워크스페이스 재연결은 완료하지 않았다.
+
 - [x] U3-1 disposable local session에서 실제 compiled circuit 호출로 wrong-secret→correct-secret→replay 시연하기. 실제 DOM + 새 독립 세션, 기존 소지자 세션 미소비 확인.
 - [x] U3-2 hardcoded PASS나 wallet mock 결과를 회로·체인 검증이라고 표시하지 않기. 실제 결과를 표시하고 의도적 실패 주입 시 PASS 0 / 다음 단계 잠금 확인.
 - [ ] U3-3 기존 Preview 계약·deploy/claim ID·원래 커밋·검증 시각·CI를 기록 예제에 연결하기. **부분 충족:** 주소·ID·커밋·날짜·CI 연결 완료. 원자료에 정확한 검증 시각이 없어 미확인으로 표시. 원기록이 확보되기 전 ‘시각까지 전부 확인’으로 체크하지 않음.
@@ -70,3 +72,30 @@ Connector SDK PASS address=fbb83816cada38336ec3245bb228843434968732cbc7b409a2071
 ## 외부 확인
 
 신규 사용자 테스트, 실제 낭독, 팀원 독립 검수, 참가 자격/최종 제출은 자동 테스트 결과로 대체하지 않는다. 최종 Submit, 외부 공개 댓글·PR, 결제는 하지 않는다.
+
+## 원격·공개 데모 종료 패키지
+
+- 구현 커밋 [`cadf575ff1b2b11fc1b7390cd368ad8dfcc3d3e5`](https://github.com/Haamseongho/midnight_contest/commit/cadf575ff1b2b11fc1b7390cd368ad8dfcc3d3e5), `dev_haams` push 완료. main/origin/main은 `f87aee390bb20ccd8e033dcfa7dbec42de522b68` 유지.
+- [구현 CI 36219672174](https://github.com/Haamseongho/midnight_contest/actions/runs/36219672174) success: verify와 실제 local-e2e 둘 다 통과.
+- [구현 Pages 36219672146](https://github.com/Haamseongho/midnight_contest/actions/runs/36219672146) success.
+- 공개 [전체 데모](https://haamseongho.github.io/midnight_contest/)와 [확인자 화면](https://haamseongho.github.io/midnight_contest/review.html), [배포 번들 분리 검사 결과](https://haamseongho.github.io/midnight_contest/reviewer-bundle-audit.json).
+- 공개 fresh-browser 재검수: `DEMO_URL=https://haamseongho.github.io/midnight_contest/ npm run test:preview` **2/2 PASS**, 각 6.0초/5.7초. 지갑 API 0·private input 0·transaction 0; main actual circuit 3/3 PASS.
+- main 관찰 UTC `2026-09-26T05:08:15.410Z`, request `b76fcdfc-0a3e-4b8c-8d2c-310637e89822`; reviewer 관찰 `2026-09-26T05:08:21.723Z`, request `dbcb64d9-29a4-4e16-8b87-a3151260a0b6`.
+- 최초 공개 smoke에서는 main의 SDK 초기화가 45초를 넘겨 실패했고 reviewer는 42.4초에 통과했다. 같은 코드·같은 45초 제한·새 브라우저로 재실행한 결과가 위 성공이다. 필요한 JS/WASM은 HTTP 200이었고 브라우저 오류 로그는 없었다. 초기 로딩 지연 원인은 확정하지 않았으며 콜드 로딩 위험을 숨기지 않는다.
+
+### 파일·재현·되돌림
+
+변경 파일은 위 커밋 diff 전체를 기준으로 한다. 주요 진입은 `review.html`/`src/review.ts`, 공유 패널 `src/ui/reviewer-panel.ts`, 공개 report `src/evidence/public-observation.ts`, 역할/가이드/시연 `src/ui/{roles,judge-guide,scenario-panel}.ts`, 격리 검사는 `vite.config.ts`, 실제 DOM 검수는 `tests/browser/enhancements.spec.ts`에 있다.
+
+```sh
+git switch dev_haams
+npm ci
+npx playwright install chromium
+npm run verify
+BUILT_PREVIEW=1 npm run test:preview
+docker compose -f devnet/compose.yml up -d --wait
+npm run test:local
+npm run dev
+```
+
+기존 U1–U4 증거는 [IMPLEMENTATION_EVIDENCE.md](./IMPLEMENTATION_EVIDENCE.md), 새 증거는 이 문서다. 계약/ABI/key 변경 및 새 Preview 배포는 없다. 필요한 경우 `cadf575` 변경을 검토해 별도의 revert commit으로 되돌리고 다시 검수한다. 원격 이력을 force-push로 되돌리지 않는다. 사용자 승인 없는 main 병합·최종 제출은 하지 않는다.
