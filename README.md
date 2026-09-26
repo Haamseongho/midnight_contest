@@ -12,7 +12,7 @@ Silent Pass demonstrates private secret knowledge and one-time consumption on Mi
 - Repository: <https://github.com/Haamseongho/midnight_contest>
 - Public demo: <https://haamseongho.github.io/midnight_contest/>
 - Read-only reviewer: <https://haamseongho.github.io/midnight_contest/review.html> (no wallet or secret input)
-- Current enhancement/demo branch: `dev_haams`; `main` is the historical baseline.
+- Canonical release/demo branch: `main`; development continues on `dev_haams`. Pages publishes only `main`; [release metadata](https://haamseongho.github.io/midnight_contest/release.json) identifies the deployed source commit and workflow run.
 - [Enhancement/U3 progress](./docs/ENHANCEMENT_PROGRESS.md), [feature comparison](./docs/FEATURE_COMPARISON.md), [pending human validation](./docs/HUMAN_VALIDATION.md)
 - Category: `Identity & Privacy`
 - Contract: Compact language 0.23, compiler 0.31.1
@@ -184,11 +184,12 @@ It performs:
 
 `npm run test:local` also broadcasts an actual claim, deliberately drops the connector reply, restores the operation metadata, reconnects, and resolves the exact transaction ID. A read of `unclaimed` is never treated as proof of transaction failure.
 
-## Reviewer and operation boundaries (dev_haams)
+## Reviewer and operation boundaries
 
 - Trusted context: [`src/context/trusted-context.ts`](./src/context/trusted-context.ts). Event label, network, contract, expected commitment, source and policy version are bundled by the app publisher. URL parameters and holder manifests cannot change them. Trusting the deployment and its public indexer is necessary; this is not issuer authentication or a light-client proof.
 - Live observations carry request ID and observation time. Network/address/commitment/version mismatches, malformed data and timeouts never produce a success state. New requests invalidate previous results; history has its own card.
 - Transactions retain only public operation metadata in this tab's `sessionStorage`. A timeout becomes `UNKNOWN`, not cancellation. Late completion updates the same operation. Reconnection/reload preserves the guard; exact transaction reconciliation can resolve it.
+- Corrupt, unreadable or unwritable recovery storage displays `BLOCKED` and prevents new transactions while public reads and circuit demonstrations remain available. Restore storage access/the original valid record, then explicitly recheck it. A missing record after an error does not unlock sending. Never clear storage or open another tab to bypass an unresolved transaction; no cross-tab/device guard is provided.
 - Before submission, **전송 전 작업 중단** prevents a late wallet response from reaching the app's submit call. Reject any remaining Lace dialog yourself. After submission, the guard remains until a matching final success/failure is observed. A missing indexer result cannot prove non-inclusion. Session data does not coordinate different tabs/devices and closing the tab can lose recovery metadata; retain public tx IDs.
 - Circuit, ABI and proving keys are unchanged. Old Preview transactions remain historical evidence, not evidence of the new UI. See [implementation evidence](./docs/IMPLEMENTATION_EVIDENCE.md) and [benchmark checklist](./docs/BENCHMARK_CHECKLIST.md).
 

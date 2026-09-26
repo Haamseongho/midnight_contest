@@ -59,6 +59,8 @@ Use this only with a compatible DApp Connector 4.x wallet and funded test-networ
 
 If the indexer is unavailable, keep the live result at UNKNOWN and open Recorded example with an explicit explanation. Do not promise a network response within the rehearsal time.
 
+If transaction recovery storage is corrupt or inaccessible, show BLOCKED and keep read-only demonstrations available. Restore storage access/the original record and explicitly recheck; never delete the guard or retry in another tab. A missing record is not evidence that a transaction failed.
+
 ## Three-minute rehearsal
 
 1. 0:00–0:30 — Organizer → holder → reviewer. The holder supplies a private input in their own environment; the reviewer never receives it.

@@ -207,10 +207,12 @@ let networkSecretHex = "";
 let networkBusy = false;
 let busyAction = 0;
 let viewRequest = 0;
-const operations = new OperationTracker(sessionStorage);
+// Resolve the Storage getter inside the tracker: browsers can throw even here.
+const operations = new OperationTracker(() => sessionStorage);
 const operationStatus = element<HTMLElement>("operation-status");
 const recoverButton = element<HTMLButtonElement>("operation-recover");
 const cancelOperationButton = element<HTMLButtonElement>("operation-cancel");
+const retryStorageButton = element<HTMLButtonElement>("operation-storage-retry");
 
 const clearNetworkView = (): number => {
   networkAddressValue.textContent = "—";
@@ -245,25 +247,28 @@ const updateNetworkButtons = (): void => {
   networkGenerateButton.disabled = networkBusy;
   networkCopyButton.disabled = networkBusy || !networkSecretHex;
   networkClearButton.disabled = !networkSecretHex && !networkClaimSecret.value;
-  deployButton.disabled = networkBusy || !network || !networkSecretHex || unresolved(operations.current);
+  deployButton.disabled = operations.blocked || networkBusy || !network || !networkSecretHex || unresolved(operations.current);
   networkReadButton.disabled = networkBusy || !network;
-  networkClaimButton.disabled = networkBusy || !network || unresolved(operations.current);
-  recoverButton.disabled = networkBusy || !network || !unresolved(operations.current) || !operations.current?.txId;
-  cancelOperationButton.disabled = !unresolved(operations.current) || !!operations.current?.txId;
+  networkClaimButton.disabled = operations.blocked || networkBusy || !network || unresolved(operations.current);
+  recoverButton.disabled = operations.blocked || networkBusy || !network || !unresolved(operations.current) || !operations.current?.txId;
+  cancelOperationButton.disabled = operations.blocked || !unresolved(operations.current) || !!operations.current?.txId;
+  retryStorageButton.hidden = !operations.blocked;
+  retryStorageButton.disabled = networkBusy;
 };
 networkClaimSecret.addEventListener("input", updateNetworkButtons);
-operations.subscribe(() => {
+const renderOperation = (): void => {
   const op = operations.current;
-  operationStatus.textContent = op ? `${op.status} · ${op.kind} · ${op.network} · 작업 ${op.id} · ${op.updatedAt} · 거래 ${op.txId ?? "전송 전"}` : "거래 작업 없음";
-  operationStatus.dataset.state = op?.status ?? "IDLE";
+  operationStatus.textContent = operations.blocked ? operations.blockedMessage + (op ? ` 원래 작업 ${op.id} · ${op.network} · 거래 ${op.txId ?? "ID 미확보"}` : "") : op ? `${op.status} · ${op.kind} · ${op.network} · 작업 ${op.id} · ${op.updatedAt} · 거래 ${op.txId ?? "전송 전"}` : "거래 작업 없음";
+  operationStatus.dataset.state = operations.blocked ? "BLOCKED" : op?.status ?? "IDLE";
   updateNetworkButtons();
-});
+};
+operations.subscribe(renderOperation);
 if (operations.current) {
   const op = operations.current;
   if (unresolved(op)) networkId.value = op.network;
-  operationStatus.textContent = `${op.status} · 복구된 ${op.kind} · ${op.network} · 작업 ${op.id} · 거래 ${op.txId ?? "전송 전"}`;
-  operationStatus.dataset.state = op.status;
 }
+renderOperation();
+retryStorageButton.addEventListener("click", () => { operations.retryStorage(); });
 recoverButton.addEventListener("click", () => {
   void runNetworkAction(async () => {
     const connected = network!;

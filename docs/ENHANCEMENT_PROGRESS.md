@@ -1,5 +1,7 @@
 # A–F 고도화·U3 검수 진행표
 
+후속: [F1 수정·F2 릴리스 검수와 남은 체크](./F1_F2_RELEASE_VALIDATION.md). 아래 main 미변경·Notion 연결 미완료 문구는 각 기록 당시의 이력이다. 이후 사용자 승인에 따른 수정/병합 및 현재 연결 상태는 후속 검수와 Notion 종료 패키지로 구분한다.
+
 시작: 2026-09-26, 기준 `b782615`, branch `dev_haams`. 시작 시 working tree clean, remote와 동일. main은 변경하지 않는다.
 
 사용자가 A–F 전부 채택했다. 회로/ABI/key, 발급자 인증, 입장권·송금 기능은 변경 범위 밖이다.

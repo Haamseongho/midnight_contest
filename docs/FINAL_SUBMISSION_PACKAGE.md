@@ -2,6 +2,8 @@
 
 문구 갱신일: 2026-09-26 (KST). 제출 계정 요건은 별도 확인 필요.
 
+최신 복구 오류 수정·배포 정합성 검수 및 미체크 사유: [F1_F2_RELEASE_VALIDATION.md](./F1_F2_RELEASE_VALIDATION.md). 아래 역사적 성공 체크는 최종 릴리스·실제 폼 검수를 대신하지 않습니다.
+
 이 문서는 제출 사이트에 그대로 옮길 수 있는 프로젝트 정보와 제출 직전
 검증 항목을 모은 것입니다. 실제 최종 제출 버튼은 프로젝트 소유자가
 Hackathon Program Page에서 직접 누릅니다.
@@ -17,15 +19,15 @@ Hackathon Program Page에서 직접 누릅니다.
 - **Public repository:** <https://github.com/Haamseongho/midnight_contest>
 - **Public demo:** <https://haamseongho.github.io/midnight_contest/>
 - **Reviewer-only demo:** <https://haamseongho.github.io/midnight_contest/review.html>
-- **Current implementation branch:** `dev_haams` (main은 과거 기준; 자동 병합하지 않음)
+- **Canonical release branch:** `main` (개발은 `dev_haams`, 사용자 승인 후 검증된 변경만 병합). 공개 배포의 정확한 SHA는 [release.json](https://haamseongho.github.io/midnight_contest/release.json) 및 해당 CI/Pages 실행과 대조합니다.
 - **Category:** Identity & Privacy
 - **License:** Apache-2.0
 - **Run guide:**
-  <https://github.com/Haamseongho/midnight_contest/blob/dev_haams/docs/RUN_AND_LACE_GUIDE.md>
+  <https://github.com/Haamseongho/midnight_contest/blob/main/docs/RUN_AND_LACE_GUIDE.md>
 - **Demo script:**
-  <https://github.com/Haamseongho/midnight_contest/blob/dev_haams/docs/DEMO_SCRIPT.md>
+  <https://github.com/Haamseongho/midnight_contest/blob/main/docs/DEMO_SCRIPT.md>
 - **Security model:**
-  <https://github.com/Haamseongho/midnight_contest/blob/dev_haams/SECURITY.md>
+  <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
 - **Preview contract:**
   `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c`
 - **Preview deploy transaction:**

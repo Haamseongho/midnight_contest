@@ -22,6 +22,69 @@ async function connected(page: import("@playwright/test").Page) {
   await expect(page.locator('#network-status')).toContainText('연결됨');
 }
 
+for (const fault of ['corrupt', 'schema', 'getter', 'read', 'write']) {
+  test(`F1 DOM: ${fault} blocks transactions, preserves records and keeps read-only paths usable`, async ({page}) => {
+    const errors:string[]=[];
+    page.on('pageerror',e=>errors.push(e.message));
+    await page.addInitScript(fault => {
+      const original=window.sessionStorage;
+      (window as any).testStorage=original;
+      if(fault==='corrupt'||fault==='schema') original.setItem('silent-pass.operation.v1',fault==='corrupt'?'{PRIVATE_SENTINEL':'{}');
+      if(fault==='getter') Object.defineProperty(window,'sessionStorage',{configurable:true,get(){throw Error('Denied');}});
+      if(fault==='read'||fault==='write') Object.defineProperty(window,'sessionStorage',{configurable:true,value:{
+        getItem:(key:string)=>{if(fault==='read')throw Error('Denied');return original.getItem(key);},
+        setItem:()=>{throw Error('Quota');},
+      }});
+    },fault);
+    await page.route('**/src/network/midnight.ts',r=>r.fulfill({contentType:'application/javascript',body:networkDouble}));
+    await page.route('**/src/network/public-reader.ts',r=>r.fulfill({contentType:'application/javascript',body:`
+      import {TRUSTED_CONTEXT as c} from '/src/context/trusted-context.ts';
+      export async function readTrustedPublicState(requestId){return {network:c.network,address:c.address,commitment:c.commitment,contextVersion:c.version,requestId,observedAt:new Date().toISOString(),claimed:true};}`}));
+    await page.goto('/');
+    await page.locator('#connect-button').click();
+    await expect(page.locator('#network-status')).toContainText('연결됨');
+    if(fault==='write'){
+      await page.locator('#network-generate-button').click();
+      await page.locator('#deploy-button').click();
+    }
+    await expect(page.locator('#operation-status')).toHaveAttribute('data-state','BLOCKED');
+    await expect(page.locator('#operation-status')).toContainText('기록을 삭제하거나 새 탭에서 재전송하지 마세요');
+    await expect(page.locator('#operation-status')).not.toContainText('PRIVATE_SENTINEL');
+    for(const selector of ['#deploy-button','#network-claim-button','#operation-cancel','#operation-recover'])await expect(page.locator(selector)).toBeDisabled();
+    await page.locator('#operation-storage-retry').click();
+    await expect(page.locator('#operation-status')).toHaveAttribute('data-state','BLOCKED');
+    await page.locator('#network-address').fill('B');await page.locator('#network-read-button').click();
+    await expect(page.locator('#network-commitment-value')).toHaveText('B');
+    await page.locator('#reviewer-read').click();
+    await expect(page.locator('#reviewer-status')).toHaveAttribute('data-state','USED');
+    await page.locator('#scenario-run').click();
+    await expect(page.locator('#scenario-results li[data-passed=true]')).toHaveCount(3);
+    if(fault==='corrupt'||fault==='schema')expect(await page.evaluate(()=>sessionStorage.getItem('silent-pass.operation.v1'))).toBe(fault==='corrupt'?'{PRIVATE_SENTINEL':'{}');
+    expect(errors).toEqual([]);
+  });
+}
+
+test('F1 DOM: explicit retry restores the same valid UNKNOWN operation, not a fresh send',async({page})=>{
+  await page.addInitScript(()=>sessionStorage.setItem('silent-pass.operation.v1','{broken'));
+  await page.route('**/src/network/midnight.ts',r=>r.fulfill({contentType:'application/javascript',body:networkDouble}));
+  await page.goto('/');await expect(page.locator('#operation-status')).toHaveAttribute('data-state','BLOCKED');
+  await page.evaluate(()=>sessionStorage.removeItem('silent-pass.operation.v1'));
+  await page.locator('#operation-storage-retry').click();
+  await expect(page.locator('#operation-status')).toHaveAttribute('data-state','BLOCKED');
+  // Simulates restoring the original public record, not a production reset button.
+  await page.evaluate(()=>sessionStorage.setItem('silent-pass.operation.v1',JSON.stringify({
+    id:'restored-original',kind:'claim',network:'preview',status:'PENDING',phase:'submitting',
+    txId:'00'+'a'.repeat(64),startedAt:new Date().toISOString(),updatedAt:new Date().toISOString(),
+  })));
+  await page.locator('#operation-storage-retry').click();
+  await expect(page.locator('#operation-status')).toHaveAttribute('data-state','UNKNOWN');
+  await expect(page.locator('#operation-status')).toContainText('restored-original');
+  await expect(page.locator('#operation-storage-retry')).toBeHidden();
+  await page.locator('#connect-button').click();await expect(page.locator('#network-status')).toContainText('연결됨');
+  await expect(page.locator('#network-claim-button')).toBeDisabled();
+  await expect(page.locator('#operation-cancel')).toBeDisabled();
+});
+
 test('U1 DOM: A → B removes old tx; success → failure displays UNKNOWN', async ({ page }) => {
   await connected(page);
   await page.locator('#network-generate-button').click();

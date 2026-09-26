@@ -16,6 +16,13 @@ export default defineConfig({
   plugins: [wasm(), {
     name: "audit-reviewer-isolation",
     generateBundle(_options, bundle) {
+      // Publication metadata, not a cryptographic attestation. CI supplies the
+      // immutable source SHA; local builds explicitly identify as local.
+      this.emitFile({ type: "asset", fileName: "release.json", source: JSON.stringify({
+        sourceCommit: process.env.RELEASE_SHA ?? null,
+        sourceRef: process.env.RELEASE_REF ?? "local",
+        workflowRun: process.env.RELEASE_RUN_ID ?? null,
+      }, null, 2) });
       const entry = Object.values(bundle).find(x => x.type === "chunk" && x.facadeModuleId?.endsWith("/review.html"));
       if (!entry || entry.type !== "chunk") this.error("Missing reviewer build entry");
       const seen = new Set<string>();

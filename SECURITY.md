@@ -4,7 +4,7 @@ Silent Pass is an experimental privacy-preserving access-pass DApp. It has not r
 
 ## Supported version
 
-The current enhancement and public demo branch is `dev_haams`; `main` remains the historical baseline until an explicitly approved merge. Report the exact affected commit.
+The canonical release and public demo branch is `main`; development uses `dev_haams`. Pages only publishes main. Report the exact affected commit from the deployed `release.json`, not just the branch name.
 
 ## Reporting a vulnerability
 
@@ -33,6 +33,7 @@ These properties are covered by contract tests and a local-development-network i
 - `claimed=true` proves consumption history, not the current presenter's identity or right of admission. The circuit has no issuer authentication, event/session binding, expiry, or revocation.
 - The wallet-free reviewer trusts the app publisher's bundled context and the configured public indexer. Matching the expected commitment is not on-chain issuer authentication. Holder-controlled URLs/manifests are not accepted as policy.
 - Timeouts leave transactions UNKNOWN. Exact transaction-ID reconciliation or late completion resolves the guard. Pre-submit cancellation prevents the app from submitting a late response; it does not cancel Lace's dialog. Post-submit operations cannot be cancelled by this app.
+- Invalid/inaccessible recovery storage fails closed as BLOCKED without deleting or displaying raw records. Storage write failures block continuation before broadcast. Explicit storage retry preserves the same in-memory operation or restores a valid original record; removing a faulty record is not recovery. If no original metadata can be recovered, there is no automatic unlock or safe inferred failure. Public reads remain usable. This is a same-tab safeguard, not tamper-proof storage or cross-device coordination.
 - Public operation metadata persists in sessionStorage for this tab only. It is not a cross-tab/device lock and can be lost when closing a tab or clearing browser data. A missing transaction or an unclaimed state is not sufficient evidence to retry.
 
 ## Secret-handling guidance

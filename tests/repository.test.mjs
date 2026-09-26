@@ -7,6 +7,21 @@ const read = (relativePath) =>
   readFile(fileURLToPath(new URL(`../${relativePath}`, import.meta.url)), 'utf8');
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
+test('canonical Pages deploys only main with source provenance', async()=>{
+  const workflow=await read('.github/workflows/pages.yml');
+  assert.match(workflow,/branches: \[main\]/);
+  assert.doesNotMatch(workflow,/branches: \[dev_haams\]/);
+  assert.match(workflow,/if: github.ref == 'refs\/heads\/main'/);
+  assert.match(workflow,/RELEASE_SHA: \$\{\{ github.sha \}\}/);
+  // Keep npm test usable before a production build; inspect the emitted file
+  // separately when validating the deployed release against its CI source SHA.
+  const config=await read('vite.config.ts');
+  assert.match(config,/fileName: "release.json"/);
+  assert.match(config,/sourceCommit: process.env.RELEASE_SHA \?\? null/);
+  assert.match(config,/sourceRef: process.env.RELEASE_REF \?\? "local"/);
+  assert.match(config,/workflowRun: process.env.RELEASE_RUN_ID \?\? null/);
+});
+
 test('repository carries the required Midnight attribution and license', async () => {
   const [readme, license, manifest] = await Promise.all([
     read('README.md'),

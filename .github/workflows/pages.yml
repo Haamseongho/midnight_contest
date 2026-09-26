@@ -2,7 +2,7 @@ name: Deploy public demo
 
 on:
   push:
-    branches: [dev_haams]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -44,6 +45,9 @@ jobs:
       - name: Build public demo
         env:
           VITE_BASE_PATH: /midnight_contest/
+          RELEASE_SHA: ${{ github.sha }}
+          RELEASE_REF: ${{ github.ref }}
+          RELEASE_RUN_ID: ${{ github.run_id }}
         run: npm run build
 
       - name: Upload Pages artifact

@@ -75,3 +75,69 @@ test('U4 after submission cancellation cannot erase the guard',async()=>{
   assert.throws(()=>tracker.cancelBeforeSubmission(),/이미 전송/);
   assert.equal(tracker.current.status,'UNKNOWN');
 });
+
+const record = () => ({id:'saved-operation',kind:'claim',network:'preview',address:'A',
+  status:'PENDING',phase:'submitting',txId,startedAt:new Date().toISOString(),updatedAt:new Date().toISOString()});
+
+test('F1 corrupt/invalid records fail closed without throwing, overwriting or exposing raw data',async()=>{
+  for(const raw of ['{PRIVATE_INPUT', '', 'null', '[]', 'false', '{}',
+    JSON.stringify({...record(),phase:'invalid'}), JSON.stringify({...record(),startedAt:'invalid'}),
+    JSON.stringify({...record(),txId:null}), JSON.stringify({...record(),txId:undefined})]){
+    let writes=0, actions=0;
+    const store={getItem:()=>raw,setItem:()=>{writes++;}};
+    const tracker=new OperationTracker(store);
+    assert.equal(tracker.blocked,true);
+    assert.doesNotMatch(tracker.blockedMessage,/PRIVATE_INPUT/);
+    await assert.rejects(tracker.run('deploy','preview',undefined,async()=>{actions++;return {txId};},()=>{}),/BLOCKED/);
+    assert.throws(()=>tracker.cancelBeforeSubmission(),/BLOCKED/);
+    await assert.rejects(tracker.reconcile('preview',async()=>({txId,status:'SucceedEntirely'})),/BLOCKED/);
+    tracker.retryStorage();
+    assert.equal(tracker.blocked,true);assert.equal(writes,0);assert.equal(actions,0);
+    assert.equal(store.getItem(),raw);
+  }
+});
+test('F1 inaccessible Storage getter/read can recover only with a valid record, never by clearing it',async()=>{
+  for(const fault of ['getter','read']){
+    let available=false,raw=JSON.stringify(record());let writes=0;
+    const store={getItem:()=>{if(!available&&fault==='read')throw Error('Denied');return raw;},setItem:()=>{writes++;}};
+    const tracker=new OperationTracker(()=>{if(!available&&fault==='getter')throw Error('Denied');return store;});
+    assert.equal(tracker.blocked,true);
+    tracker.retryStorage();assert.equal(tracker.blocked,true);
+    available=true;raw=null;tracker.retryStorage();assert.equal(tracker.blocked,true);
+    raw=JSON.stringify({...record(),secret:'NEVER_RETAIN'});tracker.retryStorage();
+    assert.equal(tracker.blocked,false);assert.equal(tracker.current.status,'UNKNOWN');
+    assert.equal(tracker.current.id,'saved-operation');assert.equal(tracker.current.secret,undefined);
+    assert.equal(writes,0);
+    await assert.rejects(tracker.run('deploy','preview',undefined,async()=>({txId}),()=>{}),/미확정/);
+    await tracker.reconcile('preview',async()=>({txId,status:'SucceedEntirely'}));
+    assert.equal(tracker.current.status,'CONFIRMED');
+  }
+});
+test('F1 write failures before action/balancing/submission prohibit broadcast and retain recovery metadata',async()=>{
+  for(const failAt of [1,2,3]){
+    let raw=null,writes=0,submissions=0,fail=true;
+    const tracker=new OperationTracker({getItem:()=>raw,setItem:(_,v)=>{if(++writes===failAt&&fail)throw Error('Quota');raw=v;}});
+    const run=tracker.run('deploy','preview',undefined,async hooks=>{
+      hooks.balancing();hooks.submitting(txId);submissions++;return {txId};
+    },()=>{});
+    if(failAt===1)await assert.rejects(run,/BLOCKED/);else await run;
+    assert.equal(tracker.blocked,true);assert.equal(submissions,0);
+    const id=tracker.current.id;fail=false;tracker.retryStorage();
+    assert.equal(tracker.blocked,false);assert.equal(tracker.current.id,id);assert.equal(tracker.current.status,'UNKNOWN');
+    assert.equal(JSON.parse(raw).id,id);
+    assert.equal(JSON.parse(raw).txId,undefined); // hook failed before broadcast
+    tracker.cancelBeforeSubmission();assert.equal(tracker.current.status,'CANCELLED');
+  }
+});
+test('F1 timeout and late-success write failures stay BLOCKED without unhandled rejection or false success',async()=>{
+  let raw=null,fail=false,complete,renders=0;
+  const tracker=new OperationTracker({getItem:()=>raw,setItem:(_,v)=>{if(fail)throw Error('Quota');raw=v;}});
+  await tracker.run('claim','preview','A',hooks=>{hooks.submitting(txId);fail=true;return new Promise(r=>complete=r);},()=>{renders++;},5);
+  assert.equal(tracker.blocked,true);assert.equal(tracker.current.status,'UNKNOWN');
+  const id=tracker.current.id;
+  complete({txId});await delay(0);
+  assert.equal(tracker.blocked,true);assert.equal(renders,0);
+  fail=false;tracker.retryStorage();assert.equal(tracker.blocked,false);
+  assert.equal(tracker.current.id,id);assert.equal(tracker.current.status,'CONFIRMED');
+  assert.equal(JSON.parse(raw).txId,txId);
+});
