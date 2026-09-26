@@ -16,14 +16,16 @@ Hackathon Program Page에서 직접 누릅니다.
 - **Scope:** 소지자는 자기 환경에서 claim을 만들고, 확인자는 앱이 고정한 계약의 공개 소비 기록을 지갑 없이 조회합니다. 발급자 인증·현재 방문자 확인·입장 허가를 자동 제공하지 않습니다.
 - **Public repository:** <https://github.com/Haamseongho/midnight_contest>
 - **Public demo:** <https://haamseongho.github.io/midnight_contest/>
+- **Reviewer-only demo:** <https://haamseongho.github.io/midnight_contest/review.html>
+- **Current implementation branch:** `dev_haams` (main은 과거 기준; 자동 병합하지 않음)
 - **Category:** Identity & Privacy
 - **License:** Apache-2.0
 - **Run guide:**
-  <https://github.com/Haamseongho/midnight_contest/blob/main/docs/RUN_AND_LACE_GUIDE.md>
+  <https://github.com/Haamseongho/midnight_contest/blob/dev_haams/docs/RUN_AND_LACE_GUIDE.md>
 - **Demo script:**
-  <https://github.com/Haamseongho/midnight_contest/blob/main/docs/DEMO_SCRIPT.md>
+  <https://github.com/Haamseongho/midnight_contest/blob/dev_haams/docs/DEMO_SCRIPT.md>
 - **Security model:**
-  <https://github.com/Haamseongho/midnight_contest/blob/main/SECURITY.md>
+  <https://github.com/Haamseongho/midnight_contest/blob/dev_haams/SECURITY.md>
 - **Preview contract:**
   `66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c`
 - **Preview deploy transaction:**
@@ -42,6 +44,8 @@ submission, and indexer reads. The wallet signs these contract operations and
 pays the network fee; Silent Pass does not hold or transfer user funds.
 
 ## 실행 또는 데모 흐름
+
+새 A–F 고도화 및 Notion U3 검수는 [ENHANCEMENT_PROGRESS.md](./ENHANCEMENT_PROGRESS.md)를 기준으로 한다. 공개 관찰 JSON은 서명되지 않은 기록이며 현재 상태·공증·입장권이 아니다. 신규 방문자 3명의 이해도와 실제 낭독은 [HUMAN_VALIDATION.md](./HUMAN_VALIDATION.md)에 실제 결과가 기록되기 전에는 미완료다. 비교·차별점은 [FEATURE_COMPARISON.md](./FEATURE_COMPARISON.md)에 출처와 함께 정리했다.
 
 1. 저장소를 clone하고 `npm ci`, `npm run verify`를 실행한다.
 2. `npm run dev`로 브라우저 데모를 연다.

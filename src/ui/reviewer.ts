@@ -1,11 +1,14 @@
 import { TRUSTED_CONTEXT } from "../context/trusted-context";
 import { readTrustedPublicState } from "../network/public-reader";
-import { classifyObservation, deadline, reviewerLabels } from "./reviewer-state";
+import { deadline, reviewerLabels, reviewerNext, type ReviewerState } from "./reviewer-state";
 import { PREVIEW_EXAMPLE } from "../evidence/preview-example";
-import { runScenarios } from "../demo/scenarios";
+import { publicReport, downloadPublicReport, type PublicReport } from "../evidence/public-observation";
+import { renderReviewerPanel } from "./reviewer-panel";
 
-export function mountReviewer(): void {
+export function mountReviewer(onChange?: (state: ReviewerState) => void): void {
+  renderReviewerPanel();
   const el = (id: string) => document.getElementById(id)!;
+  const exportButton = el("reviewer-export") as HTMLButtonElement;
   el("reviewer-context").textContent = `${TRUSTED_CONTEXT.eventLabel} · ${TRUSTED_CONTEXT.network} · ${TRUSTED_CONTEXT.version}`;
   el("reviewer-address").textContent = TRUSTED_CONTEXT.address;
   el("reviewer-commitment").textContent = TRUSTED_CONTEXT.commitment;
@@ -18,36 +21,38 @@ export function mountReviewer(): void {
   (el("recorded-source") as HTMLAnchorElement).href = example.source;
   (el("recorded-ci") as HTMLAnchorElement).href = example.ci;
   let sequence = 0;
+  let report: PublicReport | null = null;
+  const render = (state: ReviewerState) => {
+    el("reviewer-status").textContent = reviewerLabels[state];
+    el("reviewer-status").dataset.state = state;
+    el("reviewer-next").textContent = reviewerNext[state];
+    const checks = el("reviewer-checks"); checks.replaceChildren();
+    for (const [key, label] of [["network", "네트워크"], ["contract", "계약"], ["commitment", "커밋먼트"], ["policy", "정책 버전"]] as const) {
+      const result = report?.checks[key];
+      const item = document.createElement("li");
+      item.textContent = `${label}: ${result === true ? "지정 맥락과 일치" : result === false ? "불일치 — 신뢰하지 마세요" : "이번 조회에서 미확인"}`;
+      checks.append(item);
+    }
+    exportButton.disabled = !report;
+    onChange?.(state);
+  };
+  render("IDLE");
+  exportButton.addEventListener("click", () => { if (report) downloadPublicReport(report); });
   el("reviewer-read").addEventListener("click", async () => {
     const seq = ++sequence;
     const requestId = crypto.randomUUID();
     const startedAt = Date.now();
-    el("reviewer-status").textContent = reviewerLabels.READING;
-    el("reviewer-status").dataset.state = "READING";
+    report = null; render("READING");
     el("reviewer-observation").textContent = `요청 ${requestId} · ${new Date(startedAt).toISOString()} · 응답 대기`;
     try {
       const observation = await deadline(readTrustedPublicState(requestId), 15_000);
       if (seq !== sequence) return;
-      const state = classifyObservation(observation, requestId, startedAt);
-      el("reviewer-status").textContent = reviewerLabels[state];
-      el("reviewer-status").dataset.state = state;
-      el("reviewer-observation").textContent = `요청 ${requestId} · 관찰 ${observation?.observedAt ?? "미확인"}`;
+      report = publicReport(observation, requestId, startedAt);
     } catch {
       if (seq !== sequence) return;
-      el("reviewer-status").textContent = reviewerLabels.UNKNOWN;
-      el("reviewer-status").dataset.state = "UNKNOWN";
-      el("reviewer-observation").textContent = `요청 ${requestId} · ${new Date().toISOString()} · 성공 관찰 없음. 아래 Recorded example은 과거 기록입니다.`;
+      report = publicReport(null, requestId, startedAt);
     }
-  });
-  el("scenario-run").addEventListener("click", () => {
-    el("scenario-results").replaceChildren();
-    try {
-      for (const result of runScenarios()) {
-        const item = document.createElement("li");
-        item.textContent = `${result.passed ? "PASS" : "FAIL"} · ${result.name}`;
-        item.dataset.passed = String(result.passed);
-        el("scenario-results").append(item);
-      }
-    } catch { el("scenario-results").textContent = "FAIL · 회로 시연을 완료하지 못했습니다."; }
+    render(report.status);
+    el("reviewer-observation").textContent = `요청 ${requestId} · 관찰 ${report.observedAt ?? "미확인 — 성공 관찰 없음"}`;
   });
 }

@@ -7,6 +7,8 @@
 
 ## 적용과 검증
 
+후속 A–F는 사용자 요청으로 전체 채택했다. 아래 표는 최초 U1–U4의 검수이고, 추가 구현·증거 및 미완료 사람 검수는 [ENHANCEMENT_PROGRESS.md](./ENHANCEMENT_PROGRESS.md)에서 구분한다.
+
 | 참고 사례 | 원문에서 확인한 범위 | 가져온 강점·Silent Pass 반영 위치 | 검증·판정 |
 | --- | --- | --- | --- |
 | 국내 위임(We-im)·성희청과 | 디지털 위임장, DID 위임·공증·내용증명 플랫폼. 대상/우수상 확인. [공식 수상 발표](https://www.raon.com/ko/about/news_list/view/453) | 업무를 역할별로 연결하는 설계 원칙을 적용: `index.html`의 주최자 → 소지자 → 확인자, `trusted-context.ts`의 맥락 출처 | [x] 역할과 책임이 표시되고 소지자 입력이 검증자 조회로 전달되지 않음. 결선 공지는 Wiim, 수상 발표는 We-im 표기. |

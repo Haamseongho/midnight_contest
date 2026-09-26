@@ -1,7 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap");
-
 :root {
-  font-family: "DM Sans", "Noto Sans KR", sans-serif;
+  /* No external font request: public review should not wait on a font CDN. */
+  font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   color: #e8ebf6;
   background: #090f20;
   font-synthesis: none;
@@ -11,6 +10,16 @@
 * {
   box-sizing: border-box;
 }
+.role-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.role-actions a { text-decoration: none; display: inline-flex; align-items: center; }
+.button[aria-pressed="true"] { border-color: #7dd8bb; background: #173e39; }
+.information-boundary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; margin: 20px 0; }
+.information-boundary p, .story-card, .evidence-panel { padding: 20px; border: 1px solid #30445d; border-radius: 16px; background: #101e30; }
+.information-boundary strong { display: block; color: #7dd8bb; margin-bottom: 8px; }
+.evidence-panel li { margin: 10px 0; }
+.workspace a, main > p a, #role-next { color: #94e4cc; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #d2ff7e; outline-offset: 4px; }
+[hidden] { display: none !important; }
 .observation, #operation-status, #recorded-meta {
   overflow-wrap: anywhere;
   color: #b6c6e4;

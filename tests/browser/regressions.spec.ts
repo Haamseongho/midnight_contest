@@ -124,21 +124,26 @@ test('U2 DOM: slow observation is discarded after newer success', async ({page})
   await expect(page.locator('#reviewer-status')).toHaveAttribute('data-state','USED');
 });
 
-test('U2 actual Preview read: fresh browser, zero wallet/private input/transaction requests', async ({page}, info) => {
+for(const entry of ['', 'review.html']) test(`U2 actual Preview read ${entry || 'main'}: fresh browser, zero wallet/private input/transaction requests`, async ({page}, info) => {
   test.skip(!process.env.LIVE_PREVIEW, 'Explicit network evidence run: npm run test:preview');
   let walletCalls=0; let transactionRequests=0;
   const requests: string[]=[];
   await page.exposeFunction('walletTouched',()=>{walletCalls++;});
   await page.addInitScript(()=>Object.defineProperty(window,'midnight',{get(){(window as any).walletTouched();throw Error('Wallet forbidden');}}));
   page.on('request',r=>{ if(r.url().includes('indexer.preview')) requests.push(r.postData() ?? ''); if(/submitTransaction|balanceUnsealedTransaction/.test(r.postData() ?? '')) transactionRequests++; });
-  await page.goto('/?trusted=true&network=mainnet&address=attacker');
+  await page.goto(`${entry ? './review.html' : './'}?trusted=true&network=mainnet&address=attacker`);
   await page.locator('#reviewer-read').click();
   await expect(page.locator('#reviewer-status')).toHaveAttribute('data-state','USED',{timeout:25_000});
   expect(walletCalls).toBe(0); expect(transactionRequests).toBe(0);
   expect(requests.length).toBeGreaterThan(0);
   expect(requests.every(r=>r.includes('66e374b0cafdf387576cf29bcd5de16fb010f0e92ea10d6e6f1e2d6c4b99256c') && !r.includes('mutation'))).toBe(true);
-  await expect(page.locator('#claim-input')).toHaveValue('');
-  await expect(page.locator('#network-claim-secret')).toHaveValue('');
+  if(entry) await expect(page.locator('input,textarea,select')).toHaveCount(0);
+  else {
+    await expect(page.locator('#claim-input')).toHaveValue('');
+    await expect(page.locator('#network-claim-secret')).toHaveValue('');
+    await page.locator('#scenario-run').click();
+    await expect(page.locator('#scenario-results li[data-passed=true]')).toHaveCount(3);
+  }
   await expect(page.locator('#reviewer-status')).toHaveText('사용 기록 있음');
   await info.attach('preview-read-evidence',{body:JSON.stringify({observed:await page.locator('#reviewer-observation').textContent(),walletCalls,transactionRequests,privateInputs:0,requests},null,2),contentType:'application/json'});
   await page.screenshot({path:info.outputPath('preview-reviewer.png'),fullPage:true});

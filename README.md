@@ -11,12 +11,17 @@ Silent Pass demonstrates private secret knowledge and one-time consumption on Mi
 
 - Repository: <https://github.com/Haamseongho/midnight_contest>
 - Public demo: <https://haamseongho.github.io/midnight_contest/>
+- Read-only reviewer: <https://haamseongho.github.io/midnight_contest/review.html> (no wallet or secret input)
+- Current enhancement/demo branch: `dev_haams`; `main` is the historical baseline.
+- [Enhancement/U3 progress](./docs/ENHANCEMENT_PROGRESS.md), [feature comparison](./docs/FEATURE_COMPARISON.md), [pending human validation](./docs/HUMAN_VALIDATION.md)
 - Category: `Identity & Privacy`
 - Contract: Compact language 0.23, compiler 0.31.1
 - SDK: Midnight.js 4.1.1 and DApp Connector API 4.0.1
 - License: [Apache-2.0](./LICENSE)
 
 ![Silent Pass reviewer with a live Preview read on 2026-09-26](./docs/silent-pass-reviewer.png)
+
+The screenshot above is the earlier U1–U4 baseline, not evidence of the later A–F enhancement UI. Current checks are recorded in [ENHANCEMENT_PROGRESS.md](./docs/ENHANCEMENT_PROGRESS.md).
 
 ## Real-world use case
 
@@ -74,7 +79,7 @@ npm run verify
 npm run dev
 ```
 
-Open the local URL printed by Vite. Start with **지갑 없이 공개 기록 확인**: this uses the official public indexer and the generated Compact ledger decoder. No wallet is required. The historical transaction card is explicitly marked **Recorded example** and never substitutes for a live read.
+Open the local URL printed by Vite. **확인자 전용 화면** opens `review.html`, which omits holder/wallet/scenario paths. Start with **지갑 없이 공개 기록 확인**: this uses the official public indexer and the generated Compact ledger decoder. No wallet is required. The historical transaction card is explicitly marked **Recorded example** and never substitutes for a live read. The public observation download is unsigned, not an admission pass or certificate. Use the main page's four-step judge guide for the actual disposable circuit scenario; advancement requires actual results or an explicitly labelled recorded fallback. Human rehearsal and comprehension checks remain separate.
 
 **실제 회로의 실패와 성공 확인** runs wrong-secret → correct-secret → replay on a fresh disposable circuit session. The manual **입장 패스 실험실** also supports:
 

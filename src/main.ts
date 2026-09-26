@@ -19,8 +19,16 @@ import "./style.css";
 import { mountReviewer } from "./ui/reviewer";
 import { deadline } from "./ui/reviewer-state";
 import { OperationTracker, unresolved } from "./network/operations";
+import { mountJudgeGuide, mountRehearsalTimer } from "./ui/judge-guide";
+import { mountScenarios } from "./ui/scenario-panel";
+import { mountRoles } from "./ui/roles";
 
-mountReviewer();
+let guide: ReturnType<typeof mountJudgeGuide> | undefined;
+mountReviewer(state => guide?.readChanged(state));
+guide = mountJudgeGuide();
+mountScenarios(passed => guide?.circuitChanged(passed));
+mountRoles();
+mountRehearsalTimer();
 
 type Session = {
   contract: Contract<Record<string, never>>;

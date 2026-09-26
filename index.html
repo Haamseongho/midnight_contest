@@ -31,6 +31,14 @@
             소지자는 자기 환경에서 비밀값을 증명하고 확인자는 지정된 계약의
             공개 소비 기록을 읽습니다. 현재 방문자의 신원이나 입장 허가는 별도 판단입니다.
           </p>
+          <p class="story-card">예를 들어, 소규모 비공개 모임에서 초대 코드를 보여 주지 않고 그 코드의 소비 기록만 확인합니다. 이 기록만으로 참석이나 본인을 확인하지는 않습니다.</p>
+          <nav class="role-actions" aria-label="역할별 시작">
+            <button id="role-organizer" type="button" class="button button-outline" aria-pressed="false">주최자로 시작</button>
+            <button id="role-holder" type="button" class="button button-outline" aria-pressed="false">소지자로 시작</button>
+            <a class="button button-primary" id="role-reviewer" href="./review.html">확인자 전용 화면</a>
+          </nav>
+          <p id="role-instruction" role="status">확인자는 지갑 없이 시작합니다. 주최자·소지자의 실제 체인 거래에만 지갑이 필요합니다.</p>
+          <a id="role-next" href="#guide-title">심사자 가이드로 이동</a>
           <div class="hero-chips" aria-label="데모 범위">
             <span>실제 Compact 계약</span>
             <span>로컬 개발망 E2E 검증</span>
@@ -71,21 +79,16 @@
           </ol>
         </section>
 
-        <section class="workspace reviewer-workspace" aria-labelledby="reviewer-title">
-          <div class="section-heading"><div><div class="eyebrow">PUBLIC REVIEWER · LIVE READ</div><h2 id="reviewer-title">지갑 없이 공개 기록 확인</h2></div></div>
-          <p id="reviewer-context"></p>
-          <p>이 앱 배포자가 아래 계약과 예상 커밋먼트를 고정했습니다. URL이나 소지자가 제공한 manifest는 신뢰 설정을 바꾸지 않습니다. <a id="reviewer-source" target="_blank" rel="noopener noreferrer">맥락 출처</a></p>
-          <dl class="ledger-card"><div><dt>지정 계약</dt><dd id="reviewer-address"></dd></div><div><dt>예상 커밋먼트</dt><dd id="reviewer-commitment"></dd></div></dl>
-          <button id="reviewer-read" type="button" class="button button-primary">공개 기록 새로 조회</button>
-          <p id="reviewer-status" class="feedback" role="status" data-state="IDLE">아직 조회하지 않음</p>
-          <p id="reviewer-observation" class="observation">현재 확인된 관찰 없음</p>
-          <p class="scope-note">‘사용 기록 있음’은 누군가 한 번 소비했다는 뜻입니다. 현재 방문자의 입장 승인·신원·발급자 인증을 뜻하지 않습니다. 지갑 연결, 비밀값 입력, 서명과 거래 요청은 필요하지 않습니다.</p>
-          <details class="wallet-help"><summary>Recorded example · 과거 검증 기록</summary>
-            <p>아래는 과거 Preview 거래 증거입니다. 위의 현재 조회 결과와 별개이며, 실시간 성공 표시로 사용하지 않습니다.</p>
-            <p id="recorded-meta"></p>
-            <dl><div><dt>계약</dt><dd id="recorded-address"></dd></div><div><dt>당시 배포 ID</dt><dd id="recorded-deploy"></dd></div><div><dt>당시 claim ID</dt><dd id="recorded-claim"></dd></div></dl>
-            <a id="recorded-source" target="_blank" rel="noopener noreferrer">원래 검증 기록</a> · <a id="recorded-ci" target="_blank" rel="noopener noreferrer">당시 CI</a>
-          </details>
+        <section class="workspace" aria-labelledby="guide-title">
+          <div class="eyebrow">JUDGE WALKTHROUGH</div><h2 id="guide-title">처음이라면, 이 순서로 확인하세요</h2>
+          <p id="guide-instruction" role="status"></p><p id="guide-evidence-mode"></p>
+          <div class="role-actions"><button id="guide-next" type="button" class="button button-primary">다음 단계</button><button id="guide-recorded" type="button" class="button button-outline" disabled>과거 예제로 진행 · live 성공 아님</button><button id="guide-reset" type="button" class="button button-outline">가이드 다시 시작</button></div>
+          <p id="guide-complete"></p>
+        </section>
+
+        <section id="reviewer-panel" class="workspace reviewer-workspace" aria-labelledby="reviewer-title">
+          <h2 id="reviewer-title">공개 조회 화면 준비 중</h2>
+          <p>공개 SDK를 불러온 뒤 조회 버튼이 표시됩니다. JavaScript가 필요합니다.</p>
         </section>
 
         <section class="workspace" aria-labelledby="scenario-title">
@@ -93,6 +96,13 @@
           <p>매번 독립된 임시 세션에서 컴파일된 Compact 회로를 실행합니다. 아래 소지자의 패스와 네트워크 계약에는 영향을 주지 않습니다. 이 시연은 체인 거래나 ZK 증명 생성이 아닙니다.</p>
           <button id="scenario-run" type="button" class="button button-outline">잘못된 값 → 올바른 값 → 재사용 시연</button>
           <ol id="scenario-results" aria-live="polite"></ol>
+          <p id="scenario-observation">아직 회로를 실행하지 않았습니다.</p>
+          <details class="wallet-help"><summary>30초 / 3분 발표 리허설</summary>
+            <p>30초: 문제 → 현재 공개 조회 → 회로 오답/성공/재사용 거절 → 한계.</p>
+            <p>3분: 문제·역할(30초) → 맥락·조회(40초) → 회로 시연(40초) → 과거 증거(30초) → UNKNOWN 복구(25초) → 한계(15초).</p>
+            <div class="role-actions"><button id="rehearsal-30" type="button" class="button button-outline">30초 계측 시작</button><button id="rehearsal-180" type="button" class="button button-outline">3분 계측 시작</button><button id="rehearsal-stop" type="button" class="button button-outline" disabled>계측 종료</button></div>
+            <p id="rehearsal-status" role="status">계측은 발표자의 실제 낭독을 대신 검증하지 않습니다. 음성·개인정보를 수집하지 않습니다.</p>
+          </details>
         </section>
 
         <section class="workspace" aria-labelledby="workspace-title">
@@ -351,6 +361,13 @@
               </p>
             </div>
           </div>
+        </section>
+        <section class="workspace" aria-labelledby="scope-faq-title">
+          <div class="eyebrow">SMALL SCOPE · CLEAR EVIDENCE</div><h2 id="scope-faq-title">무엇이 다르고, 어디까지 하나요?</h2>
+          <div class="information-boundary"><p><strong>제공함</strong> 지정 계약의 비밀 지식·일회 소비 회로, 지갑 없는 공개 소비 조회, 근거와 불확실성 표시.</p><p><strong>제공하지 않음</strong> 티켓 판매·본인 인증·온체인 발급기관 인증·입장 승인·송금·에스크로.</p></div>
+          <details class="wallet-help"><summary>다른 ZK 서비스와 무엇이 다른가요?</summary><p>범위가 다른 작은 프로토타입입니다. 기존 ZK 티켓팅·신원/이메일 증명·자산 claim과 달리 지정 계약의 소비 기록을 함께 확인하는 경로에 집중합니다. 세계 최초나 타 서비스보다 안전하다고 주장하지 않습니다.</p><p>공식 프로젝트 설명(확인일 2026-09-26): <a href="https://ethglobal.com/showcase/lens-and-frens-ogedp" target="_blank" rel="noopener noreferrer">Lens &amp; Frens · ZK 티켓팅</a> · <a href="https://ethglobal.com/showcase/zhats-me-vioyt" target="_blank" rel="noopener noreferrer">Zhat’s Me · 신원/이메일 티켓 증명</a> · <a href="https://github.com/DpacJones/selkie-usdm-escrow" target="_blank" rel="noopener noreferrer">Selkie · 비밀 기반 자산 claim</a>. 외부 프로젝트를 직접 실행·감사하지는 않았습니다.</p></details>
+          <details class="wallet-help"><summary>사용 기록이 있으면 입장시켜도 되나요?</summary><p>아닙니다. 누가 비밀값을 사용했는지, 지금 제시자가 누구인지, 발급기관이 진짜인지 이 회로는 자동으로 확인하지 않습니다. 주최자는 별도의 신뢰·입장 정책을 정해야 합니다.</p></details>
+          <details class="wallet-help"><summary>다운로드한 관찰 요약은 증명서인가요?</summary><p>아닙니다. 서명되지 않은 저장 당시 관찰입니다. 변조될 수 있으며 현재 상태는 새로 조회해야 합니다. 과거 거래 ID와 이번 조회는 별도 증거입니다.</p></details>
         </section>
       </main>
 

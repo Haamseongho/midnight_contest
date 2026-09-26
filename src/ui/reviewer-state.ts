@@ -6,6 +6,14 @@ export const reviewerLabels: Record<ReviewerState, string> = {
   IDLE: "아직 조회하지 않음", READING: "현재 조회 중", UNUSED: "미사용",
   USED: "사용 기록 있음", MISMATCH: "맥락 불일치", UNKNOWN: "조회 실패 · UNKNOWN",
 };
+export const reviewerNext: Record<ReviewerState, string> = {
+  IDLE: "지정된 공개 기록을 새로 조회하세요. 지갑이나 비밀값은 필요하지 않습니다.",
+  READING: "현재 응답을 기다립니다. 이전 결과는 이번 조회의 근거가 아닙니다.",
+  UNUSED: "아직 소비되지 않은 공개 상태입니다. 현재 방문자의 자격·입장 허가는 별도로 판단하세요.",
+  USED: "누군가 한 번 소비한 기록입니다. 현재 방문자를 입장 승인하지 않습니다.",
+  MISMATCH: "지정 맥락과 응답이 다릅니다. 맥락 출처를 확인하고 결과를 신뢰하지 마세요. 거래를 재전송하지 마세요.",
+  UNKNOWN: "현재 상태를 확인하지 못했습니다. 공개 기록만 다시 조회하거나, Recorded example을 과거 기록으로 확인하세요. 지갑 연결·재전송은 필요하지 않습니다.",
+};
 export function classifyObservation(value: unknown, requestId: string, startedAt: number): ReviewerState {
   if (!value || typeof value !== "object") return "UNKNOWN";
   const o = value as Partial<Observation>;

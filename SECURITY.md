@@ -4,7 +4,7 @@ Silent Pass is an experimental privacy-preserving access-pass DApp. It has not r
 
 ## Supported version
 
-Security fixes are applied to the latest commit on `main`.
+The current enhancement and public demo branch is `dev_haams`; `main` remains the historical baseline until an explicitly approved merge. Report the exact affected commit.
 
 ## Reporting a vulnerability
 
@@ -36,6 +36,8 @@ These properties are covered by contract tests and a local-development-network i
 - Public operation metadata persists in sessionStorage for this tab only. It is not a cross-tab/device lock and can be lost when closing a tab or clearing browser data. A missing transaction or an unclaimed state is not sufficient evidence to retry.
 
 ## Secret-handling guidance
+
+The dedicated `review.html` entry does not mount holder inputs or import the app's wallet/transaction/scenario modules. A production bundle audit checks this boundary. The public SDK still includes ledger/runtime decoding and the `wallet-sdk-address-format` encoding dependency; this is not a wallet connection. An unsigned public observation export uses an explicit allowlist, excludes wallet/secret data, records failures honestly, and is neither a certificate nor a current-state guarantee. It must not authorize admission. A new read invalidates the previous export until the current request settles.
 
 - Generate a fresh secret for each pass.
 - Share the secret and contract address over a private authenticated channel.

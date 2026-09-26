@@ -12,6 +12,10 @@ State the product boundary before the wallet flow: Silent Pass does not send, ho
 
 ## Browser-only walkthrough
 
+Use the four-step **처음이라면, 이 순서로 확인하세요** guide. Advance from roles to public read; wait for the result; advance to the actual circuit; run all three cases; then open the historical evidence. Failed reads do not unlock a live success: explicitly select **과거 예제로 진행 · live 성공 아님** after UNKNOWN/MISMATCH if using the fallback. Failed circuit runs never unlock the next step. Guide completion is not independent review, human narration or submission completion.
+
+For a reviewer-only visit, use [review.html](https://haamseongho.github.io/midnight_contest/review.html). No private form or wallet connector is mounted there. An exported public observation is unsigned and can be edited by anyone; it is not admission evidence.
+
 Start with **지갑 없이 공개 기록 확인**. Show the context source and current observation time. Then run **실제 회로의 실패와 성공 확인**, which executes wrong-secret → correct-secret → replay in an independent disposable session. Recorded example is historical evidence, not a live result.
 
 The manual holder laboratory also supports:
@@ -65,6 +69,8 @@ If the indexer is unavailable, keep the live result at UNKNOWN and open Recorded
 6. 2:45–3:00 — State limitations and show the reproduction commands and implementation evidence.
 
 These are target-duration scripts, not a claim that a presentation video has been recorded. Click-through evidence is recorded separately in IMPLEMENTATION_EVIDENCE.md.
+
+Use the in-app 30/180-second timer while actually speaking, then fill [HUMAN_VALIDATION.md](./HUMAN_VALIDATION.md). Automated clock tests validate the timer only, not a human rehearsal. [FEATURE_COMPARISON.md](./FEATURE_COMPARISON.md) is the one-page comparison/FAQ for presentation use.
 
 ## Reproduction commands
 
