@@ -1,6 +1,6 @@
 # Midnight Korea Hackathon 최종 제출 패키지
 
-최종 확인일: 2026-09-25 (KST)
+문구 갱신일: 2026-09-26 (KST). 제출 계정 요건은 별도 확인 필요.
 
 이 문서는 제출 사이트에 그대로 옮길 수 있는 프로젝트 정보와 제출 직전
 검증 항목을 모은 것입니다. 실제 최종 제출 버튼은 프로젝트 소유자가
@@ -9,11 +9,11 @@ Hackathon Program Page에서 직접 누릅니다.
 ## 제출용 프로젝트 정보
 
 - **Project name:** Silent Pass
-- **One-line description:** 비밀값을 공개하지 않고 일회용 행사 입장 자격을
-  증명하는 Midnight DApp.
+- **One-line description:** 초대의 비밀은 공개하지 않고, 그 초대가 한 번 사용됐는지는 함께 확인합니다.
 - **English description:** A one-time access-pass DApp that proves knowledge of
   a private secret while publishing only its commitment and claimed status on
   Midnight Network.
+- **Scope:** 소지자는 자기 환경에서 claim을 만들고, 확인자는 앱이 고정한 계약의 공개 소비 기록을 지갑 없이 조회합니다. 발급자 인증·현재 방문자 확인·입장 허가를 자동 제공하지 않습니다.
 - **Public repository:** <https://github.com/Haamseongho/midnight_contest>
 - **Public demo:** <https://haamseongho.github.io/midnight_contest/>
 - **Category:** Identity & Privacy
@@ -45,11 +45,13 @@ pays the network fee; Silent Pass does not hold or transfer user funds.
 
 1. 저장소를 clone하고 `npm ci`, `npm run verify`를 실행한다.
 2. `npm run dev`로 브라우저 데모를 연다.
-3. 새 패스를 생성하고 공개 상태에 커밋먼트만 남는 것을 보여준다.
-4. 잘못된 비밀값이 거절되는 것을 보여준다.
-5. 정확한 비밀값이 한 번만 성공하고 replay가 거절되는 것을 보여준다.
+3. 지갑 없는 공개 기록 조회를 실행하고 맥락 출처·조회 시각·‘사용 기록 있음’을 보여준다. 입장 승인으로 해석하지 않는다.
+4. 독립 로컬 회로 시연으로 잘못된 비밀값 거절 → 올바른 값 성공 → 재사용 거절을 보여준다.
+5. Recorded example을 열어 과거 Preview 증거와 이번 UI 검증이 다름을 설명한다.
 6. 거래 증빙은 `npm run test:local`의 로컬 개발망 E2E 또는, 준비된 경우,
    Lace Preview 배포·claim 공개 기록으로 제시한다.
+
+새 UI/U1~U4의 실행 결과는 [IMPLEMENTATION_EVIDENCE.md](./IMPLEMENTATION_EVIDENCE.md)에서 확인한다. 아래 과거 체크는 2026-09-25 기준이며 dev_haams의 새 CI/Pages 결과를 대신하지 않는다. 제출 폼에 실제 반영됐는지는 계정에서 별도 확인해야 한다.
 
 ## 공식 제출 요건 대비
 

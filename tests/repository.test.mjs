@@ -74,8 +74,7 @@ test('browser deployment flow defaults to the Preview evidence network', async (
   assert.match(html, /Preview 실제\s*배포와 1회 사용 거래를 2026-09-25 검증했습니다/);
   assert.match(html, /같은 거래를 바로 다시 보내지 마세요/);
   assert.match(networkSource, /balanceUnsealedTransaction/);
-  assert.match(networkSource, /3분 안에 거래 밸런싱·증명을 완료하지 못했습니다/);
-  assert.match(networkSource, /결과가 불확실하므로 Activity와 공개 상태를 확인하기 전에는 같은 거래를 다시 전송하지 마세요/);
+  assert.match(networkSource, /hooks\.submitting\(tx.identifiers\(\)\[0\]\)/);
 });
 
 test('browser entry installs the Buffer compatibility shim before Midnight SDK use', async () => {
@@ -110,19 +109,7 @@ test('the product scope distinguishes credentials from asset transfers', async (
   assert.match(demoScript, /does not send, hold, or escrow funds/);
 });
 
-test('the browser can clear displayed secrets without changing public state', async () => {
-  const [html, source] = await Promise.all([
-    read('index.html'),
-    read('src/main.ts'),
-  ]);
-
-  assert.match(html, /id="clear-button"/);
-  assert.match(html, /id="network-clear-button"/);
-  assert.equal(html.match(/<dt>사용 여부<\/dt>/g)?.length, 2);
-  assert.match(source, /session\.secretHex = ""/);
-  assert.match(source, /networkSecretHex = ""/);
-  assert.match(source, /계약 상태는 유지됩니다/);
-});
+// Secret clearing is exercised through the actual DOM in browser/regressions.spec.ts.
 
 test('development versions stay aligned with the pinned official reference stack', async () => {
   const [manifestText, compose, readme] = await Promise.all([

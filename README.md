@@ -5,9 +5,9 @@
 
 This project is built on the Midnight Network.
 
-**한 줄 설명:** 비밀값을 공개하지 않고 일회용 행사 입장 자격을 증명하는 Midnight DApp.
+**한 줄 설명:** 초대의 비밀은 공개하지 않고, 그 초대가 한 번 사용됐는지는 함께 확인합니다.
 
-Silent Pass is a privacy-preserving bearer credential for one-time event admission. An organizer publishes a commitment, privately gives an attendee the secret and contract address, and lets a verifier confirm the pass exactly once without putting the secret or attendee name on the public ledger.
+Silent Pass demonstrates private secret knowledge and one-time consumption on Midnight. A holder claims in their own environment; a wallet-free reviewer reads a deployment-pinned public contract. A consumed record does not authenticate the presenter, the issuer, or an admission decision.
 
 - Repository: <https://github.com/Haamseongho/midnight_contest>
 - Public demo: <https://haamseongho.github.io/midnight_contest/>
@@ -16,7 +16,7 @@ Silent Pass is a privacy-preserving bearer credential for one-time event admissi
 - SDK: Midnight.js 4.1.1 and DApp Connector API 4.0.1
 - License: [Apache-2.0](./LICENSE)
 
-![Silent Pass public demo](./docs/silent-pass-demo.png)
+![Silent Pass reviewer with a live Preview read on 2026-09-26](./docs/silent-pass-reviewer.png)
 
 ## Real-world use case
 
@@ -24,7 +24,7 @@ Event organizers often need to distribute invitation codes while avoiding a publ
 
 1. **Organizer:** generates a random 32-byte secret and deploys only its Compact commitment.
 2. **Attendee:** receives the contract address and secret through a private authenticated channel.
-3. **Verifier:** accepts a zero-knowledge claim and reads the public `claimed` state to prevent reuse.
+3. **Reviewer:** reads the pinned public consumption record without a wallet or private input. The app publisher selects the trusted context; this is an off-chain deployment policy, not on-chain issuer authentication.
 
 The current prototype deploys one pass per contract. The same primitive can support private invitations, one-time claim codes, pickup authorizations, or recovery handoffs. It does not hide wallet identity or transaction metadata.
 
@@ -36,7 +36,7 @@ Silent Pass is not a payment, remittance, or escrow application. The connected w
 | --- | --- |
 | Keep the credential private | `secret: Bytes<32>` remains a private circuit argument |
 | Make verification public | The ledger stores `persistentHash(secret)` and `claimed` |
-| Reject forged passes | `claim` asserts that the supplied secret matches the commitment |
+| Reject an incorrect secret for the selected contract | `claim` asserts that the supplied secret matches the commitment |
 | Prevent replay | A successful claim sets `claimed = true`; later claims fail |
 | Submit a real transaction | Midnight.js connects proof generation, wallet balancing, submission, and indexer reads |
 
@@ -69,11 +69,14 @@ Build, test, and run the browser demo:
 
 ```sh
 npm ci
+npx playwright install chromium
 npm run verify
 npm run dev
 ```
 
-Open the local URL printed by Vite. In **입장 패스 실험실**:
+Open the local URL printed by Vite. Start with **지갑 없이 공개 기록 확인**: this uses the official public indexer and the generated Compact ledger decoder. No wallet is required. The historical transaction card is explicitly marked **Recorded example** and never substitutes for a live read.
+
+**실제 회로의 실패와 성공 확인** runs wrong-secret → correct-secret → replay on a fresh disposable circuit session. The manual **입장 패스 실험실** also supports:
 
 1. Generate a pass.
 2. Copy the displayed secret.
@@ -145,7 +148,7 @@ Generated contract bindings and proof artifacts are intentionally excluded from 
 
 The proof provider or connected wallet may process the private circuit input. This project does not send the secret to an application server, but it cannot guarantee how third-party wallet or proving services handle it. The operating-system clipboard may retain copied secrets.
 
-After storing a pass through an appropriate private channel, use **지우기** to remove its plaintext from the page and the app's current session state. JavaScript strings cannot be reliably zeroized, and this control does not erase clipboard history or copies saved outside the app.
+After storing a pass through an appropriate private channel, use **지우기** to clear both generated and claim-input fields in that section, including claim-input-only cases. Public contract state is unchanged. JavaScript strings cannot be reliably zeroized, and this control does not erase clipboard history or copies saved outside the app. In-flight proof inputs can remain in an outstanding operation until it settles.
 
 Read [SECURITY.md](./SECURITY.md) for the threat model, disclosure process, trust boundaries, and known limitations.
 
@@ -166,10 +169,25 @@ It performs:
 - Production dependency audit at high severity or above
 - Contract-state and privacy-invariant tests
 - Wrong-secret and replay-rejection tests
-- Browser secret-clearing, product-scope, and submission-document consistency checks
+- Real Chromium DOM regressions for clearing, request ordering, read failures, reviewer context, and operation recovery
+- Product-scope and submission-document consistency checks
 - Repository attribution and license checks
 
 `npm run test:local` separately verifies actual local-network deployment and claim transactions through both the direct SDK and the application's DApp Connector route.
+
+`npm run test:preview` performs a fresh-browser read of the pinned actual Preview contract and asserts zero wallet API access, private inputs, and transaction requests. It needs internet access and is kept separate from deterministic `verify`.
+
+`npm run test:local` also broadcasts an actual claim, deliberately drops the connector reply, restores the operation metadata, reconnects, and resolves the exact transaction ID. A read of `unclaimed` is never treated as proof of transaction failure.
+
+## Reviewer and operation boundaries (dev_haams)
+
+- Trusted context: [`src/context/trusted-context.ts`](./src/context/trusted-context.ts). Event label, network, contract, expected commitment, source and policy version are bundled by the app publisher. URL parameters and holder manifests cannot change them. Trusting the deployment and its public indexer is necessary; this is not issuer authentication or a light-client proof.
+- Live observations carry request ID and observation time. Network/address/commitment/version mismatches, malformed data and timeouts never produce a success state. New requests invalidate previous results; history has its own card.
+- Transactions retain only public operation metadata in this tab's `sessionStorage`. A timeout becomes `UNKNOWN`, not cancellation. Late completion updates the same operation. Reconnection/reload preserves the guard; exact transaction reconciliation can resolve it.
+- Before submission, **전송 전 작업 중단** prevents a late wallet response from reaching the app's submit call. Reject any remaining Lace dialog yourself. After submission, the guard remains until a matching final success/failure is observed. A missing indexer result cannot prove non-inclusion. Session data does not coordinate different tabs/devices and closing the tab can lose recovery metadata; retain public tx IDs.
+- Circuit, ABI and proving keys are unchanged. Old Preview transactions remain historical evidence, not evidence of the new UI. See [implementation evidence](./docs/IMPLEMENTATION_EVIDENCE.md) and [benchmark checklist](./docs/BENCHMARK_CHECKLIST.md).
+
+Existing work already covers ZK ticketing ([Lens & Frens](https://ethglobal.com/showcase/lens-and-frens-ogedp)), identity plus email ticket verification ([Zhat's Me](https://ethglobal.com/showcase/zhats-me-vioyt)), and secret-based asset claims ([Selkie](https://github.com/DpacJones/selkie-usdm-escrow)). Silent Pass makes no novelty or equivalent-feature claim: its deliberately small scope is one-time consumption plus a deployment-pinned public read and recoverable transaction status. It implements neither identity/email verification nor asset escrow.
 
 ### Current verified state
 

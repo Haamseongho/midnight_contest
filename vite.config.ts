@@ -14,6 +14,7 @@ export default defineConfig({
     "process.env.NODE_DEBUG": "undefined",
   },
   plugins: [wasm()],
+  server: { watch: process.env.VITE_TEST ? null : undefined },
   resolve: {
     alias: [
       { find: /^assert$/, replacement: require.resolve("assert/") },

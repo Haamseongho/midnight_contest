@@ -31,6 +31,7 @@ import {
 } from "../../contract/managed/silent-pass/contract/index.js";
 import { sessionPrivateStateProvider } from "./private-state";
 import { assertSpendableDust } from "./errors";
+import type { OperationHooks } from "./operations";
 
 type SilentContract = Contract<undefined>;
 type SilentProviders = ContractProviders<SilentContract, "claim", unknown>;
@@ -153,11 +154,8 @@ export class MidnightSession {
         getCoinPublicKey: () => addresses.shieldedCoinPublicKey,
         getEncryptionPublicKey: () => addresses.shieldedEncryptionPublicKey,
         balanceTx: async (tx: UnboundTransaction) => {
-          const response = await withTimeout(
-            connected.balanceUnsealedTransaction(toHex(tx.serialize())),
-            180_000,
-            "Lace가 3분 안에 거래 밸런싱·증명을 완료하지 못했습니다. Activity와 잔액을 확인하기 전에는 같은 거래를 다시 전송하지 마세요.",
-          );
+          // The UI tracker owns the deadline and retains the original promise.
+          const response = await connected.balanceUnsealedTransaction(toHex(tx.serialize()));
           return Transaction.deserialize<SignatureEnabled, Proof, Binding>(
             "signature",
             "proof",
@@ -168,11 +166,7 @@ export class MidnightSession {
       },
       midnightProvider: {
         submitTx: async (tx) => {
-          await withTimeout(
-            connected.submitTransaction(toHex(tx.serialize())),
-            90_000,
-            "Lace의 제출 응답을 90초 안에 확인하지 못했습니다. 결과가 불확실하므로 Activity와 공개 상태를 확인하기 전에는 같은 거래를 다시 전송하지 마세요.",
-          );
+          await connected.submitTransaction(toHex(tx.serialize()));
           return tx.identifiers()[0];
         },
       },
@@ -198,10 +192,27 @@ export class MidnightSession {
     assertSpendableDust(dust);
   }
 
-  async deploy(secret: Uint8Array): Promise<{ address: string; state: PublicPass; txId: string }> {
+  private operationProviders(hooks?: OperationHooks): SilentProviders {
+    if (!hooks) return this.providers;
+    return {
+      ...this.providers,
+      walletProvider: {
+        ...this.providers.walletProvider,
+        balanceTx: async (tx) => { hooks.balancing(); return this.providers.walletProvider.balanceTx(tx); },
+      },
+      midnightProvider: {
+        submitTx: async (tx) => {
+          hooks.submitting(tx.identifiers()[0]);
+          return this.providers.midnightProvider.submitTx(tx);
+        },
+      },
+    };
+  }
+
+  async deploy(secret: Uint8Array, hooks?: OperationHooks): Promise<{ address: string; state: PublicPass; txId: string }> {
     await this.assertWalletReady();
     const commitment = pureCircuits.makeCommitment(secret);
-    const deployed = await deployContract(this.providers, {
+    const deployed = await deployContract(this.operationProviders(hooks), {
       compiledContract,
       args: [commitment],
     });
@@ -213,10 +224,10 @@ export class MidnightSession {
     };
   }
 
-  async claim(address: string, secret: Uint8Array): Promise<PublicPass> {
+  async claim(address: string, secret: Uint8Array, hooks?: OperationHooks): Promise<PublicPass> {
     await this.assertWalletReady();
     assertIsContractAddress(address);
-    const found = await findDeployedContract(this.providers, {
+    const found = await findDeployedContract(this.operationProviders(hooks), {
       compiledContract,
       contractAddress: address,
     });
@@ -230,5 +241,20 @@ export class MidnightSession {
     if (!state) throw new Error("해당 주소의 계약을 찾을 수 없습니다.");
     const publicState = ledger(state.data);
     return { commitment: toHex(publicState.commitment), claimed: publicState.claimed };
+  }
+
+  private transactionWatches = new Map<string, ReturnType<SilentProviders["publicDataProvider"]["watchForTxData"]>>();
+  async transactionStatus(txId: string): Promise<{ status: string; txId: string }> {
+    // Ledger v8 transaction identifiers include a one-byte discriminator (33 bytes).
+    if (!/^[a-f0-9]{66}$/.test(txId)) throw new Error("잘못된 거래 식별자");
+    let watch = this.transactionWatches.get(txId);
+    if (!watch) {
+      watch = this.providers.publicDataProvider.watchForTxData(txId);
+      this.transactionWatches.set(txId, watch);
+      void watch.catch(() => this.transactionWatches.delete(txId));
+    }
+    const result = await withTimeout(watch, 15_000, "거래가 아직 확인되지 않았습니다. UNKNOWN을 유지합니다.");
+    if (!result.identifiers.includes(txId)) throw new Error("거래 식별자가 일치하지 않습니다.");
+    return { status: result.status, txId };
   }
 }

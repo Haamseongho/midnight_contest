@@ -1,14 +1,20 @@
 # Silent Pass demo script
 
-This script demonstrates a private one-time event admission credential in about three minutes.
+Opening: “초대의 비밀은 공개하지 않고, 그 초대가 한 번 사용됐는지는 함께 확인합니다.”
+
+The contract proves private secret knowledge and one-time consumption. A public consumed record does not authenticate the issuer, current presenter, or an admission decision.
 
 ## Story
 
-An organizer needs to admit one invited attendee without publishing the attendee's name or the invitation secret. The organizer deploys a commitment. The attendee receives the secret and contract address through a private channel. At check-in, the attendee proves knowledge of the secret once. The public state reveals only the commitment and whether the pass has been claimed.
+An organizer wants to track invitation consumption without publishing the secret. The organizer privately distributes a secret and contract address. The holder performs claim in their own environment. A reviewer reads the deployment-pinned public contract without a wallet or secret.
 
 State the product boundary before the wallet flow: Silent Pass does not send, hold, or escrow funds. The wallet signs the contract transactions and pays network fees; it is not the subject of the private proof.
 
 ## Browser-only walkthrough
+
+Start with **지갑 없이 공개 기록 확인**. Show the context source and current observation time. Then run **실제 회로의 실패와 성공 확인**, which executes wrong-secret → correct-secret → replay in an independent disposable session. Recorded example is historical evidence, not a live result.
+
+The manual holder laboratory also supports:
 
 1. Open the DApp and explain the three roles: organizer, attendee, and verifier.
 2. Select **새 패스 생성** in the interactive laboratory.
@@ -36,3 +42,40 @@ Use this only with a compatible DApp Connector 4.x wallet and funded test-networ
 - Do not describe the browser-only laboratory as an on-chain transaction.
 - Do not claim an independent security audit.
 - Do not claim Preview or Preprod verification without a published contract address and transaction evidence.
+- Do not claim world-first, anonymous admission, forged-ticket prevention, or on-chain issuer authentication.
+- Do not describe `claimed=true` as approval for the current visitor.
+- Do not call the browser scenario a ZK proof or a blockchain transaction.
+
+## 30-second rehearsal
+
+1. 0–8s: Explain the need to check consumption without publishing an invitation secret.
+2. 8–18s: Press **공개 기록 새로 조회**. Show request ID/time and “사용 기록 있음”. Explain that this is consumption history, not admission approval.
+3. 18–27s: Run the disposable circuit scenario. Show wrong-secret rejection, correct-secret success, then replay rejection.
+4. 27–30s: Point to Recorded example and state the issuer/presenter boundary.
+
+If the indexer is unavailable, keep the live result at UNKNOWN and open Recorded example with an explicit explanation. Do not promise a network response within the rehearsal time.
+
+## Three-minute rehearsal
+
+1. 0:00–0:30 — Organizer → holder → reviewer. The holder supplies a private input in their own environment; the reviewer never receives it.
+2. 0:30–1:10 — Context source/version, network, contract, expected commitment and an actual Preview read. Explain the app publisher and indexer trust assumptions.
+3. 1:10–1:50 — Run all three local scenarios and repeat. Show that a separately generated holder pass remains unused.
+4. 1:50–2:20 — Open Recorded example: original code/documentation commits, contract, deploy/claim IDs, original date and CI. The historical source has no exact time; do not invent one.
+5. 2:20–2:45 — Explain UNKNOWN, exact-ID recovery after reconnection, and pre-submit interruption. A missing transaction or an unclaimed read never authorizes automatic retry.
+6. 2:45–3:00 — State limitations and show the reproduction commands and implementation evidence.
+
+These are target-duration scripts, not a claim that a presentation video has been recorded. Click-through evidence is recorded separately in IMPLEMENTATION_EVIDENCE.md.
+
+## Reproduction commands
+
+```sh
+npm ci
+npx playwright install chromium
+npm run verify
+npm run test:preview
+docker compose -f devnet/compose.yml up -d --wait
+npm run test:local
+npm run dev
+```
+
+The DOM suite uses boundary doubles for network failures. The Preview read and local-network E2E use real services. Local E2E deliberately loses an already-broadcast transaction's reply, restores the tracker, reconnects and resolves the exact ID.

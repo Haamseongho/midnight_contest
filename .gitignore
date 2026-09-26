@@ -6,3 +6,5 @@ public/keys/
 public/zkir/
 logs/
 .DS_Store
+test-results/
+playwright-report/

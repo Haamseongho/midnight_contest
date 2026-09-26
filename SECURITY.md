@@ -29,13 +29,17 @@ These properties are covered by contract tests and a local-development-network i
 - Contract addresses, transaction metadata, the commitment, and the final claimed state are public. Wallet or network metadata may identify a participant.
 - The contract supports one pass per deployment. It has no expiry, revocation, recipient binding, or recovery mechanism.
 - The interactive browser-only laboratory executes the compiled Compact circuit locally. It is not a blockchain transaction. Use the wallet/network section or `npm run test:local` for transaction-level validation.
-- Lace 2.4.0 authorization and the Preview connector handshake have been verified, but Preview and Preprod transaction operation remains unverified until a deployment record is added to the README.
+- Historical Lace 2.4.0 Preview deployment and claim evidence is published in the README (2026-09-25). Preprod remains unverified. This historical evidence does not validate later UI changes.
+- `claimed=true` proves consumption history, not the current presenter's identity or right of admission. The circuit has no issuer authentication, event/session binding, expiry, or revocation.
+- The wallet-free reviewer trusts the app publisher's bundled context and the configured public indexer. Matching the expected commitment is not on-chain issuer authentication. Holder-controlled URLs/manifests are not accepted as policy.
+- Timeouts leave transactions UNKNOWN. Exact transaction-ID reconciliation or late completion resolves the guard. Pre-submit cancellation prevents the app from submitting a late response; it does not cancel Lace's dialog. Post-submit operations cannot be cancelled by this app.
+- Public operation metadata persists in sessionStorage for this tab only. It is not a cross-tab/device lock and can be lost when closing a tab or clearing browser data. A missing transaction or an unclaimed state is not sufficient evidence to retry.
 
 ## Secret-handling guidance
 
 - Generate a fresh secret for each pass.
 - Share the secret and contract address over a private authenticated channel.
 - Do not place secrets in screenshots, issues, logs, URLs, analytics, or repository files.
-- After saving a pass through an appropriate private channel, use the app's **지우기** control to remove its plaintext from the page and current session state. JavaScript strings cannot be reliably zeroized.
+- After saving a pass through an appropriate private channel, **지우기** clears both displayed secret and claim input for that section. JavaScript strings cannot be reliably zeroized; an in-flight proof may retain its input until settlement. Clipboard and external copies are outside this control.
 - Clear clipboard history after transferring a secret when the platform permits it.
 - Never use the public local-devnet genesis seed on Preview, Preprod, or any network holding real assets.

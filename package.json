@@ -16,7 +16,9 @@
     "build": "npm run compile:contract && npm run typecheck && vite build",
     "test": "npm run compile:contract && node --test tests/*.test.mjs",
     "test:local": "npm run compile:contract && tsx scripts/local-e2e.mjs",
-    "verify": "npm run audit:prod && npm run build && npm test"
+    "verify": "npm run audit:prod && npm run build && npm test && npm run test:ui",
+    "test:ui": "playwright test",
+    "test:preview": "LIVE_PREVIEW=1 playwright test --grep \"actual Preview\""
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.16.0",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@midnight-ntwrk/midnight-js-node-zk-config-provider": "^4.1.1",
     "@midnight-ntwrk/testkit-js": "^4.1.1",
+    "@playwright/test": "^1.63.0",
     "rxjs": "^7.8.2",
     "tsx": "^4.20.6",
     "typescript": "5.9.3",

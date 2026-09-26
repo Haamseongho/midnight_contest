@@ -20,6 +20,7 @@ import {
   inMemoryPrivateStateProvider,
 } from '@midnight-ntwrk/testkit-js';
 import { Contract, ledger, pureCircuits } from '../contract/managed/silent-pass/contract/index.js';
+import { OperationTracker } from '../src/network/operations.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const genesisSeed = '0'.repeat(63) + '1';
@@ -196,8 +197,30 @@ try {
     /Secret does not match/i,
   );
   assert.equal((await resumedSession.read(connectorDeploy.address)).claimed, false);
-  const connectorClaim = await resumedSession.claim(connectorDeploy.address, connectorSecret);
-  assert.equal(connectorClaim.claimed, true);
+  // Real network regression: the transaction is broadcast, then the connector
+  // response is lost. No mock claim result is substituted for a circuit.
+  const originalSubmit = adapter.submitTransaction.bind(adapter);
+  adapter.submitTransaction = async (...args) => {
+    await originalSubmit(...args);
+    throw new Error('Injected disconnection AFTER actual local submission');
+  };
+  let operationRecord;
+  const storage = { getItem: () => operationRecord ?? null, setItem: (_, value) => { operationRecord = value; } };
+  const tracker = new OperationTracker(storage);
+  await tracker.run('claim','undeployed',connectorDeploy.address,
+    hooks => resumedSession.claim(connectorDeploy.address,connectorSecret,hooks),()=>{});
+  assert.equal(tracker.current.status,'UNKNOWN');
+  assert.ok(tracker.current.txId);
+  console.log(`U4 actual broadcast / lost response: status=${tracker.current.status} tx=${tracker.current.txId}`);
+  await assert.rejects(tracker.run('claim','undeployed',connectorDeploy.address,
+    async()=>{throw Error('must never resend');},()=>{}),/미확정/);
+  adapter.submitTransaction = originalSubmit;
+  const recoveredSession = await MidnightSession.connect('undeployed');
+  const restoredTracker = new OperationTracker(storage);
+  await restoredTracker.reconcile('undeployed',id=>recoveredSession.transactionStatus(id));
+  assert.equal(restoredTracker.current.status,'CONFIRMED');
+  assert.equal((await recoveredSession.read(connectorDeploy.address)).claimed,true);
+  console.log(`U4 recovery PASS operation=${restoredTracker.current.id} tx=${restoredTracker.current.txId}`);
   await assert.rejects(
     () => resumedSession.claim(connectorDeploy.address, connectorSecret),
     /already claimed/i,

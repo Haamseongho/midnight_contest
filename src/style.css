@@ -11,6 +11,19 @@
 * {
   box-sizing: border-box;
 }
+.observation, #operation-status, #recorded-meta {
+  overflow-wrap: anywhere;
+  color: #b6c6e4;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.reviewer-workspace { border-top: 2px solid #7dd8bb; padding-top: 30px; }
+.reviewer-workspace > p, .workspace > p { line-height: 1.8; }
+.wallet-help dd { overflow-wrap: anywhere; margin: 8px 0 18px; font-size: 13px; }
+#scenario-results { line-height: 2; padding-left: 24px; }
+[data-state="MISMATCH"], [data-state="UNKNOWN"] { color: #ffd28d; }
+[data-passed="true"] { color: #9ce8c7; }
+[data-passed="false"] { color: #ffb0b0; }
 html {
   scroll-behavior: smooth;
 }
@@ -99,7 +112,9 @@ main {
   max-width: 850px;
 }
 .hero h1 {
-  font-size: clamp(43px, 5.7vw, 78px);
+  font-size: clamp(32px, 4.5vw, 60px);
+  word-break: keep-all;
+  text-wrap: balance;
   line-height: 1.2;
   letter-spacing: -0.075em;
   margin: 21px 0 23px;
