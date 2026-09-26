@@ -93,4 +93,8 @@ npm run dev
 
 ## 원격 배포 기록
 
-로컬 검수 완료 후 dev_haams에 push하고 CI/Pages 결과를 확인해 아래에 덧붙인다. main은 이 작업에서 변경하지 않는다.
+- 구현 커밋: [`fd71c40c2a873db2b67ef189147bf5bad7082904`](https://github.com/Haamseongho/midnight_contest/commit/fd71c40c2a873db2b67ef189147bf5bad7082904). `dev_haams`에 push 완료. `main`은 시작 커밋 그대로 유지했다.
+- [새 CI 36215886045](https://github.com/Haamseongho/midnight_contest/actions/runs/36215886045): **success**. `verify`와 실제 `local-e2e` 두 job 모두 통과했다. 이 결과는 위 구현 커밋에 해당한다.
+- [Pages 36215886066](https://github.com/Haamseongho/midnight_contest/actions/runs/36215886066): build 성공, deploy 차단. GitHub의 `github-pages` 환경 보호 규칙이 `dev_haams` 브랜치를 허용하지 않는다. 실패 사유: `Branch "dev_haams" is not allowed to deploy to github-pages due to environment protection rules.`
+- 환경 보호 규칙을 임의로 변경하지 않았다. 사용자에게 기존 규칙을 유지하면서 `dev_haams`만 추가 허용할지 확인을 요청했다. 허용 후 재배포 및 공개 URL 재검수가 남아 있다.
+- 따라서 **구현·로컬·원격 CI 검수 완료 / 새 공개 데모 배포 미완료**로 구분한다. 기존 공개 demo를 새 UI의 배포 증거로 사용하지 않는다. 실제 Preview 조회 검증은 새 코드를 실행한 fresh browser의 기록이다.
